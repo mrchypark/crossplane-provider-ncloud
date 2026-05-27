@@ -1,0 +1,12 @@
+apiVersion: network.ncloud.m.crossplane.io/v1alpha1
+kind: Vpc
+metadata:
+  name: sample-vpc
+  namespace: default
+spec:
+  forProvider:
+    ipv4CidrBlock: 10.20.0.0/16
+    name: sample-vpc
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
