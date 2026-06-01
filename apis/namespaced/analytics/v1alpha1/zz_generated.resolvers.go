@@ -10,89 +10,11 @@ import (
 	"context"
 	reference "github.com/crossplane/crossplane-runtime/v2/pkg/reference"
 	v1alpha12 "github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/compute/v1alpha1"
-	v1alpha1 "github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1"
-	v1alpha11 "github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/objectstorage/v1alpha1"
+	v1alpha11 "github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1"
+	v1alpha1 "github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/objectstorage/v1alpha1"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-// ResolveReferences of this CdssCluster.
-func (mg *CdssCluster) ResolveReferences(ctx context.Context, c client.Reader) error {
-	r := reference.NewAPINamespacedResolver(c, mg)
-
-	var rsp reference.NamespacedResolutionResponse
-	var err error
-
-	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ConfigGroupNo),
-		Extract:      reference.ExternalName(),
-		Namespace:    mg.GetNamespace(),
-		Reference:    mg.Spec.ForProvider.ConfigGroupNoRef,
-		Selector:     mg.Spec.ForProvider.ConfigGroupNoSelector,
-		To: reference.To{
-			List:    &CdssConfigGroupList{},
-			Managed: &CdssConfigGroup{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.ForProvider.ConfigGroupNo")
-	}
-	mg.Spec.ForProvider.ConfigGroupNo = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.ConfigGroupNoRef = rsp.ResolvedReference
-
-	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VPCNo),
-		Extract:      reference.ExternalName(),
-		Namespace:    mg.GetNamespace(),
-		Reference:    mg.Spec.ForProvider.VPCNoRef,
-		Selector:     mg.Spec.ForProvider.VPCNoSelector,
-		To: reference.To{
-			List:    &v1alpha1.VpcList{},
-			Managed: &v1alpha1.Vpc{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.ForProvider.VPCNo")
-	}
-	mg.Spec.ForProvider.VPCNo = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.VPCNoRef = rsp.ResolvedReference
-
-	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ConfigGroupNo),
-		Extract:      reference.ExternalName(),
-		Namespace:    mg.GetNamespace(),
-		Reference:    mg.Spec.InitProvider.ConfigGroupNoRef,
-		Selector:     mg.Spec.InitProvider.ConfigGroupNoSelector,
-		To: reference.To{
-			List:    &CdssConfigGroupList{},
-			Managed: &CdssConfigGroup{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.InitProvider.ConfigGroupNo")
-	}
-	mg.Spec.InitProvider.ConfigGroupNo = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.InitProvider.ConfigGroupNoRef = rsp.ResolvedReference
-
-	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.VPCNo),
-		Extract:      reference.ExternalName(),
-		Namespace:    mg.GetNamespace(),
-		Reference:    mg.Spec.InitProvider.VPCNoRef,
-		Selector:     mg.Spec.InitProvider.VPCNoSelector,
-		To: reference.To{
-			List:    &v1alpha1.VpcList{},
-			Managed: &v1alpha1.Vpc{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.InitProvider.VPCNo")
-	}
-	mg.Spec.InitProvider.VPCNo = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.InitProvider.VPCNoRef = rsp.ResolvedReference
-
-	return nil
-}
 
 // ResolveReferences of this Hadoop.
 func (mg *Hadoop) ResolveReferences(ctx context.Context, c client.Reader) error {
@@ -108,8 +30,8 @@ func (mg *Hadoop) ResolveReferences(ctx context.Context, c client.Reader) error 
 		Reference:    mg.Spec.ForProvider.BucketNameRef,
 		Selector:     mg.Spec.ForProvider.BucketNameSelector,
 		To: reference.To{
-			List:    &v1alpha11.ObjectstorageBucketList{},
-			Managed: &v1alpha11.ObjectstorageBucket{},
+			List:    &v1alpha1.ObjectstorageBucketList{},
+			Managed: &v1alpha1.ObjectstorageBucket{},
 		},
 	})
 	if err != nil {
@@ -125,8 +47,8 @@ func (mg *Hadoop) ResolveReferences(ctx context.Context, c client.Reader) error 
 		Reference:    mg.Spec.ForProvider.EdgeNodeSubnetNoRef,
 		Selector:     mg.Spec.ForProvider.EdgeNodeSubnetNoSelector,
 		To: reference.To{
-			List:    &v1alpha1.SubnetList{},
-			Managed: &v1alpha1.Subnet{},
+			List:    &v1alpha11.SubnetList{},
+			Managed: &v1alpha11.Subnet{},
 		},
 	})
 	if err != nil {
@@ -159,8 +81,8 @@ func (mg *Hadoop) ResolveReferences(ctx context.Context, c client.Reader) error 
 		Reference:    mg.Spec.ForProvider.MasterNodeSubnetNoRef,
 		Selector:     mg.Spec.ForProvider.MasterNodeSubnetNoSelector,
 		To: reference.To{
-			List:    &v1alpha1.SubnetList{},
-			Managed: &v1alpha1.Subnet{},
+			List:    &v1alpha11.SubnetList{},
+			Managed: &v1alpha11.Subnet{},
 		},
 	})
 	if err != nil {
@@ -176,8 +98,8 @@ func (mg *Hadoop) ResolveReferences(ctx context.Context, c client.Reader) error 
 		Reference:    mg.Spec.ForProvider.VPCNoRef,
 		Selector:     mg.Spec.ForProvider.VPCNoSelector,
 		To: reference.To{
-			List:    &v1alpha1.VpcList{},
-			Managed: &v1alpha1.Vpc{},
+			List:    &v1alpha11.VpcList{},
+			Managed: &v1alpha11.Vpc{},
 		},
 	})
 	if err != nil {
@@ -193,8 +115,8 @@ func (mg *Hadoop) ResolveReferences(ctx context.Context, c client.Reader) error 
 		Reference:    mg.Spec.ForProvider.WorkerNodeSubnetNoRef,
 		Selector:     mg.Spec.ForProvider.WorkerNodeSubnetNoSelector,
 		To: reference.To{
-			List:    &v1alpha1.SubnetList{},
-			Managed: &v1alpha1.Subnet{},
+			List:    &v1alpha11.SubnetList{},
+			Managed: &v1alpha11.Subnet{},
 		},
 	})
 	if err != nil {
@@ -210,8 +132,8 @@ func (mg *Hadoop) ResolveReferences(ctx context.Context, c client.Reader) error 
 		Reference:    mg.Spec.InitProvider.BucketNameRef,
 		Selector:     mg.Spec.InitProvider.BucketNameSelector,
 		To: reference.To{
-			List:    &v1alpha11.ObjectstorageBucketList{},
-			Managed: &v1alpha11.ObjectstorageBucket{},
+			List:    &v1alpha1.ObjectstorageBucketList{},
+			Managed: &v1alpha1.ObjectstorageBucket{},
 		},
 	})
 	if err != nil {
@@ -227,8 +149,8 @@ func (mg *Hadoop) ResolveReferences(ctx context.Context, c client.Reader) error 
 		Reference:    mg.Spec.InitProvider.EdgeNodeSubnetNoRef,
 		Selector:     mg.Spec.InitProvider.EdgeNodeSubnetNoSelector,
 		To: reference.To{
-			List:    &v1alpha1.SubnetList{},
-			Managed: &v1alpha1.Subnet{},
+			List:    &v1alpha11.SubnetList{},
+			Managed: &v1alpha11.Subnet{},
 		},
 	})
 	if err != nil {
@@ -261,8 +183,8 @@ func (mg *Hadoop) ResolveReferences(ctx context.Context, c client.Reader) error 
 		Reference:    mg.Spec.InitProvider.MasterNodeSubnetNoRef,
 		Selector:     mg.Spec.InitProvider.MasterNodeSubnetNoSelector,
 		To: reference.To{
-			List:    &v1alpha1.SubnetList{},
-			Managed: &v1alpha1.Subnet{},
+			List:    &v1alpha11.SubnetList{},
+			Managed: &v1alpha11.Subnet{},
 		},
 	})
 	if err != nil {
@@ -278,8 +200,8 @@ func (mg *Hadoop) ResolveReferences(ctx context.Context, c client.Reader) error 
 		Reference:    mg.Spec.InitProvider.VPCNoRef,
 		Selector:     mg.Spec.InitProvider.VPCNoSelector,
 		To: reference.To{
-			List:    &v1alpha1.VpcList{},
-			Managed: &v1alpha1.Vpc{},
+			List:    &v1alpha11.VpcList{},
+			Managed: &v1alpha11.Vpc{},
 		},
 	})
 	if err != nil {
@@ -295,8 +217,8 @@ func (mg *Hadoop) ResolveReferences(ctx context.Context, c client.Reader) error 
 		Reference:    mg.Spec.InitProvider.WorkerNodeSubnetNoRef,
 		Selector:     mg.Spec.InitProvider.WorkerNodeSubnetNoSelector,
 		To: reference.To{
-			List:    &v1alpha1.SubnetList{},
-			Managed: &v1alpha1.Subnet{},
+			List:    &v1alpha11.SubnetList{},
+			Managed: &v1alpha11.Subnet{},
 		},
 	})
 	if err != nil {
@@ -339,8 +261,8 @@ func (mg *SesCluster) ResolveReferences(ctx context.Context, c client.Reader) er
 		Reference:    mg.Spec.ForProvider.VPCNoRef,
 		Selector:     mg.Spec.ForProvider.VPCNoSelector,
 		To: reference.To{
-			List:    &v1alpha1.VpcList{},
-			Managed: &v1alpha1.Vpc{},
+			List:    &v1alpha11.VpcList{},
+			Managed: &v1alpha11.Vpc{},
 		},
 	})
 	if err != nil {
@@ -373,8 +295,8 @@ func (mg *SesCluster) ResolveReferences(ctx context.Context, c client.Reader) er
 		Reference:    mg.Spec.InitProvider.VPCNoRef,
 		Selector:     mg.Spec.InitProvider.VPCNoSelector,
 		To: reference.To{
-			List:    &v1alpha1.VpcList{},
-			Managed: &v1alpha1.Vpc{},
+			List:    &v1alpha11.VpcList{},
+			Managed: &v1alpha11.Vpc{},
 		},
 	})
 	if err != nil {

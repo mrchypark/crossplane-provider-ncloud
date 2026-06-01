@@ -73,6 +73,45 @@ type DataNodeParameters struct {
 	SubnetNo *float64 `json:"subnetNo" tf:"subnet_no,omitempty"`
 }
 
+type ManagerNodeInitParameters struct {
+	Count *float64 `json:"count,omitempty" tf:"count,omitempty"`
+
+	IsDualManager *bool `json:"isDualManager,omitempty" tf:"is_dual_manager,omitempty"`
+
+	ProductCode *string `json:"productCode,omitempty" tf:"product_code,omitempty"`
+
+	SubnetNo *float64 `json:"subnetNo,omitempty" tf:"subnet_no,omitempty"`
+}
+
+type ManagerNodeObservation struct {
+	AcgID *float64 `json:"acgId,omitempty" tf:"acg_id,omitempty"`
+
+	AcgName *string `json:"acgName,omitempty" tf:"acg_name,omitempty"`
+
+	Count *float64 `json:"count,omitempty" tf:"count,omitempty"`
+
+	IsDualManager *bool `json:"isDualManager,omitempty" tf:"is_dual_manager,omitempty"`
+
+	ProductCode *string `json:"productCode,omitempty" tf:"product_code,omitempty"`
+
+	SubnetNo *float64 `json:"subnetNo,omitempty" tf:"subnet_no,omitempty"`
+}
+
+type ManagerNodeParameters struct {
+
+	// +kubebuilder:validation:Optional
+	Count *float64 `json:"count,omitempty" tf:"count,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	IsDualManager *bool `json:"isDualManager" tf:"is_dual_manager,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ProductCode *string `json:"productCode" tf:"product_code,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	SubnetNo *float64 `json:"subnetNo" tf:"subnet_no,omitempty"`
+}
+
 type MasterNodeInitParameters struct {
 	Count *float64 `json:"count,omitempty" tf:"count,omitempty"`
 
@@ -156,7 +195,7 @@ type SesClusterInitParameters struct {
 	// +kubebuilder:validation:Optional
 	LoginKeyNameSelector *v1.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
 
-	ManagerNode []SesClusterManagerNodeInitParameters `json:"managerNode,omitempty" tf:"manager_node,omitempty"`
+	ManagerNode []ManagerNodeInitParameters `json:"managerNode,omitempty" tf:"manager_node,omitempty"`
 
 	MasterNode []MasterNodeInitParameters `json:"masterNode,omitempty" tf:"master_node,omitempty"`
 
@@ -176,45 +215,6 @@ type SesClusterInitParameters struct {
 	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 }
 
-type SesClusterManagerNodeInitParameters struct {
-	Count *float64 `json:"count,omitempty" tf:"count,omitempty"`
-
-	IsDualManager *bool `json:"isDualManager,omitempty" tf:"is_dual_manager,omitempty"`
-
-	ProductCode *string `json:"productCode,omitempty" tf:"product_code,omitempty"`
-
-	SubnetNo *float64 `json:"subnetNo,omitempty" tf:"subnet_no,omitempty"`
-}
-
-type SesClusterManagerNodeObservation struct {
-	AcgID *float64 `json:"acgId,omitempty" tf:"acg_id,omitempty"`
-
-	AcgName *string `json:"acgName,omitempty" tf:"acg_name,omitempty"`
-
-	Count *float64 `json:"count,omitempty" tf:"count,omitempty"`
-
-	IsDualManager *bool `json:"isDualManager,omitempty" tf:"is_dual_manager,omitempty"`
-
-	ProductCode *string `json:"productCode,omitempty" tf:"product_code,omitempty"`
-
-	SubnetNo *float64 `json:"subnetNo,omitempty" tf:"subnet_no,omitempty"`
-}
-
-type SesClusterManagerNodeParameters struct {
-
-	// +kubebuilder:validation:Optional
-	Count *float64 `json:"count,omitempty" tf:"count,omitempty"`
-
-	// +kubebuilder:validation:Optional
-	IsDualManager *bool `json:"isDualManager" tf:"is_dual_manager,omitempty"`
-
-	// +kubebuilder:validation:Optional
-	ProductCode *string `json:"productCode" tf:"product_code,omitempty"`
-
-	// +kubebuilder:validation:Optional
-	SubnetNo *float64 `json:"subnetNo" tf:"subnet_no,omitempty"`
-}
-
 type SesClusterObservation struct {
 	ClusterName *string `json:"clusterName,omitempty" tf:"cluster_name,omitempty"`
 
@@ -226,7 +226,7 @@ type SesClusterObservation struct {
 
 	LoginKeyName *string `json:"loginKeyName,omitempty" tf:"login_key_name,omitempty"`
 
-	ManagerNode []SesClusterManagerNodeObservation `json:"managerNode,omitempty" tf:"manager_node,omitempty"`
+	ManagerNode []ManagerNodeObservation `json:"managerNode,omitempty" tf:"manager_node,omitempty"`
 
 	ManagerNodeInstanceNoList []*float64 `json:"managerNodeInstanceNoList,omitempty" tf:"manager_node_instance_no_list,omitempty"`
 
@@ -262,7 +262,7 @@ type SesClusterParameters struct {
 	LoginKeyNameSelector *v1.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
-	ManagerNode []SesClusterManagerNodeParameters `json:"managerNode,omitempty" tf:"manager_node,omitempty"`
+	ManagerNode []ManagerNodeParameters `json:"managerNode,omitempty" tf:"manager_node,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	MasterNode []MasterNodeParameters `json:"masterNode,omitempty" tf:"master_node,omitempty"`

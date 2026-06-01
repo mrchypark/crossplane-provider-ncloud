@@ -6,7 +6,6 @@
   "ncloud_auto_scaling_schedule",
   "ncloud_block_storage",
   "ncloud_block_storage_snapshot",
-  "ncloud_cdss_cluster",
   "ncloud_cdss_config_group",
   "ncloud_hadoop",
   "ncloud_init_script",

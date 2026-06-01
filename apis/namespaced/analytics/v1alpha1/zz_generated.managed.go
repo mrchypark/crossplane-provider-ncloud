@@ -8,46 +8,6 @@ package v1alpha1
 
 import xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 
-// GetCondition of this CdssCluster.
-func (mg *CdssCluster) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
-	return mg.Status.GetCondition(ct)
-}
-
-// GetManagementPolicies of this CdssCluster.
-func (mg *CdssCluster) GetManagementPolicies() xpv1.ManagementPolicies {
-	return mg.Spec.ManagementPolicies
-}
-
-// GetProviderConfigReference of this CdssCluster.
-func (mg *CdssCluster) GetProviderConfigReference() *xpv1.ProviderConfigReference {
-	return mg.Spec.ProviderConfigReference
-}
-
-// GetWriteConnectionSecretToReference of this CdssCluster.
-func (mg *CdssCluster) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
-	return mg.Spec.WriteConnectionSecretToReference
-}
-
-// SetConditions of this CdssCluster.
-func (mg *CdssCluster) SetConditions(c ...xpv1.Condition) {
-	mg.Status.SetConditions(c...)
-}
-
-// SetManagementPolicies of this CdssCluster.
-func (mg *CdssCluster) SetManagementPolicies(r xpv1.ManagementPolicies) {
-	mg.Spec.ManagementPolicies = r
-}
-
-// SetProviderConfigReference of this CdssCluster.
-func (mg *CdssCluster) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
-	mg.Spec.ProviderConfigReference = r
-}
-
-// SetWriteConnectionSecretToReference of this CdssCluster.
-func (mg *CdssCluster) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
-	mg.Spec.WriteConnectionSecretToReference = r
-}
-
 // GetCondition of this CdssConfigGroup.
 func (mg *CdssConfigGroup) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
