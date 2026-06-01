@@ -20,6 +20,7 @@ func Configure(p *ujconfig.Provider) {
 		r.References["subnet_no"] = ujconfig.Reference{TerraformName: "ncloud_subnet"}
 		r.References["init_script_no"] = ujconfig.Reference{TerraformName: "ncloud_init_script"}
 		r.References["network_interface.network_interface_no"] = ujconfig.Reference{TerraformName: "ncloud_network_interface"}
+		r.LateInitializer.IgnoredFields = []string{"server_image_product_code", "server_product_code"}
 		ujconfig.MoveToStatus(r.TerraformResource, "instance_no", "private_ip", "public_ip", "port_forwarding_public_ip", "port_forwarding_external_port", "port_forwarding_internal_port")
 	})
 	p.AddResourceConfigurator("ncloud_network_interface", func(r *ujconfig.Resource) {
@@ -46,6 +47,7 @@ func Configure(p *ujconfig.Provider) {
 		r.Kind = "BlockStorage"
 		r.UseAsync = true
 		r.References["server_instance_no"] = ujconfig.Reference{TerraformName: "ncloud_server"}
+		r.LateInitializer.IgnoredFields = []string{"disk_detail_type"}
 		ujconfig.MoveToStatus(r.TerraformResource, "block_storage_no", "server_name", "status")
 	})
 	p.AddResourceConfigurator("ncloud_block_storage_snapshot", func(r *ujconfig.Resource) {
@@ -59,6 +61,7 @@ func Configure(p *ujconfig.Provider) {
 		r.ShortGroup = "compute"
 		r.Kind = "LaunchConfiguration"
 		r.References["login_key_name"] = ujconfig.Reference{TerraformName: "ncloud_login_key"}
+		r.LateInitializer.IgnoredFields = []string{"server_image_product_code", "server_product_code"}
 	})
 	p.AddResourceConfigurator("ncloud_placement_group", func(r *ujconfig.Resource) {
 		r.ShortGroup = "compute"
