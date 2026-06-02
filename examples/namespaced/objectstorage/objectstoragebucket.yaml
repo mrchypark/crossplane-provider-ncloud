@@ -1,4 +1,4 @@
-apiVersion: objectstorage.ncloud.m.crossplane.io/v1alpha1
+apiVersion: objectstorage.ncloud.crossplane.io/v1alpha1
 kind: ObjectstorageBucket
 metadata:
   name: sample-objectstorage-bucket

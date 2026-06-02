@@ -16,7 +16,7 @@ ${KUBECTL} -n crossplane-system wait --for=condition=Available deployment --all 
 
 echo "Creating a default cluster provider config..."
 cat <<EOF | ${KUBECTL} apply -f -
-apiVersion: ncloud.m.crossplane.io/v1beta1
+apiVersion: ncloud.crossplane.io/v1beta1
 kind: ClusterProviderConfig
 metadata:
   name: default

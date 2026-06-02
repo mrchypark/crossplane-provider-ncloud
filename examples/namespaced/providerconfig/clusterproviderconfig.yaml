@@ -1,4 +1,4 @@
-apiVersion: ncloud.m.crossplane.io/v1beta1
+apiVersion: ncloud.crossplane.io/v1beta1
 kind: ClusterProviderConfig
 metadata:
   name: default

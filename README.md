@@ -18,7 +18,7 @@ Credentials are read from a Secret whose `credentials` key contains JSON:
 The ProviderConfig supplies region and site. Shared credentials can use a cluster-wide `ClusterProviderConfig`:
 
 ```yaml
-apiVersion: ncloud.m.crossplane.io/v1beta1
+apiVersion: ncloud.crossplane.io/v1beta1
 kind: ClusterProviderConfig
 metadata:
   name: default

@@ -1,4 +1,4 @@
-apiVersion: network.ncloud.m.crossplane.io/v1alpha1
+apiVersion: network.ncloud.crossplane.io/v1alpha1
 kind: Vpc
 metadata:
   name: sample-vpc

@@ -22,7 +22,6 @@ git grep -l "crossplane.io" -- "apis/namespaced/v1*" | xargs sed -i.bak "s|cross
 git grep -l "crossplane.io" -- "cluster/test/setup.sh" | xargs sed -i.bak "s|crossplane.io|${CRD_ROOT_GROUP}|g"
 # shellcheck disable=SC2086
 git grep -l "ujconfig\.WithRootGroup(\"${PROVIDER_NAME_LOWER}\.crossplane\.io\")" -- "config/provider.go" | xargs sed -i.bak "s|ujconfig.WithRootGroup(\"${PROVIDER_NAME_LOWER}\.crossplane\.io\")|ujconfig.WithRootGroup(\"${PROVIDER_NAME_LOWER}.${CRD_ROOT_GROUP}\")|g"
-git grep -l "ujconfig\.WithRootGroup(\"${PROVIDER_NAME_LOWER}\.m\.crossplane\.io\")" -- "config/provider.go" | xargs sed -i.bak "s|ujconfig.WithRootGroup(\"${PROVIDER_NAME_LOWER}\.m.crossplane\.io\")|ujconfig.WithRootGroup(\"${PROVIDER_NAME_LOWER}.m.${CRD_ROOT_GROUP}\")|g"
 
 # We need to be careful while replacing "ncloud" keyword in go.mod as it could tamper
 # some imported packages under require section.

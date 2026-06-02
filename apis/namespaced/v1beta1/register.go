@@ -9,7 +9,7 @@ import (
 
 // Package type metadata.
 const (
-	Group   = "ncloud.m.crossplane.io"
+	Group   = "ncloud.crossplane.io"
 	Version = "v1beta1"
 )
 
