@@ -1,3 +1,5 @@
+# golangci-lint v2 configuration. The top-level version, linters.settings, and
+# formatters sections are v2 schema fields; do not rewrite this to v1 syntax.
 version: "2"
 output:
   formats:
