@@ -35,9 +35,8 @@ PLATFORMS ?= linux_amd64 linux_arm64
 # ====================================================================================
 # Setup Go
 
-# Set a sane default so that the nprocs calculation below is less noisy on the initial
-# loading of this file
-NPROCS ?= 1
+# Default to the host CPU count when available; callers may override NPROCS.
+NPROCS ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 1)
 
 # each of our test suites starts a kube-apiserver and running many test suites in
 # parallel can lead to high CPU utilization. by default we reduce the parallelism
@@ -120,6 +119,7 @@ $(TERRAFORM): check-terraform-version
 	@curl -fsSL https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip
 	@unzip $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip -d $(TOOLS_HOST_DIR)/tmp-terraform
 	@mv $(TOOLS_HOST_DIR)/tmp-terraform/terraform $(TERRAFORM)
+	@chmod +x $(TERRAFORM)
 	@rm -fr $(TOOLS_HOST_DIR)/tmp-terraform
 	@$(OK) installing terraform $(HOSTOS)-$(HOSTARCH)
 
