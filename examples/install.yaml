@@ -1,0 +1,6 @@
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: crossplane-provider-ncloud
+spec:
+  package: xpkg.crossplane.io/mrchypark/crossplane-provider-ncloud:v0.1.0

@@ -1,0 +1,482 @@
+name: NaverCloudPlatform/ncloud
+resources:
+    ncloud_access_control_group:
+        subCategory: Compute
+        description: NAVER Cloud Platform access control group resource.
+        name: ncloud_access_control_group
+        title: ncloud_access_control_group Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_access_control_group_rule:
+        subCategory: Compute
+        description: NAVER Cloud Platform access control group rule resource.
+        name: ncloud_access_control_group_rule
+        title: ncloud_access_control_group_rule Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_auto_scaling_group:
+        subCategory: Auto Scaling
+        description: NAVER Cloud Platform auto scaling group resource.
+        name: ncloud_auto_scaling_group
+        title: ncloud_auto_scaling_group Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_auto_scaling_policy:
+        subCategory: Auto Scaling
+        description: NAVER Cloud Platform auto scaling policy resource.
+        name: ncloud_auto_scaling_policy
+        title: ncloud_auto_scaling_policy Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_auto_scaling_schedule:
+        subCategory: Auto Scaling
+        description: NAVER Cloud Platform auto scaling schedule resource.
+        name: ncloud_auto_scaling_schedule
+        title: ncloud_auto_scaling_schedule Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_block_storage:
+        subCategory: Compute
+        description: NAVER Cloud Platform block storage resource.
+        name: ncloud_block_storage
+        title: ncloud_block_storage Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_block_storage_snapshot:
+        subCategory: Compute
+        description: NAVER Cloud Platform block storage snapshot resource.
+        name: ncloud_block_storage_snapshot
+        title: ncloud_block_storage_snapshot Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_cdss_cluster:
+        subCategory: Analytics
+        description: NAVER Cloud Platform cdss cluster resource.
+        name: ncloud_cdss_cluster
+        title: ncloud_cdss_cluster Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_cdss_config_group:
+        subCategory: Analytics
+        description: NAVER Cloud Platform cdss config group resource.
+        name: ncloud_cdss_config_group
+        title: ncloud_cdss_config_group Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_hadoop:
+        subCategory: Analytics
+        description: NAVER Cloud Platform hadoop resource.
+        name: ncloud_hadoop
+        title: ncloud_hadoop Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_init_script:
+        subCategory: Compute
+        description: NAVER Cloud Platform init script resource.
+        name: ncloud_init_script
+        title: ncloud_init_script Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_launch_configuration:
+        subCategory: Auto Scaling
+        description: NAVER Cloud Platform launch configuration resource.
+        name: ncloud_launch_configuration
+        title: ncloud_launch_configuration Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_lb:
+        subCategory: Load Balancer
+        description: NAVER Cloud Platform lb resource.
+        name: ncloud_lb
+        title: ncloud_lb Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_lb_listener:
+        subCategory: Load Balancer
+        description: NAVER Cloud Platform lb listener resource.
+        name: ncloud_lb_listener
+        title: ncloud_lb_listener Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_lb_target_group:
+        subCategory: Load Balancer
+        description: NAVER Cloud Platform lb target group resource.
+        name: ncloud_lb_target_group
+        title: ncloud_lb_target_group Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_lb_target_group_attachment:
+        subCategory: Load Balancer
+        description: NAVER Cloud Platform lb target group attachment resource.
+        name: ncloud_lb_target_group_attachment
+        title: ncloud_lb_target_group_attachment Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_login_key:
+        subCategory: Compute
+        description: NAVER Cloud Platform login key resource.
+        name: ncloud_login_key
+        title: ncloud_login_key Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_mongodb:
+        subCategory: Database
+        description: NAVER Cloud Platform mongodb resource.
+        name: ncloud_mongodb
+        title: ncloud_mongodb Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_mongodb_users:
+        subCategory: Database
+        description: NAVER Cloud Platform mongodb users resource.
+        name: ncloud_mongodb_users
+        title: ncloud_mongodb_users Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_mssql:
+        subCategory: Database
+        description: NAVER Cloud Platform mssql resource.
+        name: ncloud_mssql
+        title: ncloud_mssql Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_mysql:
+        subCategory: Database
+        description: NAVER Cloud Platform mysql resource.
+        name: ncloud_mysql
+        title: ncloud_mysql Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_mysql_databases:
+        subCategory: Database
+        description: NAVER Cloud Platform mysql databases resource.
+        name: ncloud_mysql_databases
+        title: ncloud_mysql_databases Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_mysql_recovery:
+        subCategory: Database
+        description: NAVER Cloud Platform mysql recovery resource.
+        name: ncloud_mysql_recovery
+        title: ncloud_mysql_recovery Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_mysql_slave:
+        subCategory: Database
+        description: NAVER Cloud Platform mysql slave resource.
+        name: ncloud_mysql_slave
+        title: ncloud_mysql_slave Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_mysql_users:
+        subCategory: Database
+        description: NAVER Cloud Platform mysql users resource.
+        name: ncloud_mysql_users
+        title: ncloud_mysql_users Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_nas_volume:
+        subCategory: NAS
+        description: NAVER Cloud Platform nas volume resource.
+        name: ncloud_nas_volume
+        title: ncloud_nas_volume Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_nat_gateway:
+        subCategory: Networking
+        description: NAVER Cloud Platform nat gateway resource.
+        name: ncloud_nat_gateway
+        title: ncloud_nat_gateway Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_network_acl:
+        subCategory: Networking
+        description: NAVER Cloud Platform network acl resource.
+        name: ncloud_network_acl
+        title: ncloud_network_acl Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_network_acl_deny_allow_group:
+        subCategory: Networking
+        description: NAVER Cloud Platform network acl deny allow group resource.
+        name: ncloud_network_acl_deny_allow_group
+        title: ncloud_network_acl_deny_allow_group Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_network_acl_rule:
+        subCategory: Networking
+        description: NAVER Cloud Platform network acl rule resource.
+        name: ncloud_network_acl_rule
+        title: ncloud_network_acl_rule Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_network_interface:
+        subCategory: Compute
+        description: NAVER Cloud Platform network interface resource.
+        name: ncloud_network_interface
+        title: ncloud_network_interface Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_nks_cluster:
+        subCategory: Kubernetes Service
+        description: NAVER Cloud Platform nks cluster resource.
+        name: ncloud_nks_cluster
+        title: ncloud_nks_cluster Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_nks_node_pool:
+        subCategory: Kubernetes Service
+        description: NAVER Cloud Platform nks node pool resource.
+        name: ncloud_nks_node_pool
+        title: ncloud_nks_node_pool Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_objectstorage_bucket:
+        subCategory: Object Storage
+        description: NAVER Cloud Platform objectstorage bucket resource.
+        name: ncloud_objectstorage_bucket
+        title: ncloud_objectstorage_bucket Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_objectstorage_bucket_acl:
+        subCategory: Object Storage
+        description: NAVER Cloud Platform objectstorage bucket acl resource.
+        name: ncloud_objectstorage_bucket_acl
+        title: ncloud_objectstorage_bucket_acl Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_objectstorage_object:
+        subCategory: Object Storage
+        description: NAVER Cloud Platform objectstorage object resource.
+        name: ncloud_objectstorage_object
+        title: ncloud_objectstorage_object Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_objectstorage_object_acl:
+        subCategory: Object Storage
+        description: NAVER Cloud Platform objectstorage object acl resource.
+        name: ncloud_objectstorage_object_acl
+        title: ncloud_objectstorage_object_acl Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_objectstorage_object_copy:
+        subCategory: Object Storage
+        description: NAVER Cloud Platform objectstorage object copy resource.
+        name: ncloud_objectstorage_object_copy
+        title: ncloud_objectstorage_object_copy Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_placement_group:
+        subCategory: Compute
+        description: NAVER Cloud Platform placement group resource.
+        name: ncloud_placement_group
+        title: ncloud_placement_group Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_postgresql:
+        subCategory: Database
+        description: NAVER Cloud Platform postgresql resource.
+        name: ncloud_postgresql
+        title: ncloud_postgresql Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_postgresql_databases:
+        subCategory: Database
+        description: NAVER Cloud Platform postgresql databases resource.
+        name: ncloud_postgresql_databases
+        title: ncloud_postgresql_databases Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_postgresql_read_replica:
+        subCategory: Database
+        description: NAVER Cloud Platform postgresql read replica resource.
+        name: ncloud_postgresql_read_replica
+        title: ncloud_postgresql_read_replica Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_postgresql_users:
+        subCategory: Database
+        description: NAVER Cloud Platform postgresql users resource.
+        name: ncloud_postgresql_users
+        title: ncloud_postgresql_users Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_public_ip:
+        subCategory: Compute
+        description: NAVER Cloud Platform public ip resource.
+        name: ncloud_public_ip
+        title: ncloud_public_ip Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_redis:
+        subCategory: Database
+        description: NAVER Cloud Platform redis resource.
+        name: ncloud_redis
+        title: ncloud_redis Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_redis_config_group:
+        subCategory: Database
+        description: NAVER Cloud Platform redis config group resource.
+        name: ncloud_redis_config_group
+        title: ncloud_redis_config_group Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_route:
+        subCategory: Networking
+        description: NAVER Cloud Platform route resource.
+        name: ncloud_route
+        title: ncloud_route Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_route_table:
+        subCategory: Networking
+        description: NAVER Cloud Platform route table resource.
+        name: ncloud_route_table
+        title: ncloud_route_table Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_route_table_association:
+        subCategory: Networking
+        description: NAVER Cloud Platform route table association resource.
+        name: ncloud_route_table_association
+        title: ncloud_route_table_association Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_server:
+        subCategory: Compute
+        description: NAVER Cloud Platform server resource.
+        name: ncloud_server
+        title: ncloud_server Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_ses_cluster:
+        subCategory: Analytics
+        description: NAVER Cloud Platform ses cluster resource.
+        name: ncloud_ses_cluster
+        title: ncloud_ses_cluster Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_sourcebuild_project:
+        subCategory: Source Tools
+        description: NAVER Cloud Platform sourcebuild project resource.
+        name: ncloud_sourcebuild_project
+        title: ncloud_sourcebuild_project Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_sourcecommit_repository:
+        subCategory: Source Tools
+        description: NAVER Cloud Platform sourcecommit repository resource.
+        name: ncloud_sourcecommit_repository
+        title: ncloud_sourcecommit_repository Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_sourcedeploy_project:
+        subCategory: Source Tools
+        description: NAVER Cloud Platform sourcedeploy project resource.
+        name: ncloud_sourcedeploy_project
+        title: ncloud_sourcedeploy_project Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_sourcedeploy_project_stage:
+        subCategory: Source Tools
+        description: NAVER Cloud Platform sourcedeploy project stage resource.
+        name: ncloud_sourcedeploy_project_stage
+        title: ncloud_sourcedeploy_project_stage Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_sourcedeploy_project_stage_scenario:
+        subCategory: Source Tools
+        description: NAVER Cloud Platform sourcedeploy project stage scenario resource.
+        name: ncloud_sourcedeploy_project_stage_scenario
+        title: ncloud_sourcedeploy_project_stage_scenario Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_sourcepipeline_project:
+        subCategory: Source Tools
+        description: NAVER Cloud Platform sourcepipeline project resource.
+        name: ncloud_sourcepipeline_project
+        title: ncloud_sourcepipeline_project Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_subnet:
+        subCategory: Networking
+        description: NAVER Cloud Platform subnet resource.
+        name: ncloud_subnet
+        title: ncloud_subnet Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_vpc:
+        subCategory: Networking
+        description: NAVER Cloud Platform vpc resource.
+        name: ncloud_vpc
+        title: ncloud_vpc Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_vpc_peering:
+        subCategory: Networking
+        description: NAVER Cloud Platform vpc peering resource.
+        name: ncloud_vpc_peering
+        title: ncloud_vpc_peering Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []

@@ -1,0 +1,660 @@
+diff --git a/internal/conn/api_client.go b/internal/conn/api_client.go
+index f52f4a4..c86ef21 100644
+--- a/internal/conn/api_client.go
++++ b/internal/conn/api_client.go
+@@ -19,6 +19,7 @@ func NewS3Client(region string, api *ncloud.APIKey, site, endpointFromEnv string
+ 	} else {
+ 		endpoint = genEndpointWithCode(region, site)
+ 	}
++	s3Region := genS3SigningRegion(region, site)
+ 
+ 	if api.AccessKey == "" || api.SecretKey == "" {
+ 		log.Fatal("AccessKey and SecretKey must not be empty")
+@@ -26,7 +27,7 @@ func NewS3Client(region string, api *ncloud.APIKey, site, endpointFromEnv string
+ 
+ 	cfg, err := config.LoadDefaultConfig(context.TODO(),
+ 		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(api.AccessKey, api.SecretKey, "")),
+-		config.WithRegion(region),
++		config.WithRegion(s3Region),
+ 	)
+ 
+ 	if err != nil {
+@@ -40,6 +41,21 @@ func NewS3Client(region string, api *ncloud.APIKey, site, endpointFromEnv string
+ 	return newClient
+ }
+ 
++func genS3SigningRegion(region, site string) string {
++	if site != "gov" {
++		return region
++	}
++
++	switch strings.ToUpper(region) {
++	case "KR":
++		return "gov-standard"
++	case "KRS":
++		return "gov2-standard"
++	default:
++		return region
++	}
++}
++
+ // API docs: https://api.ncloud-docs.com/docs/platform-region-getregionlist
+ // Common object storage docs; https://api.ncloud-docs.com/docs/storage-objectstorage
+ func genEndpointWithCode(region, site string) string {
+diff --git a/internal/conn/config.go b/internal/conn/config.go
+index c1a7428..22554e2 100644
+--- a/internal/conn/config.go
++++ b/internal/conn/config.go
+@@ -120,5 +120,7 @@ type ProviderConfig struct {
+ 	SupportVPC bool
+ 	RegionCode string
+ 	RegionNo   string
++	AccessKey  string
++	SecretKey  string
+ 	Client     *NcloudAPIClient
+ }
+diff --git a/internal/provider/provider.go b/internal/provider/provider.go
+index 326cd15..027eeeb 100644
+--- a/internal/provider/provider.go
++++ b/internal/provider/provider.go
+@@ -212,6 +212,8 @@ func ProviderConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
+ 		SecretKey: secretKey.(string),
+ 		Region:    region.(string),
+ 	}
++	providerConfig.AccessKey = accessKey.(string)
++	providerConfig.SecretKey = secretKey.(string)
+ 
+ 	// Set endpoint (only for debugging)
+ 	obs_endpoint := os.Getenv("NCLOUD_OBS_ENDPOINT")
+diff --git a/internal/service/cdss/cdss_cluster.go b/internal/service/cdss/cdss_cluster.go
+index 794703d..0343b8e 100644
+--- a/internal/service/cdss/cdss_cluster.go
++++ b/internal/service/cdss/cdss_cluster.go
+@@ -222,6 +222,18 @@ func resourceNcloudCDSSClusterCreate(ctx context.Context, d *schema.ResourceData
+ 	b := d.Get("broker_nodes").([]interface{})
+ 	bMap := b[0].(map[string]interface{})
+ 
++	if isCDSSG3Create(d, mMap, bMap) {
++		id, err := createCDSSG3Cluster(ctx, config, d, cMap, mMap, bMap)
++		if err != nil {
++			return diag.FromErr(err)
++		}
++		if err := waitForCDSSClusterActive(ctx, d, config, id); err != nil {
++			return diag.FromErr(err)
++		}
++		d.SetId(id)
++		return resourceNcloudCDSSClusterRead(ctx, d, meta)
++	}
++
+ 	reqParams := vcdss.CreateCluster{
+ 		ClusterName:              *StringPtrOrNil(d.GetOk("name")),
+ 		KafkaVersionCode:         *StringPtrOrNil(d.GetOk("kafka_version_code")),
+@@ -559,6 +571,9 @@ func waitForCDSSClusterActive(ctx context.Context, d *schema.ResourceData, confi
+ func getCDSSCluster(ctx context.Context, config *conn.ProviderConfig, id string) (*vcdss.OpenApiGetClusterInfoResponseVo, error) {
+ 	resp, _, err := config.Client.Vcdss.V1Api.ClusterGetClusterInfoListServiceGroupInstanceNoPost(ctx, id)
+ 	if err != nil {
++		if id == "" || id == "0" || strings.HasPrefix(id, "0:") {
++			return nil, nil
++		}
+ 		return nil, err
+ 	}
+ 	LogResponse("getCDSSCluster", resp)
+@@ -575,3 +590,147 @@ func getBrokerInfo(ctx context.Context, config *conn.ProviderConfig, id string)
+ 
+ 	return resp.Result, nil
+ }
++
++func isCDSSG3Create(d *schema.ResourceData, managerNode, brokerNode map[string]interface{}) bool {
++	return strings.Contains(d.Get("os_image").(string), ".G003") ||
++		strings.Contains(managerNode["node_product_code"].(string), ".G003") ||
++		strings.Contains(brokerNode["node_product_code"].(string), ".G003")
++}
++
++func createCDSSG3Cluster(ctx context.Context, config *conn.ProviderConfig, d *schema.ResourceData, cmak, managerNode, brokerNode map[string]interface{}) (string, error) {
++	vpcNo := *GetInt32FromString(d.GetOk("vpc_no"))
++	managerSubnetNo := *GetInt32FromString(managerNode["subnet_no"], true)
++	brokerSubnetNo := *GetInt32FromString(brokerNode["subnet_no"], true)
++
++	managerSubnet, err := getCDSSG3Subnet(ctx, config, vpcNo, managerSubnetNo)
++	if err != nil {
++		return "", err
++	}
++	brokerSubnet, err := getCDSSG3Subnet(ctx, config, vpcNo, brokerSubnetNo)
++	if err != nil {
++		return "", err
++	}
++
++	req := map[string]any{
++		"clusterName":                                *StringPtrOrNil(d.GetOk("name")),
++		"kafkaVersionCode":                           *StringPtrOrNil(d.GetOk("kafka_version_code")),
++		"kafkaManagerUserName":                       *StringPtrOrNil(cmak["user_name"], true),
++		"kafkaManagerUserPassword":                   *StringPtrOrNil(cmak["user_password"], true),
++		"hypervisorCode":                             "KVM",
++		"generationCode":                             "G3",
++		"softwareProductCode":                        *StringPtrOrNil(d.GetOk("os_image")),
++		"vpcName":                                    managerSubnet.VpcName,
++		"vpcNo":                                      vpcNo,
++		"managerNodeSubnetName":                      managerSubnet.SubnetName,
++		"managerNodeSubnetNo":                        managerSubnetNo,
++		"managerNodeProductCode":                     *StringPtrOrNil(managerNode["node_product_code"], true),
++		"dataNodeSubnetName":                         brokerSubnet.SubnetName,
++		"dataNodeSubnetNo":                           brokerSubnetNo,
++		"dataNodeCount":                              *Int32PtrOrNil(brokerNode["node_count"], true),
++		"dataNodeProductCode":                        *StringPtrOrNil(brokerNode["node_product_code"], true),
++		"dataNodeStorageType2Code":                   "SSD",
++		"dataNodeStorageInfraResourceDetailTypeCode": "CB1",
++		"dataNodeStorageSize":                        *Int32PtrOrNil(brokerNode["storage_size"], true),
++		"configGroupNo":                              *GetInt32FromString(d.GetOk("config_group_no")),
++		"serverSpecCode":                             serverSpecCodeFromProduct("cdss", *StringPtrOrNil(brokerNode["node_product_code"], true)),
++	}
++
++	var createResp rawAPIResponse[bool]
++	if err := config.RawJSONRequest(ctx, "cdss", "POST", "/api/v1/cluster/createKvmCluster", req, &createResp); err != nil {
++		return "", err
++	}
++	if createResp.Code != 0 || !createResp.Result {
++		return "", fmt.Errorf("CDSS G3 create failed: code=%d message=%s", createResp.Code, createResp.Message)
++	}
++
++	return waitForCDSSG3ClusterID(ctx, config, *StringPtrOrNil(d.GetOk("name")))
++}
++
++type rawAPIResponse[T any] struct {
++	Code    int    `json:"code"`
++	Message string `json:"message"`
++	Result  T      `json:"result"`
++}
++
++type cdssG3Subnet struct {
++	SubnetName string `json:"subnetName"`
++	SubnetNo   int32  `json:"subnetNo"`
++	VpcName    string `json:"vpcName"`
++	VpcNo      int32  `json:"vpcNo"`
++	IsPublic   bool   `json:"isPublic"`
++}
++
++func getCDSSG3Subnet(ctx context.Context, config *conn.ProviderConfig, vpcNo, subnetNo int32) (*cdssG3Subnet, error) {
++	for _, isPrivate := range []bool{true, false} {
++		req := map[string]any{
++			"isPrivate":           isPrivate,
++			"softwareProductCode": "SW.VCDSS.OS.LNX64.ROCKY.08.G003",
++			"vpcNo":               vpcNo,
++		}
++		var resp rawAPIResponse[struct {
++			Content []cdssG3Subnet `json:"content"`
++		}]
++		if err := config.RawJSONRequest(ctx, "cdss", "POST", "/api/v1/cluster/getVpcAvailableSubnetList", req, &resp); err != nil {
++			return nil, err
++		}
++		for i := range resp.Result.Content {
++			if resp.Result.Content[i].SubnetNo == subnetNo {
++				return &resp.Result.Content[i], nil
++			}
++		}
++	}
++	return nil, fmt.Errorf("CDSS G3 subnet %d not found in VPC %d", subnetNo, vpcNo)
++}
++
++func waitForCDSSG3ClusterID(ctx context.Context, config *conn.ProviderConfig, name string) (string, error) {
++	stateConf := &resource.StateChangeConf{
++		Pending: []string{CDSSStatusNull},
++		Target:  []string{CDSSStatusCreating, CDSSStatusChanging, CDSSStatusRunning},
++		Refresh: func() (interface{}, string, error) {
++			var resp rawAPIResponse[struct {
++				AllowedClusters []struct {
++					ClusterName            string `json:"clusterName"`
++					ServiceGroupInstanceNo string `json:"serviceGroupInstanceNo"`
++					ServerStatus           string `json:"serverStatus"`
++				} `json:"allowedClusters"`
++			}]
++			if err := config.RawJSONRequest(ctx, "cdss", "POST", "/api/v1/cluster/getClusterInfoList", map[string]any{"pageNo": 0, "pageSize": 100}, &resp); err != nil {
++				return nil, "", err
++			}
++			for _, c := range resp.Result.AllowedClusters {
++				if c.ClusterName == name {
++					return c.ServiceGroupInstanceNo, c.ServerStatus, nil
++				}
++			}
++			return nil, CDSSStatusNull, nil
++		},
++		Timeout:    10 * time.Minute,
++		MinTimeout: 3 * time.Second,
++		Delay:      2 * time.Second,
++	}
++	result, err := stateConf.WaitForStateContext(ctx)
++	if err != nil {
++		return "", err
++	}
++	id, ok := result.(string)
++	if !ok || id == "" {
++		return "", fmt.Errorf("CDSS G3 cluster %s was created but no serviceGroupInstanceNo was found", name)
++	}
++	return id, nil
++}
++
++func serverSpecCodeFromProduct(service, productCode string) string {
++	prefix := service + "."
++	specType := "s"
++	if strings.Contains(productCode, ".HICPU.") {
++		specType = "c"
++	}
++	if strings.Contains(productCode, ".HIMEM.") {
++		specType = "m"
++	}
++	cpu := regexp.MustCompile(`\.C0*([0-9]+)\.`).FindStringSubmatch(productCode)
++	if len(cpu) < 2 {
++		return prefix + specType + "2-g3"
++	}
++	return prefix + specType + cpu[1] + "-g3"
++}
+diff --git a/internal/service/cdss/cdss_config_group.go b/internal/service/cdss/cdss_config_group.go
+index 1031205..72a59ed 100644
+--- a/internal/service/cdss/cdss_config_group.go
++++ b/internal/service/cdss/cdss_config_group.go
+@@ -148,6 +148,9 @@ func getCDSSConfigGroup(ctx context.Context, config *conn.ProviderConfig, kafkaV
+ 
+ 	resp, _, err := config.Client.Vcdss.V1Api.ConfigGroupGetKafkaConfigGroupConfigGroupNoPost(ctx, reqParams, id)
+ 	if err != nil {
++		if id == "" || id == "0" || strings.HasPrefix(id, "0:") {
++			return nil, nil
++		}
+ 		return nil, err
+ 	}
+ 	LogResponse("getCDSSConfigGroup", resp)
+diff --git a/internal/service/devtools/sourcebuild_project.go b/internal/service/devtools/sourcebuild_project.go
+index 4e7f53f..1af17c1 100644
+--- a/internal/service/devtools/sourcebuild_project.go
++++ b/internal/service/devtools/sourcebuild_project.go
+@@ -5,6 +5,7 @@ import (
+ 	"fmt"
+ 	"log"
+ 	"regexp"
++	"strings"
+ 
+ 	"github.com/NaverCloudPlatform/ncloud-sdk-go-v2/ncloud"
+ 	"github.com/NaverCloudPlatform/ncloud-sdk-go-v2/services/sourcebuild"
+@@ -798,10 +799,18 @@ func resourceNcloudSourceBuildProjectRead(ctx context.Context, d *schema.Resourc
+ 
+ func getBuildProject(ctx context.Context, config *conn.ProviderConfig, id *string) (*sourcebuild.GetProjectDetailResponse, error) {
+ 	LogCommonRequest("getSourceBuildProjectDetail", id)
++	if id == nil || *id == "" || *id == "0" {
++		return nil, nil
++	}
+ 	resp, err := config.Client.Sourcebuild.V1Api.GetProject(ctx, id)
+ 
+ 	if err != nil {
+ 		LogErrorResponse("getSourceBuildProjectDetail", err, id)
++		if strings.Contains(err.Error(), "invalid project id") ||
++			strings.Contains(err.Error(), "Project not found") ||
++			strings.Contains(err.Error(), "not found") {
++			return nil, nil
++		}
+ 		return nil, err
+ 	}
+ 
+diff --git a/internal/service/devtools/sourcecommit_repository.go b/internal/service/devtools/sourcecommit_repository.go
+index 45434e6..11ea5cc 100644
+--- a/internal/service/devtools/sourcecommit_repository.go
++++ b/internal/service/devtools/sourcecommit_repository.go
+@@ -4,6 +4,7 @@ import (
+ 	"context"
+ 	"fmt"
+ 	"strconv"
++	"strings"
+ 	"time"
+ 
+ 	"github.com/NaverCloudPlatform/ncloud-sdk-go-v2/ncloud"
+@@ -239,6 +240,11 @@ func getRepository(ctx context.Context, config *conn.ProviderConfig, name string
+ 
+ 	if err != nil {
+ 		LogErrorResponse("getRepository", err, name)
++		if strings.Contains(err.Error(), "Unable to search repository") ||
++			strings.Contains(err.Error(), "Repository not found") ||
++			strings.Contains(err.Error(), "not found") {
++			return nil, nil
++		}
+ 		return nil, err
+ 	}
+ 	LogResponse("getRepository", resp)
+diff --git a/internal/service/devtools/sourcedeploy_project_stage.go b/internal/service/devtools/sourcedeploy_project_stage.go
+index 1afad5d..4c67456 100644
+--- a/internal/service/devtools/sourcedeploy_project_stage.go
++++ b/internal/service/devtools/sourcedeploy_project_stage.go
+@@ -237,6 +237,9 @@ func GetSourceDeployStageById(ctx context.Context, config *conn.ProviderConfig,
+ 	LogCommonRequest("getSourceDeployStage", id)
+ 	resp, err := config.Client.Vsourcedeploy.V1Api.GetStage(ctx, projectId, id)
+ 	if err != nil {
++		if ncloud.StringValue(id) == "" || ncloud.StringValue(id) == "0" || strings.HasSuffix(ncloud.StringValue(id), ":0") {
++			return nil, nil
++		}
+ 		LogErrorResponse("getSourceDeployStage", err, *id)
+ 		return nil, err
+ 	}
+diff --git a/internal/service/devtools/sourcedeploy_project_stage_scenario.go b/internal/service/devtools/sourcedeploy_project_stage_scenario.go
+index dae23f8..8fd43b7 100644
+--- a/internal/service/devtools/sourcedeploy_project_stage_scenario.go
++++ b/internal/service/devtools/sourcedeploy_project_stage_scenario.go
+@@ -822,6 +822,9 @@ func GetSourceDeployScenarioById(ctx context.Context, config *conn.ProviderConfi
+ 	LogCommonRequest("getSourceDeployScenario", id)
+ 	resp, err := config.Client.Vsourcedeploy.V1Api.GetScenario(ctx, projectId, stageId, id)
+ 	if err != nil {
++		if ncloud.StringValue(id) == "" || ncloud.StringValue(id) == "0" {
++			return nil, nil
++		}
+ 		LogErrorResponse("getSourceDeployScenario", err, *id)
+ 		return nil, err
+ 	}
+diff --git a/internal/service/devtools/sourcepipeline_project.go b/internal/service/devtools/sourcepipeline_project.go
+index a8c4408..feecb62 100644
+--- a/internal/service/devtools/sourcepipeline_project.go
++++ b/internal/service/devtools/sourcepipeline_project.go
+@@ -130,7 +130,7 @@ func ResourceNcloudSourcePipeline() *schema.Resource {
+ 						},
+ 						"linked_tasks": {
+ 							Type:     schema.TypeList,
+-							Required: true,
++							Optional: true,
+ 							Elem: &schema.Schema{
+ 								Type:             schema.TypeString,
+ 								ValidateDiagFunc: validation.ToDiagFunc(validation.StringIsNotEmpty),
+@@ -303,9 +303,17 @@ func createPipelineProject(d *schema.ResourceData, config *conn.ProviderConfig)
+ 
+ func GetPipelineProject(ctx context.Context, config *conn.ProviderConfig, id string) (*PipelineProject, error) {
+ 	LogCommonRequest("getSourcePipelineProject", id)
++	if id == "" || id == "0" {
++		return nil, nil
++	}
+ 	resp, err := config.Client.Vsourcepipeline.V1Api.GetProject(ctx, &id)
+ 	if err != nil {
+ 		LogErrorResponse("getSourcePipelineProject", err, id)
++		if strings.Contains(err.Error(), "invalid project id") ||
++			strings.Contains(err.Error(), "Project not found") ||
++			strings.Contains(err.Error(), "not found") {
++			return nil, nil
++		}
+ 		return nil, err
+ 	}
+ 	LogResponse("getSourcePipelineProject", resp)
+diff --git a/internal/service/loadbalancer/lb.go b/internal/service/loadbalancer/lb.go
+index 5fe7eb4..db4a33f 100644
+--- a/internal/service/loadbalancer/lb.go
++++ b/internal/service/loadbalancer/lb.go
+@@ -67,6 +67,7 @@ func (r *lbResource) Schema(ctx context.Context, req resource.SchemaRequest, res
+ 	resp.Schema = schema.Schema{
+ 		Attributes: map[string]schema.Attribute{
+ 			"load_balancer_no": schema.StringAttribute{
++				Optional: true,
+ 				Computed: true,
+ 				PlanModifiers: []planmodifier.String{
+ 					stringplanmodifier.UseStateForUnknown(),
+diff --git a/internal/service/mongodb/mongodb.go b/internal/service/mongodb/mongodb.go
+index f012e4f..e033a77 100644
+--- a/internal/service/mongodb/mongodb.go
++++ b/internal/service/mongodb/mongodb.go
+@@ -189,7 +189,7 @@ func (m *mongodbResource) Schema(_ context.Context, _ resource.SchemaRequest, re
+ 					int64planmodifier.UseStateForUnknown(),
+ 				},
+ 				Validators: []validator.Int64{
+-					int64validator.Between(2, 7),
++					int64validator.Between(1, 7),
+ 				},
+ 			},
+ 			"arbiter_server_count": schema.Int64Attribute{
+@@ -594,6 +594,11 @@ func (m *mongodbResource) Read(ctx context.Context, req resource.ReadRequest, re
+ 		return
+ 	}
+ 
++	if state.ID.IsNull() || state.ID.IsUnknown() || state.ID.ValueString() == "" || state.ID.ValueString() == "0" {
++		resp.State.RemoveResource(ctx)
++		return
++	}
++
+ 	output, err := GetCloudMongoDbInstance(ctx, m.config, state.ID.ValueString())
+ 	if err != nil {
+ 		resp.Diagnostics.AddError("READING ERROR", err.Error())
+diff --git a/internal/service/mysql/mysql_users.go b/internal/service/mysql/mysql_users.go
+index 57aef34..dedc0dc 100644
+--- a/internal/service/mysql/mysql_users.go
++++ b/internal/service/mysql/mysql_users.go
+@@ -229,6 +229,10 @@ func (r *mysqlUsersResource) Read(ctx context.Context, req resource.ReadRequest,
+ 
+ 	output, err := GetMysqlUserList(ctx, r.config, state.ID.ValueString(), common.ConvertToStringList(state.MysqlUserList, "name"))
+ 	if err != nil {
++		if isMysqlUsersNotFound(err) {
++			resp.State.RemoveResource(ctx)
++			return
++		}
+ 		resp.Diagnostics.AddError("READING ERROR", err.Error())
+ 		return
+ 	}
+@@ -245,6 +249,15 @@ func (r *mysqlUsersResource) Read(ctx context.Context, req resource.ReadRequest,
+ 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
+ }
+ 
++func isMysqlUsersNotFound(err error) bool {
++	if err == nil {
++		return false
++	}
++	msg := err.Error()
++	return strings.Contains(msg, "5001017") ||
++		strings.Contains(msg, "Unable to lookup cluster instance information")
++}
++
+ func (r *mysqlUsersResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+ 	var plan, state mysqlUsersResourceModel
+ 
+diff --git a/internal/service/nks/nks_cluster.go b/internal/service/nks/nks_cluster.go
+index a3b2b93..ab9bd88 100644
+--- a/internal/service/nks/nks_cluster.go
++++ b/internal/service/nks/nks_cluster.go
+@@ -435,6 +435,11 @@ func resourceNcloudNKSClusterRead(ctx context.Context, d *schema.ResourceData, m
+ 		return diag.FromErr(err)
+ 	}
+ 
++	if cluster == nil {
++		d.SetId("")
++		return nil
++	}
++
+ 	oidcSpec, err := getOIDCSpec(ctx, config, d.Id())
+ 	if err != nil {
+ 		return diag.FromErr(err)
+@@ -450,11 +455,6 @@ func resourceNcloudNKSClusterRead(ctx context.Context, d *schema.ResourceData, m
+ 		return diag.FromErr(err)
+ 	}
+ 
+-	if cluster == nil {
+-		d.SetId("")
+-		return nil
+-	}
+-
+ 	d.SetId(ncloud.StringValue(cluster.Uuid))
+ 	d.Set("uuid", cluster.Uuid)
+ 	d.Set("name", cluster.Name)
+@@ -794,6 +794,9 @@ func GetNKSCluster(ctx context.Context, config *conn.ProviderConfig, uuid string
+ 
+ 	resp, err := config.Client.Vnks.V2Api.ClustersUuidGet(ctx, &uuid)
+ 	if err != nil {
++		if uuid == "00000000-0000-0000-0000-000000000000" {
++			return nil, nil
++		}
+ 		return nil, err
+ 	}
+ 	return resp.Cluster, nil
+diff --git a/internal/service/objectstorage/objectstorage_object.go b/internal/service/objectstorage/objectstorage_object.go
+index aae3204..c4c6d1b 100644
+--- a/internal/service/objectstorage/objectstorage_object.go
++++ b/internal/service/objectstorage/objectstorage_object.go
+@@ -140,6 +140,19 @@ func (o *objectResource) Read(ctx context.Context, req resource.ReadRequest, res
+ 		return
+ 	}
+ 
++	_, err := o.config.Client.ObjectStorage.HeadObject(ctx, &s3.HeadObjectInput{
++		Bucket: plan.Bucket.ValueStringPointer(),
++		Key:    plan.Key.ValueStringPointer(),
++	})
++	if isObjectStorageObjectNotFound(err) {
++		resp.State.RemoveResource(ctx)
++		return
++	}
++	if err != nil {
++		resp.Diagnostics.AddError("HeadObject ERROR", err.Error())
++		return
++	}
++
+ 	plan.refreshFromOutput(ctx, o.config, &resp.Diagnostics)
+ 	if resp.Diagnostics.HasError() {
+ 		return
+@@ -151,6 +164,14 @@ func (o *objectResource) Read(ctx context.Context, req resource.ReadRequest, res
+ 	}
+ }
+ 
++func isObjectStorageObjectNotFound(err error) bool {
++	if err == nil {
++		return false
++	}
++	msg := err.Error()
++	return strings.Contains(msg, "StatusCode: 404") || strings.Contains(msg, "NotFound")
++}
++
+ func (o *objectResource) Schema(_ context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+ 	resp.Schema = schema.Schema{
+ 		Attributes: map[string]schema.Attribute{
+diff --git a/internal/service/objectstorage/objectstorage_object_copy.go b/internal/service/objectstorage/objectstorage_object_copy.go
+index 8ffe899..fe4dfee 100644
+--- a/internal/service/objectstorage/objectstorage_object_copy.go
++++ b/internal/service/objectstorage/objectstorage_object_copy.go
+@@ -163,6 +163,19 @@ func (o *objectCopyResource) Read(ctx context.Context, req resource.ReadRequest,
+ 		return
+ 	}
+ 
++	_, err := o.config.Client.ObjectStorage.HeadObject(ctx, &s3.HeadObjectInput{
++		Bucket: plan.Bucket.ValueStringPointer(),
++		Key:    plan.Key.ValueStringPointer(),
++	})
++	if isObjectStorageObjectNotFound(err) {
++		resp.State.RemoveResource(ctx)
++		return
++	}
++	if err != nil {
++		resp.Diagnostics.AddError("HeadObject ERROR", err.Error())
++		return
++	}
++
+ 	plan.refreshFromOutput(ctx, o.config, &resp.Diagnostics)
+ 	if resp.Diagnostics.HasError() {
+ 		return
+diff --git a/internal/service/ses/ses_cluster.go b/internal/service/ses/ses_cluster.go
+index db0f6c2..e102ce2 100644
+--- a/internal/service/ses/ses_cluster.go
++++ b/internal/service/ses/ses_cluster.go
+@@ -6,6 +6,7 @@ import (
+ 	"log"
+ 	"regexp"
+ 	"strconv"
++	"strings"
+ 	"time"
+ 
+ 	"github.com/NaverCloudPlatform/ncloud-sdk-go-v2/ncloud"
+@@ -290,6 +291,18 @@ func resourceNcloudSESClusterCreate(ctx context.Context, d *schema.ResourceData,
+ 		masterNodeCount = Int32PtrOrNil(masterNodeParamsMap["count"], true)
+ 	}
+ 
++	if isSESG3Create(d, managerNodeParamsMap, dataNodeParamsMap, masterNodeProductCode) {
++		id, err := createSESG3Cluster(ctx, config, d, searchEngineParamsMap, managerNodeParamsMap, dataNodeParamsMap, isMasterOnlyNodeActivated, masterNodeProductCode, masterNodeSubnetNo, masterNodeCount)
++		if err != nil {
++			return diag.FromErr(err)
++		}
++		if err := waitForSESClusterActive(ctx, d, config, id); err != nil {
++			return diag.FromErr(err)
++		}
++		d.SetId(id)
++		return resourceNcloudSESClusterRead(ctx, d, meta)
++	}
++
+ 	var reqParams = &vses2.CreateClusterRequestVo{
+ 		ClusterName:               StringPtrOrNil(d.GetOk("cluster_name")),
+ 		SearchEngineVersionCode:   StringPtrOrNil(searchEngineParamsMap["version_code"], true),
+@@ -623,6 +636,9 @@ func GetSESCluster(ctx context.Context, config *conn.ProviderConfig, id string)
+ 
+ 	resp, _, err := config.Client.Vses.V2Api.GetClusterInfoUsingGET(ctx, id)
+ 	if err != nil {
++		if id == "" || id == "0" {
++			return nil, nil
++		}
+ 		return nil, err
+ 	}
+ 	LogResponse("GetSESCluster", resp)
+@@ -640,3 +656,72 @@ func getSESClusters(ctx context.Context, config *conn.ProviderConfig) (*vses2.Ge
+ 
+ 	return resp.Result, nil
+ }
++
++func isSESG3Create(d *schema.ResourceData, managerNode, dataNode map[string]interface{}, masterNodeProductCode *string) bool {
++	if strings.Contains(d.Get("os_image_code").(string), ".G003") ||
++		strings.Contains(managerNode["product_code"].(string), ".G003") ||
++		strings.Contains(dataNode["product_code"].(string), ".G003") {
++		return true
++	}
++	return masterNodeProductCode != nil && strings.Contains(*masterNodeProductCode, ".G003")
++}
++
++func createSESG3Cluster(ctx context.Context, config *conn.ProviderConfig, d *schema.ResourceData, searchEngine, managerNode, dataNode map[string]interface{}, isMasterOnlyNodeActivated bool, masterNodeProductCode *string, masterNodeSubnetNo *int32, masterNodeCount *int32) (string, error) {
++	req := map[string]any{
++		"clusterName":                                *StringPtrOrNil(d.GetOk("cluster_name")),
++		"searchEngineVersionCode":                    *StringPtrOrNil(searchEngine["version_code"], true),
++		"searchEngineUserName":                       *StringPtrOrNil(searchEngine["user_name"], true),
++		"searchEngineUserPassword":                   *StringPtrOrNil(searchEngine["user_password"], true),
++		"searchEngineDashboardPort":                  *StringPtrOrNil(searchEngine["dashboard_port"], true),
++		"softwareProductCode":                        *StringPtrOrNil(d.GetOk("os_image_code")),
++		"vpcNo":                                      *Int32PtrOrNil(d.GetOk("vpc_no")),
++		"hypervisorCode":                             "KVM",
++		"generationCode":                             "G3",
++		"isDualManager":                              *BoolPtrOrNil(managerNode["is_dual_manager"], true),
++		"managerNodeSubnetNo":                        *Int32PtrOrNil(managerNode["subnet_no"], true),
++		"managerNodeProductCode":                     *StringPtrOrNil(managerNode["product_code"], true),
++		"dataNodeSubnetNo":                           *Int32PtrOrNil(dataNode["subnet_no"], true),
++		"dataNodeCount":                              *Int32PtrOrNil(dataNode["count"], true),
++		"dataNodeProductCode":                        *StringPtrOrNil(dataNode["product_code"], true),
++		"dataNodeStorageSize":                        *Int32PtrOrNil(dataNode["storage_size"], true),
++		"dataNodeStorageInfraResourceDetailTypeCode": "CB1",
++		"serverSpecCode":                             sesServerSpecCodeFromProduct(*StringPtrOrNil(dataNode["product_code"], true)),
++		"isMasterOnlyNodeActivated":                  isMasterOnlyNodeActivated,
++		"loginKeyName":                               *StringPtrOrNil(d.GetOk("login_key_name")),
++	}
++	if isMasterOnlyNodeActivated {
++		req["masterNodeProductCode"] = *masterNodeProductCode
++		req["masterNodeSubnetNo"] = *masterNodeSubnetNo
++		req["masterNodeCount"] = *masterNodeCount
++	}
++
++	var createResp struct {
++		Code    int    `json:"code"`
++		Message string `json:"message"`
++		Result  struct {
++			ServiceGroupInstanceNo int32 `json:"serviceGroupInstanceNo"`
++		} `json:"result"`
++	}
++	if err := config.RawJSONRequest(ctx, "ses", "POST", "/api/v2/cluster/createKvmSearchEngineCluster", req, &createResp); err != nil {
++		return "", err
++	}
++	if createResp.Code != 0 || createResp.Result.ServiceGroupInstanceNo == 0 {
++		return "", fmt.Errorf("SES G3 create failed: code=%d message=%s", createResp.Code, createResp.Message)
++	}
++	return strconv.Itoa(int(createResp.Result.ServiceGroupInstanceNo)), nil
++}
++
++func sesServerSpecCodeFromProduct(productCode string) string {
++	specType := "s"
++	if strings.Contains(productCode, ".HICPU.") {
++		specType = "c"
++	}
++	if strings.Contains(productCode, ".HIMEM.") {
++		specType = "m"
++	}
++	cpu := regexp.MustCompile(`\.C0*([0-9]+)\.`).FindStringSubmatch(productCode)
++	if len(cpu) < 2 {
++		return "elst." + specType + "2-g3"
++	}
++	return "elst." + specType + cpu[1] + "-g3"
++}

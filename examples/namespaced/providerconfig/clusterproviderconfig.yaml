@@ -1,0 +1,13 @@
+apiVersion: ncloud.m.crossplane.io/v1beta1
+kind: ClusterProviderConfig
+metadata:
+  name: default
+spec:
+  region: KR
+  site: public
+  credentials:
+    source: Secret
+    secretRef:
+      name: example-creds
+      namespace: default
+      key: credentials

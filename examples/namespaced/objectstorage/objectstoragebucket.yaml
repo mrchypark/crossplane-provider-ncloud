@@ -1,0 +1,11 @@
+apiVersion: objectstorage.ncloud.m.crossplane.io/v1alpha1
+kind: ObjectstorageBucket
+metadata:
+  name: sample-objectstorage-bucket
+  namespace: default
+spec:
+  forProvider:
+    bucketName: crossplane-provider-ncloud-sample-m
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

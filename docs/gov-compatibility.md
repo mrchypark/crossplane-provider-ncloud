@@ -1,0 +1,96 @@
+# Ncloud Gov Compatibility
+
+This provider exposes `site` on ProviderConfig and passes it directly to the Terraform provider. Set `site: gov` for NAVER Cloud Platform Government. The upstream Terraform provider maps this to the government API gateway. Object Storage buckets use the government endpoint pattern, but Gov S3 signing still requires the native-provider patch described below until the upstream Terraform provider carries the same fix.
+
+## Provider Settings
+
+| Setting | Public | Gov | Fin | Notes |
+| --- | --- | --- | --- | --- |
+| `region` | Required | Required | Required | Region values are validated by the Terraform provider at runtime. |
+| `site` | `public` | `gov` | `fin` | Defaults to `public` when omitted. |
+| `support_vpc` | Always true | Always true | Always true | Classic is not supported by Terraform provider `v4.0.5`. |
+| credentials JSON | Required | Required | Required | Secret key `credentials` must contain `access_key` and `secret_key`. |
+
+## Resource Coverage
+
+| API Group | Resources | Gov Status |
+| --- | --- | --- |
+| `network.ncloud.m.crossplane.io` | `Vpc`, `Subnet`, `NetworkACL`, `NetworkACLDenyAllowGroup`, `NetworkACLRule`, `RouteTable`, `Route`, `RouteTableAssociation`, `NatGateway`, `VpcPeering` | Real gov creation tested and deleted in the local `kind-provider-ncloud-test` cluster with the packaged provider inputs. |
+| `compute.ncloud.m.crossplane.io` | `LoginKey`, `InitScript`, `Server`, `NetworkInterface`, `PublicIP`, `BlockStorage`, `BlockStorageSnapshot`, `LaunchConfiguration`, `PlacementGroup`, `AccessControlGroup`, `AccessControlGroupRule` | Real gov creation tested and deleted with the packaged provider inputs. |
+| `loadbalancer.ncloud.m.crossplane.io` | `Lb`, `LbListener`, `LbTargetGroup`, `LbTargetGroupAttachment` | Real gov creation tested and deleted with a local Terraform provider read-only field patch for `ncloud_lb`; upstream package users should treat this as a native-provider blocker until upstream includes the fix. |
+| `objectstorage.ncloud.m.crossplane.io` | `ObjectstorageBucket`, `ObjectstorageBucketACL`, `ObjectstorageObject`, `ObjectstorageObjectACL`, `ObjectstorageObjectCopy` | Real gov creation tested and deleted after Object Storage service subscription and a local Gov signing patch. Object/object-copy require `sourceSecretRef` because Terraform `source` is sensitive. |
+| `autoscaling.ncloud.m.crossplane.io` | `AutoScalingGroup`, `AutoScalingPolicy`, `AutoScalingSchedule` | Real gov creation tested and deleted with the packaged provider inputs. |
+| `database.ncloud.m.crossplane.io` | `Mongodb`, `MongodbUsers`, `Mssql`, `Mysql`, `MysqlDatabases`, `MysqlRecovery`, `MysqlSlave`, `MysqlUsers`, `Postgresql`, `PostgresqlDatabases`, `PostgresqlReadReplica`, `PostgresqlUsers`, `Redis`, `RedisConfigGroup` | Real gov creation tested for Redis, MongoDB, MSSQL, MySQL, and PostgreSQL families after Cloud Log Analytics subscription. `MysqlSlave`, `MysqlRecovery`, and `PostgresqlReadReplica` were retested with high-availability parent fixtures and reached `Ready=True`. Some read paths used the local native-provider fixes listed below. |
+| `analytics.ncloud.m.crossplane.io` | `CdssCluster`, `CdssConfigGroup`, `Hadoop`, `SesCluster` | Real gov creation tested and deleted. `CdssCluster` and `SesCluster` require the local Terraform provider Gov G3/KVM fallback because upstream Terraform provider `v4.0.5` exposes only Gov-rejected G2 catalog combinations. |
+| `nks.ncloud.m.crossplane.io` | `NksCluster`, `NksNodePool` | Real gov creation tested and deleted after local Terraform provider read/not-found handling patches. |
+| `nas.ncloud.m.crossplane.io` | `NasVolume` | Real gov creation tested and deleted with the packaged provider inputs. |
+| `source.ncloud.m.crossplane.io` | `SourcebuildProject`, `SourcecommitRepository`, `SourcedeployProject`, `SourcedeployProjectStage`, `SourcedeployProjectStageScenario`, `SourcepipelineProject` | Real gov creation tested and deleted. SourceCommit, SourceBuild, SourcePipeline required local Terraform provider read/not-found and empty `linked_tasks` handling patches. |
+
+Managed resources are namespaced only and use Crossplane v2 groups ending in
+`ncloud.m.crossplane.io`. They may use either a namespace-local
+`ncloud.m.crossplane.io/v1beta1` `ProviderConfig` or a shared
+`ClusterProviderConfig`.
+
+## Known Gov Differences To Respect Later
+
+- SourceCommit, SourceBuild, SourceDeploy, and SourcePipeline are reachable in gov with the tested account, even though older planning notes expected public-only behavior. Keep gov coverage enabled for these resources.
+- Object Storage Gov uses endpoint `https://kr.object.gov-ncloudstorage.com` and signing region `gov-standard` for `KR`. Upstream Terraform provider `v4.0.5` signs S3 requests with the provider `region` value, so a native provider patch is needed for Gov Object Storage.
+- Object Storage returns `InvalidAccessKeyId` when the API key is not present in the Object Storage credential database. After Object Storage service subscription, the same preflight returned `objectstorage_s3_listbuckets_http=200`.
+- Cloud Log Analytics is a hard precondition for Cloud DB for MySQL, PostgreSQL, MongoDB, MSSQL, and Search Engine Service creation in gov. After console subscription, the local preflight returned `cla_capacity_http=200 body_bytes=287 code=0 message=SUCCESS`.
+- Hadoop Gov creation requires catalog-compatible image and engine codes. The tested fixture used `SW.VCHDP.OS.LNX64.ROCKY.0810.HDP.B050` with engine `HADOOP2.2`.
+- Search Engine Service and Cloud Data Streaming Service reached the Gov create API with the upstream Terraform provider `v4.0.5` G2 schema, but Gov rejected those combinations with generation-code errors (`10140` for SES, `8` for CDSS).
+- [NAVER Cloud Gov notice 542](https://www.gov-ncloud.com/support/notice/all/542) says new Search Engine Service and Cloud Data Streaming Service cluster creation is restricted for CentOS 7.x and Rocky Linux 8.6 from 2025-08-21, and recommends KVM(G3) Rocky Linux 8.10 with OpenSearch 2.x or Kafka 3.x. Terraform provider `v4.0.5` uses Ncloud Go SDK `v1.6.26`; a local helper retest with SDK `v1.6.28` still exposed only the same CentOS 7.8/Rocky 8.6 SES/CDSS catalog values.
+- Gov G3/KVM raw API endpoints are available even though they are not represented by upstream Terraform provider `v4.0.5` or SDK `v1.6.28`: CDSS `POST /api/v1/cluster/createKvmCluster` and SES `POST /api/v2/cluster/createKvmSearchEngineCluster`. The local patched Terraform provider maps `.G003` OS/product codes to those endpoints and was used for the final `CdssCluster` and `SesCluster` Crossplane acceptance runs.
+- PostgreSQL has gov-specific field gaps, including storage encryption and multi-zone related fields.
+- MySQL and PostgreSQL multi-zone subnet behavior differs in gov. The tested account only exposed `KR-1`; single-zone HA parent fixtures were required for `MysqlSlave`, `MysqlRecovery`, and `PostgresqlReadReplica`.
+- Redis user fields differ for gov and should be added only with dedicated acceptance coverage.
+- NKS has mixed site-specific behavior and should be added in a separate phase.
+
+## Local Acceptance Snapshot
+
+As of 2026-06-02, local Gov acceptance covers all 60 generated managed resource
+kinds. This is an acceptance result for the Crossplane API and resource
+configuration. Some rows intentionally used the local native-provider patch in
+`hack/terraform-provider-ncloud-acceptance.patch`; they are evidence for the
+desired upstream behavior, not a claim that the pinned upstream Terraform
+provider `v4.0.5` already reconciles those Gov resources without native-provider
+changes.
+
+| Result | Count | Notes |
+| --- | ---: | --- |
+| Ready | 60 | Real-created in gov and reached `Ready=True`. This includes object storage, Cloud DB children, Hadoop, NKS, source tools, load balancer resources, and the SES/CDSS G3 resources after the local native-provider patches used during acceptance. |
+| Not ready | 0 | No generated managed resource kind remains unverified in the local Gov acceptance result set. |
+| Missing | 0 | Every generated kind has an explicit result row. |
+
+The latest cleanup check showed `kubectl get managed -n ncloud-accept` at zero
+rows. CDSS and SES raw Gov list calls returned zero clusters. MySQL and
+PostgreSQL SDK lists also returned zero instances. The billing snapshot hash did
+not change and no total demand amount was reported.
+
+Before running Gov acceptance, run the local gov preflight:
+
+```console
+scripts/gov-acceptance-preflight.sh
+```
+
+It validates account-level prerequisites without creating managed resources. The
+latest run returned `objectstorage_s3_listbuckets_http=200 error_code=none` and
+`cla_capacity_http=200 body_bytes=287 code=0 message=SUCCESS`, so Object
+Storage and Cloud Log Analytics are available for the tested account.
+
+## Acceptance Checks
+
+Run public and gov smoke tests separately. For gov:
+
+```console
+UPTEST_NCLOUD_REGION=KR \
+UPTEST_NCLOUD_SITE=gov \
+UPTEST_CLOUD_CREDENTIALS='{"access_key":"...","secret_key":"..."}' \
+make e2e
+```
+
+The first gov acceptance path should create and delete a minimal VPC, Subnet, Server, PublicIP, NatGateway, Route, Load Balancer, and Object Storage bucket.
+The repository includes minimal VPC and Object Storage manifests at
+`examples/namespaced/network/vpc.yaml`, and
+`examples/namespaced/objectstorage/objectstoragebucket.yaml`. These examples can be used
+for public and gov by changing only the setup script environment values.
