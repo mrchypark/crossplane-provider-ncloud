@@ -16,6 +16,12 @@ import (
 )
 
 const (
+	credentialKeyAccessKey = "access_key"
+	credentialKeySecretKey = "secret_key"
+	defaultSite            = "public"
+	siteGov                = "gov"
+	siteFin                = "fin"
+
 	// error messages
 	errNoProviderConfig     = "no providerConfigRef provided"
 	errGetProviderConfig    = "cannot get referenced ProviderConfig"
@@ -63,11 +69,11 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 }
 
 func terraformProviderConfiguration(pcSpec *namespacedv1beta1.ProviderConfigSpec, creds map[string]string) (map[string]any, error) {
-	accessKey := creds["access_key"]
+	accessKey := creds[credentialKeyAccessKey]
 	if accessKey == "" {
 		return nil, errors.New(errMissingAccessKey)
 	}
-	secretKey := creds["secret_key"]
+	secretKey := creds[credentialKeySecretKey]
 	if secretKey == "" {
 		return nil, errors.New(errMissingSecretKey)
 	}
@@ -76,20 +82,20 @@ func terraformProviderConfiguration(pcSpec *namespacedv1beta1.ProviderConfigSpec
 	}
 	site := pcSpec.Site
 	if site == "" {
-		site = "public"
+		site = defaultSite
 	}
 	switch site {
-	case "public", "gov", "fin":
+	case defaultSite, siteGov, siteFin:
 	default:
 		return nil, fmt.Errorf("unsupported ncloud site %q", site)
 	}
 
 	return map[string]any{
-		"access_key":  accessKey,
-		"secret_key":  secretKey,
-		"region":      pcSpec.Region,
-		"site":        site,
-		"support_vpc": true,
+		credentialKeyAccessKey: accessKey,
+		credentialKeySecretKey: secretKey,
+		"region":               pcSpec.Region,
+		"site":                 site,
+		"support_vpc":          true,
 	}, nil
 }
 

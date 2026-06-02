@@ -11,7 +11,7 @@ import (
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
 	"ncloud_access_control_group":                identifierFromProviderWithPlaceholder("0"),
-	"ncloud_access_control_group_rule":           identifierFromProviderFromField("access_control_group_no", "accessControlGroupNo", "0"),
+	"ncloud_access_control_group_rule":           identifierFromProviderFromField("access_control_group_no", "accessControlGroupNo"),
 	"ncloud_auto_scaling_group":                  identifierFromProviderWithPlaceholder("0"),
 	"ncloud_auto_scaling_policy":                 identifierFromProviderWithPlaceholder("0"),
 	"ncloud_auto_scaling_schedule":               identifierFromProviderWithPlaceholder("0"),
@@ -25,7 +25,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"ncloud_lb":                                  config.FrameworkResourceWithComputedIdentifier("load_balancer_no", "0"),
 	"ncloud_lb_listener":                         identifierFromProviderFromFields("{{ .first }}:0", "load_balancer_no", "loadBalancerNo"),
 	"ncloud_lb_target_group":                     identifierFromProviderWithPlaceholder("0"),
-	"ncloud_lb_target_group_attachment":          identifierFromProviderFromField("target_group_no", "targetGroupNo", "0"),
+	"ncloud_lb_target_group_attachment":          identifierFromProviderFromField("target_group_no", "targetGroupNo"),
 	"ncloud_login_key":                           identifierFromProviderWithPlaceholder("0"),
 	"ncloud_mongodb":                             identifierFromProviderWithPlaceholder("0"),
 	"ncloud_mongodb_users":                       config.ParameterAsIdentifier("id"),
@@ -39,14 +39,14 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"ncloud_nat_gateway":                         identifierFromProviderWithPlaceholder("0"),
 	"ncloud_network_acl":                         identifierFromProviderWithPlaceholder("0"),
 	"ncloud_network_acl_deny_allow_group":        identifierFromProviderWithPlaceholder("0"),
-	"ncloud_network_acl_rule":                    identifierFromProviderFromField("network_acl_no", "networkAclNo", "0"),
+	"ncloud_network_acl_rule":                    identifierFromProviderFromField("network_acl_no", "networkAclNo"),
 	"ncloud_network_interface":                   identifierFromProviderWithPlaceholder("0"),
 	"ncloud_nks_cluster":                         identifierFromProviderWithPlaceholder("00000000-0000-0000-0000-000000000000"),
 	"ncloud_nks_node_pool":                       identifierFromProviderFromFields("{{ .first }}:{{ .second }}", "cluster_uuid", "clusterUuid", "node_pool_name", "nodePoolName"),
-	"ncloud_objectstorage_bucket":                identifierFromProviderFromField("bucket_name", "bucketName", "0"),
-	"ncloud_objectstorage_bucket_acl":            identifierFromProviderFromField("bucket_name", "bucketName", "0"),
+	"ncloud_objectstorage_bucket":                identifierFromProviderFromField("bucket_name", "bucketName"),
+	"ncloud_objectstorage_bucket_acl":            identifierFromProviderFromField("bucket_name", "bucketName"),
 	"ncloud_objectstorage_object":                identifierFromProviderFromFields("{{ .first }}/{{ .second }}", "bucket", "bucket", "key", "key"),
-	"ncloud_objectstorage_object_acl":            identifierFromProviderFromField("object_id", "objectId", "0"),
+	"ncloud_objectstorage_object_acl":            identifierFromProviderFromField("object_id", "objectId"),
 	"ncloud_objectstorage_object_copy":           identifierFromProviderFromFields("{{ .first }}/{{ .second }}", "bucket", "bucket", "key", "key"),
 	"ncloud_placement_group":                     identifierFromProviderWithPlaceholder("0"),
 	"ncloud_postgresql":                          identifierFromProviderWithPlaceholder("0"),
@@ -82,7 +82,7 @@ func identifierFromProviderWithPlaceholder(placeholder string) config.ExternalNa
 		}))
 }
 
-func identifierFromProviderFromField(snakeName, camelName, placeholder string) config.ExternalName {
+func identifierFromProviderFromField(snakeName, camelName string) config.ExternalName {
 	return config.NewExternalNameFrom(config.IdentifierFromProvider,
 		config.WithGetIDFn(func(_ config.GetIDFn, _ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
 			if externalName != "" {
@@ -91,7 +91,7 @@ func identifierFromProviderFromField(snakeName, camelName, placeholder string) c
 			if value := stringParameter(parameters, snakeName, camelName); value != "" {
 				return value, nil
 			}
-			return placeholder, nil
+			return "0", nil
 		}))
 }
 

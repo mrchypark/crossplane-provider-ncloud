@@ -8,6 +8,11 @@ import (
 	namespacedv1beta1 "github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/v1beta1"
 )
 
+const (
+	testAccessKey = "access"
+	testSecretKey = "secret"
+)
+
 func TestTerraformProviderConfiguration(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -20,50 +25,50 @@ func TestTerraformProviderConfiguration(t *testing.T) {
 			name: "public defaults",
 			spec: &namespacedv1beta1.ProviderConfigSpec{Region: "KR"},
 			creds: map[string]string{
-				"access_key": "access",
-				"secret_key": "secret",
+				credentialKeyAccessKey: testAccessKey,
+				credentialKeySecretKey: testSecretKey,
 			},
 			want: map[string]any{
-				"access_key":  "access",
-				"secret_key":  "secret",
-				"region":      "KR",
-				"site":        "public",
-				"support_vpc": true,
+				credentialKeyAccessKey: testAccessKey,
+				credentialKeySecretKey: testSecretKey,
+				"region":               "KR",
+				"site":                 "public",
+				"support_vpc":          true,
 			},
 		},
 		{
 			name: "gov site",
 			spec: &namespacedv1beta1.ProviderConfigSpec{Region: "KR", Site: "gov"},
 			creds: map[string]string{
-				"access_key": "access",
-				"secret_key": "secret",
+				credentialKeyAccessKey: testAccessKey,
+				credentialKeySecretKey: testSecretKey,
 			},
 			want: map[string]any{
-				"access_key":  "access",
-				"secret_key":  "secret",
-				"region":      "KR",
-				"site":        "gov",
-				"support_vpc": true,
+				credentialKeyAccessKey: testAccessKey,
+				credentialKeySecretKey: testSecretKey,
+				"region":               "KR",
+				"site":                 "gov",
+				"support_vpc":          true,
 			},
 		},
 		{
 			name:    "missing access key",
 			spec:    &namespacedv1beta1.ProviderConfigSpec{Region: "KR"},
-			creds:   map[string]string{"secret_key": "secret"},
+			creds:   map[string]string{credentialKeySecretKey: testSecretKey},
 			wantErr: errMissingAccessKey,
 		},
 		{
 			name:    "missing secret key",
 			spec:    &namespacedv1beta1.ProviderConfigSpec{Region: "KR"},
-			creds:   map[string]string{"access_key": "access"},
+			creds:   map[string]string{credentialKeyAccessKey: testAccessKey},
 			wantErr: errMissingSecretKey,
 		},
 		{
 			name: "missing region",
 			spec: &namespacedv1beta1.ProviderConfigSpec{},
 			creds: map[string]string{
-				"access_key": "access",
-				"secret_key": "secret",
+				credentialKeyAccessKey: testAccessKey,
+				credentialKeySecretKey: testSecretKey,
 			},
 			wantErr: errMissingRegion,
 		},
@@ -71,8 +76,8 @@ func TestTerraformProviderConfiguration(t *testing.T) {
 			name: "invalid site",
 			spec: &namespacedv1beta1.ProviderConfigSpec{Region: "KR", Site: "private"},
 			creds: map[string]string{
-				"access_key": "access",
-				"secret_key": "secret",
+				credentialKeyAccessKey: testAccessKey,
+				credentialKeySecretKey: testSecretKey,
 			},
 			wantErr: "unsupported ncloud site",
 		},
