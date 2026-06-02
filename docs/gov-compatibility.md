@@ -1,6 +1,6 @@
 # Ncloud Gov Compatibility
 
-This provider exposes `site` on ProviderConfig and passes it directly to the Terraform provider. Set `site: gov` for NAVER Cloud Platform Government. The Terraform provider maps this to the government API gateway and uses a government Object Storage endpoint pattern for buckets.
+This provider exposes `site` on ProviderConfig and passes it directly to the Terraform provider. Set `site: gov` for NAVER Cloud Platform Government. The upstream Terraform provider maps this to the government API gateway. Object Storage buckets use the government endpoint pattern, but Gov S3 signing still requires the native-provider patch described below until the upstream Terraform provider carries the same fix.
 
 ## Provider Settings
 
@@ -15,15 +15,15 @@ This provider exposes `site` on ProviderConfig and passes it directly to the Ter
 
 | API Group | Resources | Gov Status |
 | --- | --- | --- |
-| `network.ncloud.m.crossplane.io` | `Vpc`, `Subnet`, `NetworkACL`, `NetworkACLDenyAllowGroup`, `NetworkACLRule`, `RouteTable`, `Route`, `RouteTableAssociation`, `NatGateway`, `VpcPeering` | Real gov creation tested and deleted in the local `kind-provider-ncloud-test` cluster. |
-| `compute.ncloud.m.crossplane.io` | `LoginKey`, `InitScript`, `Server`, `NetworkInterface`, `PublicIP`, `BlockStorage`, `BlockStorageSnapshot`, `LaunchConfiguration`, `PlacementGroup`, `AccessControlGroup`, `AccessControlGroupRule` | Real gov creation tested and deleted. |
-| `loadbalancer.ncloud.m.crossplane.io` | `Lb`, `LbListener`, `LbTargetGroup`, `LbTargetGroupAttachment` | Real gov creation tested and deleted after a local Terraform provider read-only field patch for `ncloud_lb`. |
-| `objectstorage.ncloud.m.crossplane.io` | `ObjectstorageBucket`, `ObjectstorageBucketACL`, `ObjectstorageObject`, `ObjectstorageObjectACL`, `ObjectstorageObjectCopy` | Real gov creation tested and deleted after Object Storage service subscription. Object/object-copy require `sourceSecretRef` because Terraform `source` is sensitive. |
-| `autoscaling.ncloud.m.crossplane.io` | `AutoScalingGroup`, `AutoScalingPolicy`, `AutoScalingSchedule` | Real gov creation tested and deleted. |
-| `database.ncloud.m.crossplane.io` | `Mongodb`, `MongodbUsers`, `Mssql`, `Mysql`, `MysqlDatabases`, `MysqlRecovery`, `MysqlSlave`, `MysqlUsers`, `Postgresql`, `PostgresqlDatabases`, `PostgresqlReadReplica`, `PostgresqlUsers`, `Redis`, `RedisConfigGroup` | Real gov creation tested for Redis, MongoDB, MSSQL, MySQL, and PostgreSQL families after Cloud Log Analytics subscription. `MysqlSlave`, `MysqlRecovery`, and `PostgresqlReadReplica` were retested with high-availability parent fixtures and reached `Ready=True`. |
+| `network.ncloud.m.crossplane.io` | `Vpc`, `Subnet`, `NetworkACL`, `NetworkACLDenyAllowGroup`, `NetworkACLRule`, `RouteTable`, `Route`, `RouteTableAssociation`, `NatGateway`, `VpcPeering` | Real gov creation tested and deleted in the local `kind-provider-ncloud-test` cluster with the packaged provider inputs. |
+| `compute.ncloud.m.crossplane.io` | `LoginKey`, `InitScript`, `Server`, `NetworkInterface`, `PublicIP`, `BlockStorage`, `BlockStorageSnapshot`, `LaunchConfiguration`, `PlacementGroup`, `AccessControlGroup`, `AccessControlGroupRule` | Real gov creation tested and deleted with the packaged provider inputs. |
+| `loadbalancer.ncloud.m.crossplane.io` | `Lb`, `LbListener`, `LbTargetGroup`, `LbTargetGroupAttachment` | Real gov creation tested and deleted with a local Terraform provider read-only field patch for `ncloud_lb`; upstream package users should treat this as a native-provider blocker until upstream includes the fix. |
+| `objectstorage.ncloud.m.crossplane.io` | `ObjectstorageBucket`, `ObjectstorageBucketACL`, `ObjectstorageObject`, `ObjectstorageObjectACL`, `ObjectstorageObjectCopy` | Real gov creation tested and deleted after Object Storage service subscription and a local Gov signing patch. Object/object-copy require `sourceSecretRef` because Terraform `source` is sensitive. |
+| `autoscaling.ncloud.m.crossplane.io` | `AutoScalingGroup`, `AutoScalingPolicy`, `AutoScalingSchedule` | Real gov creation tested and deleted with the packaged provider inputs. |
+| `database.ncloud.m.crossplane.io` | `Mongodb`, `MongodbUsers`, `Mssql`, `Mysql`, `MysqlDatabases`, `MysqlRecovery`, `MysqlSlave`, `MysqlUsers`, `Postgresql`, `PostgresqlDatabases`, `PostgresqlReadReplica`, `PostgresqlUsers`, `Redis`, `RedisConfigGroup` | Real gov creation tested for Redis, MongoDB, MSSQL, MySQL, and PostgreSQL families after Cloud Log Analytics subscription. `MysqlSlave`, `MysqlRecovery`, and `PostgresqlReadReplica` were retested with high-availability parent fixtures and reached `Ready=True`. Some read paths used the local native-provider fixes listed below. |
 | `analytics.ncloud.m.crossplane.io` | `CdssCluster`, `CdssConfigGroup`, `Hadoop`, `SesCluster` | Real gov creation tested and deleted. `CdssCluster` and `SesCluster` require the local Terraform provider Gov G3/KVM fallback because upstream Terraform provider `v4.0.5` exposes only Gov-rejected G2 catalog combinations. |
 | `nks.ncloud.m.crossplane.io` | `NksCluster`, `NksNodePool` | Real gov creation tested and deleted after local Terraform provider read/not-found handling patches. |
-| `nas.ncloud.m.crossplane.io` | `NasVolume` | Real gov creation tested and deleted. |
+| `nas.ncloud.m.crossplane.io` | `NasVolume` | Real gov creation tested and deleted with the packaged provider inputs. |
 | `source.ncloud.m.crossplane.io` | `SourcebuildProject`, `SourcecommitRepository`, `SourcedeployProject`, `SourcedeployProjectStage`, `SourcedeployProjectStageScenario`, `SourcepipelineProject` | Real gov creation tested and deleted. SourceCommit, SourceBuild, SourcePipeline required local Terraform provider read/not-found and empty `linked_tasks` handling patches. |
 
 Managed resources are namespaced only and use Crossplane v2 groups ending in
@@ -49,11 +49,16 @@ Managed resources are namespaced only and use Crossplane v2 groups ending in
 ## Local Acceptance Snapshot
 
 As of 2026-06-02, local Gov acceptance covers all 60 generated managed resource
-kinds:
+kinds. This is an acceptance result for the Crossplane API and resource
+configuration. Some rows intentionally used the local native-provider patch in
+`hack/terraform-provider-ncloud-acceptance.patch`; they are evidence for the
+desired upstream behavior, not a claim that the pinned upstream Terraform
+provider `v4.0.5` already reconciles those Gov resources without native-provider
+changes.
 
 | Result | Count | Notes |
 | --- | ---: | --- |
-| Ready | 60 | Real-created in gov and reached `Ready=True`. This includes object storage, Cloud DB children, Hadoop, NKS, source tools, load balancer resources, and the SES/CDSS G3 resources after the local provider patches used during acceptance. |
+| Ready | 60 | Real-created in gov and reached `Ready=True`. This includes object storage, Cloud DB children, Hadoop, NKS, source tools, load balancer resources, and the SES/CDSS G3 resources after the local native-provider patches used during acceptance. |
 | Not ready | 0 | No generated managed resource kind remains unverified in the local Gov acceptance result set. |
 | Missing | 0 | Every generated kind has an explicit result row. |
 
