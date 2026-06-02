@@ -17,6 +17,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"ncloud_auto_scaling_schedule":               identifierFromProviderWithPlaceholder("0"),
 	"ncloud_block_storage":                       identifierFromProviderWithPlaceholder("0"),
 	"ncloud_block_storage_snapshot":              identifierFromProviderWithPlaceholder("0"),
+	"ncloud_cdss_cluster":                        identifierFromProviderWithPlaceholder("0"),
 	"ncloud_cdss_config_group":                   identifierFromProviderFromFields("0:{{ .first }}", "kafka_version_code", "kafkaVersionCode"),
 	"ncloud_hadoop":                              identifierFromProviderWithPlaceholder("0"),
 	"ncloud_init_script":                         identifierFromProviderWithPlaceholder("0"),

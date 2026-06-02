@@ -4,6 +4,13 @@ import ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 
 // Configure adds analytics and data platform resource configuration.
 func Configure(p *ujconfig.Provider) {
+	p.AddResourceConfigurator("ncloud_cdss_cluster", func(r *ujconfig.Resource) {
+		r.ShortGroup = "analytics"
+		r.Kind = "CdssCluster"
+		r.UseAsync = true
+		r.References["vpc_no"] = ujconfig.Reference{TerraformName: "ncloud_vpc"}
+		r.References["config_group_no"] = ujconfig.Reference{TerraformName: "ncloud_cdss_config_group"}
+	})
 	p.AddResourceConfigurator("ncloud_cdss_config_group", func(r *ujconfig.Resource) {
 		r.ShortGroup = "analytics"
 		r.Kind = "CdssConfigGroup"

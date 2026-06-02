@@ -20,8 +20,8 @@ This provider exposes `site` on ProviderConfig and passes it directly to the Ter
 | `loadbalancer.ncloud.m.crossplane.io` | `Lb`, `LbListener`, `LbTargetGroup`, `LbTargetGroupAttachment` | Real gov creation tested and deleted after a local Terraform provider read-only field patch for `ncloud_lb`. |
 | `objectstorage.ncloud.m.crossplane.io` | `ObjectstorageBucket`, `ObjectstorageBucketACL`, `ObjectstorageObject`, `ObjectstorageObjectACL`, `ObjectstorageObjectCopy` | Real gov creation tested and deleted after Object Storage service subscription. Object/object-copy require `sourceSecretRef` because Terraform `source` is sensitive. |
 | `autoscaling.ncloud.m.crossplane.io` | `AutoScalingGroup`, `AutoScalingPolicy`, `AutoScalingSchedule` | Real gov creation tested and deleted. |
-| `database.ncloud.m.crossplane.io` | `Mongodb`, `MongodbUsers`, `Mssql`, `Mysql`, `MysqlDatabases`, `MysqlRecovery`, `MysqlSlave`, `MysqlUsers`, `Postgresql`, `PostgresqlDatabases`, `PostgresqlReadReplica`, `PostgresqlUsers`, `Redis`, `RedisConfigGroup` | Real gov creation tested for Redis, MongoDB, MSSQL, MySQL, and PostgreSQL families after Cloud Log Analytics subscription. `MysqlSlave` and `PostgresqlReadReplica` need high-availability parent fixtures. `MysqlRecovery` needs point-in-time restore data. |
-| `analytics.ncloud.m.crossplane.io` | `CdssConfigGroup`, `Hadoop`, `SesCluster` | `CdssConfigGroup` and `Hadoop` were real-created. `CdssCluster` is intentionally excluded from the provider after Gov API rejected multiple generation-code combinations. `SesCluster` reaches Gov create after Cloud Log Analytics subscription, but Gov rejects tested generation-code combinations. |
+| `database.ncloud.m.crossplane.io` | `Mongodb`, `MongodbUsers`, `Mssql`, `Mysql`, `MysqlDatabases`, `MysqlRecovery`, `MysqlSlave`, `MysqlUsers`, `Postgresql`, `PostgresqlDatabases`, `PostgresqlReadReplica`, `PostgresqlUsers`, `Redis`, `RedisConfigGroup` | Real gov creation tested for Redis, MongoDB, MSSQL, MySQL, and PostgreSQL families after Cloud Log Analytics subscription. `MysqlSlave`, `MysqlRecovery`, and `PostgresqlReadReplica` were retested with high-availability parent fixtures and reached `Ready=True`. |
+| `analytics.ncloud.m.crossplane.io` | `CdssCluster`, `CdssConfigGroup`, `Hadoop`, `SesCluster` | `CdssConfigGroup` and `Hadoop` were real-created. `CdssCluster` and `SesCluster` both reach Gov create, but Gov rejects the currently exposed Terraform/API catalog combinations with generation-code errors. |
 | `nks.ncloud.m.crossplane.io` | `NksCluster`, `NksNodePool` | Real gov creation tested and deleted after local Terraform provider read/not-found handling patches. |
 | `nas.ncloud.m.crossplane.io` | `NasVolume` | Real gov creation tested and deleted. |
 | `source.ncloud.m.crossplane.io` | `SourcebuildProject`, `SourcecommitRepository`, `SourcedeployProject`, `SourcedeployProjectStage`, `SourcedeployProjectStageScenario`, `SourcepipelineProject` | Real gov creation tested and deleted. SourceCommit, SourceBuild, SourcePipeline required local Terraform provider read/not-found and empty `linked_tasks` handling patches. |
@@ -39,26 +39,27 @@ Managed resources are namespaced only and use Crossplane v2 groups ending in
 - Cloud Log Analytics is a hard precondition for Cloud DB for MySQL, PostgreSQL, MongoDB, MSSQL, and Search Engine Service creation in gov. After console subscription, the local preflight returned `cla_capacity_http=200 body_bytes=287 code=0 message=SUCCESS`.
 - Hadoop Gov creation requires catalog-compatible image and engine codes. The tested fixture used `SW.VCHDP.OS.LNX64.ROCKY.0810.HDP.B050` with engine `HADOOP2.2`.
 - Search Engine Service reached the Gov create API after Cloud Log Analytics subscription, but Gov returned code `10140` for tested Rocky 8.6 and CentOS 7.8 generation/catalog combinations.
+- Cloud Data Streaming Service reached the Gov create API with current catalog values, but Gov returned code `8` for the tested G2 OS/product combinations.
+- [NAVER Cloud Gov notice 542](https://www.gov-ncloud.com/support/notice/all/542) says new Search Engine Service and Cloud Data Streaming Service cluster creation is restricted for CentOS 7.x and Rocky Linux 8.6 from 2025-08-21, and recommends KVM(G3) Rocky Linux 8.10 with OpenSearch 2.x or Kafka 3.x. The current Terraform provider/API catalog used by this acceptance run still exposed G2-style SES/CDSS products, so those two resources remain blocked by catalog/provider support rather than untested fixtures.
 - PostgreSQL has gov-specific field gaps, including storage encryption and multi-zone related fields.
-- MySQL slave/recovery multi-zone subnet behavior differs in gov.
+- MySQL and PostgreSQL multi-zone subnet behavior differs in gov. The tested account only exposed `KR-1`; single-zone HA parent fixtures were required for `MysqlSlave`, `MysqlRecovery`, and `PostgresqlReadReplica`.
 - Redis user fields differ for gov and should be added only with dedicated acceptance coverage.
 - NKS has mixed site-specific behavior and should be added in a separate phase.
 
 ## Local Acceptance Snapshot
 
-As of 2026-06-01, local Gov acceptance covers all 59 generated managed
-resource kinds after excluding `CdssCluster`:
+As of 2026-06-02, local Gov acceptance covers all 60 generated managed resource
+kinds:
 
 | Result | Count | Notes |
 | --- | ---: | --- |
-| Ready | 55 | Real-created in gov and reached `Ready=True`. Most were deleted; `Hadoop` cleanup can remain pending while Ncloud reports an internal setup operation. |
-| Not ready | 4 | `MysqlSlave`, `MysqlRecovery`, `PostgresqlReadReplica`, and `SesCluster` need additional fixtures or Gov catalog clarification. |
+| Ready | 58 | Real-created in gov and reached `Ready=True`. This includes object storage, Cloud DB children, Hadoop, NKS, source tools, and load balancer resources after the local provider patches used during acceptance. |
+| Not ready | 2 | `CdssCluster` and `SesCluster` reach Gov create but are rejected by generation-code/catalog restrictions. |
 | Missing | 0 | Every generated kind has an explicit result row. |
 
-The latest cleanup check showed `Hadoop` deletion pending while Ncloud reports
-`settingUp/SETUP`, with its dependent VPC/Subnet/LoginKey/NetworkACL/Object
-Storage resources intentionally retained until the Hadoop external resource is
-gone. The billing snapshot hash did not change.
+The latest cleanup check showed `kubectl get managed -n ncloud-accept` at zero
+rows. MySQL and PostgreSQL SDK lists also returned zero instances. The billing
+snapshot hash did not change and no total demand amount was reported.
 
 Before running Gov acceptance, run the local gov preflight:
 

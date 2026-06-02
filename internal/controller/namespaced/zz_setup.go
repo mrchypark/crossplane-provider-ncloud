@@ -9,6 +9,7 @@ import (
 
 	"github.com/crossplane/upjet/v2/pkg/controller"
 
+	cdsscluster "github.com/mrchypark/crossplane-provider-ncloud/internal/controller/namespaced/analytics/cdsscluster"
 	cdssconfiggroup "github.com/mrchypark/crossplane-provider-ncloud/internal/controller/namespaced/analytics/cdssconfiggroup"
 	hadoop "github.com/mrchypark/crossplane-provider-ncloud/internal/controller/namespaced/analytics/hadoop"
 	sescluster "github.com/mrchypark/crossplane-provider-ncloud/internal/controller/namespaced/analytics/sescluster"
@@ -75,6 +76,7 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		cdsscluster.Setup,
 		cdssconfiggroup.Setup,
 		hadoop.Setup,
 		sescluster.Setup,
@@ -147,6 +149,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 // the supplied manager gated.
 func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		cdsscluster.SetupGated,
 		cdssconfiggroup.SetupGated,
 		hadoop.SetupGated,
 		sescluster.SetupGated,
