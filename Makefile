@@ -210,15 +210,32 @@ e2e: local-deploy uptest
 
 crddiff: $(UPTEST)
 	@$(INFO) Checking breaking CRD schema changes
-	@failed=0; \
+	@base_ref="$${GITHUB_BASE_REF:-}"; \
+	if [ -z "$${base_ref}" ]; then \
+		base_ref=$$(git rev-parse HEAD^ 2>/dev/null || true); \
+	fi; \
+	if [ -z "$${base_ref}" ]; then \
+		echo "No base ref found. Skipping CRD diff..."; \
+		exit 0; \
+	fi; \
+	failed=0; \
 	for crd in $${MODIFIED_CRD_LIST}; do \
-		if ! git cat-file -e "$${GITHUB_BASE_REF}:$${crd}" 2>/dev/null; then \
-			echo "CRD $${crd} does not exist in the $${GITHUB_BASE_REF} branch. Skipping..." ; \
+		if ! grep -q "forProvider:" "$${crd}"; then \
+			echo "CRD $${crd} is not an Upjet managed resource. Skipping..." ; \
+			continue ; \
+		fi ; \
+		if ! git cat-file -e "$${base_ref}:$${crd}" 2>/dev/null; then \
+			echo "CRD $${crd} does not exist in the $${base_ref} ref. Skipping..." ; \
 			continue ; \
 		fi ; \
 		echo "Checking $${crd} for breaking API changes..." ; \
 		base_crd=$$(mktemp) ; \
-		git cat-file -p "$${GITHUB_BASE_REF}:$${crd}" > "$${base_crd}" ; \
+		git cat-file -p "$${base_ref}:$${crd}" > "$${base_crd}" ; \
+		if ! grep -q "forProvider:" "$${base_crd}"; then \
+			echo "Base CRD $${crd} is not an Upjet managed resource. Skipping..." ; \
+			rm -f "$${base_crd}" ; \
+			continue ; \
+		fi ; \
 		changes_detected=$$(go run github.com/upbound/uptest/cmd/crddiff@$(CRDDIFF_VERSION) revision --enable-upjet-extensions "$${base_crd}" "$${crd}" 2>&1) ; \
 		crddiff_status=$$? ; \
 		rm -f "$${base_crd}" ; \
