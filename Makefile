@@ -42,7 +42,7 @@ NPROCS ?= 1
 # each of our test suites starts a kube-apiserver and running many test suites in
 # parallel can lead to high CPU utilization. by default we reduce the parallelism
 # to half the number of CPU cores.
-GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
+GO_TEST_PARALLEL := $(shell n=$$(( $(NPROCS) / 2 )); if [ "$$n" -lt 1 ]; then echo 1; else echo "$$n"; fi)
 
 GO_REQUIRED_VERSION ?= 1.24
 # golangci-lint has v2.x releases. Keep this value without a leading "v":
