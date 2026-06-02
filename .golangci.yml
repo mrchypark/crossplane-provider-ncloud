@@ -86,7 +86,6 @@ linters:
           - errcheck
           - gocyclo
           - gosec
-          - scopelint
           - unparam
         path: _test(ing)?\.go
       - linters:

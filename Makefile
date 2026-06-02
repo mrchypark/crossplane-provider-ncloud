@@ -226,12 +226,18 @@ crddiff: $(UPTEST)
 
 schema-version-diff:
 	@$(INFO) Checking for native state schema version changes
-	@export PREV_PROVIDER_VERSION=$$(git cat-file -p "${GITHUB_BASE_REF}:Makefile" | sed -E -n 's/^export[[:space:]]*TERRAFORM_PROVIDER_VERSION[[:space:]]*:=[[:space:]]*(.+)/\1/p'); \
-	echo Detected previous Terraform provider version: $${PREV_PROVIDER_VERSION}; \
-	echo Current Terraform provider version: $${TERRAFORM_PROVIDER_VERSION}; \
-	mkdir -p $(WORK_DIR); \
-	git cat-file -p "$${GITHUB_BASE_REF}:config/schema.json" > "$(WORK_DIR)/schema.json.$${PREV_PROVIDER_VERSION}"; \
-	./scripts/version_diff.sh config/generated.lst "$(WORK_DIR)/schema.json.$${PREV_PROVIDER_VERSION}" config/schema.json
+	@if [ -z "$${GITHUB_BASE_REF}" ] || \
+		! git cat-file -e "$${GITHUB_BASE_REF}:Makefile" 2>/dev/null || \
+		! git cat-file -e "$${GITHUB_BASE_REF}:config/schema.json" 2>/dev/null; then \
+		echo "Base ref $${GITHUB_BASE_REF:-<unset>} does not have Makefile or config/schema.json. Skipping schema diff..."; \
+	else \
+		export PREV_PROVIDER_VERSION=$$(git cat-file -p "$${GITHUB_BASE_REF}:Makefile" | sed -E -n 's/^export[[:space:]]*TERRAFORM_PROVIDER_VERSION[[:space:]]*:=[[:space:]]*(.+)/\1/p'); \
+		echo Detected previous Terraform provider version: $${PREV_PROVIDER_VERSION}; \
+		echo Current Terraform provider version: $${TERRAFORM_PROVIDER_VERSION}; \
+		mkdir -p $(WORK_DIR); \
+		git cat-file -p "$${GITHUB_BASE_REF}:config/schema.json" > "$(WORK_DIR)/schema.json.$${PREV_PROVIDER_VERSION}"; \
+		./scripts/version_diff.sh config/generated.lst "$(WORK_DIR)/schema.json.$${PREV_PROVIDER_VERSION}" config/schema.json; \
+	fi
 	@$(OK) Checking for native state schema version changes
 
 .PHONY: cobertura submodules fallthrough run crds.clean
