@@ -109,9 +109,10 @@ TERRAFORM_WORKDIR := $(WORK_DIR)/terraform
 TERRAFORM_PROVIDER_SCHEMA := config/schema.json
 
 check-terraform-version:
-ifneq ($(TERRAFORM_VERSION_VALID),1)
-	$(error invalid TERRAFORM_VERSION $(TERRAFORM_VERSION), must be less than 1.6.0 since that version introduced a not permitted BSL license)
-endif
+	@if [ "$(TERRAFORM_VERSION_VALID)" != "1" ]; then \
+		echo "invalid TERRAFORM_VERSION $(TERRAFORM_VERSION), must be less than 1.6.0 since that version introduced a not permitted BSL license"; \
+		exit 1; \
+	fi
 
 $(TERRAFORM): check-terraform-version
 	@$(INFO) installing terraform $(HOSTOS)-$(HOSTARCH)
@@ -209,7 +210,8 @@ e2e: local-deploy uptest
 
 crddiff: $(UPTEST)
 	@$(INFO) Checking breaking CRD schema changes
-	@for crd in $${MODIFIED_CRD_LIST}; do \
+	@failed=0; \
+	for crd in $${MODIFIED_CRD_LIST}; do \
 		if ! git cat-file -e "$${GITHUB_BASE_REF}:$${crd}" 2>/dev/null; then \
 			echo "CRD $${crd} does not exist in the $${GITHUB_BASE_REF} branch. Skipping..." ; \
 			continue ; \
@@ -224,8 +226,12 @@ crddiff: $(UPTEST)
 			printf "\033[31m"; echo "Breaking change detected!"; printf "\033[0m" ; \
 			echo "$${changes_detected}" ; \
 			echo ; \
+			failed=1 ; \
 		fi ; \
-	done
+	done ; \
+	if [ "$${failed}" -eq 1 ]; then \
+		exit 1 ; \
+	fi
 	@$(OK) Checking breaking CRD schema changes
 
 schema-version-diff:
