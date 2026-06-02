@@ -213,7 +213,7 @@ crddiff: $(UPTEST)
 		echo "Checking $${crd} for breaking API changes..." ; \
 		base_crd=$$(mktemp) ; \
 		git cat-file -p "$${GITHUB_BASE_REF}:$${crd}" > "$${base_crd}" ; \
-		changes_detected=$$(go run github.com/crossplane/uptest/cmd/crddiff@$(CRDDIFF_VERSION) revision --enable-upjet-extensions "$${base_crd}" "$${crd}" 2>&1) ; \
+		changes_detected=$$(go run github.com/upbound/uptest/cmd/crddiff@$(CRDDIFF_VERSION) revision --enable-upjet-extensions "$${base_crd}" "$${crd}" 2>&1) ; \
 		crddiff_status=$$? ; \
 		rm -f "$${base_crd}" ; \
 		if [ "$${crddiff_status}" -ne 0 ] ; then \
@@ -231,7 +231,7 @@ schema-version-diff:
 		! git cat-file -e "$${GITHUB_BASE_REF}:config/schema.json" 2>/dev/null; then \
 		echo "Base ref $${GITHUB_BASE_REF:-<unset>} does not have Makefile or config/schema.json. Skipping schema diff..."; \
 	else \
-		export PREV_PROVIDER_VERSION=$$(git cat-file -p "$${GITHUB_BASE_REF}:Makefile" | sed -E -n 's/^export[[:space:]]*TERRAFORM_PROVIDER_VERSION[[:space:]]*:=[[:space:]]*(.+)/\1/p'); \
+		export PREV_PROVIDER_VERSION=$$(git cat-file -p "$${GITHUB_BASE_REF}:Makefile" | sed -E -n 's/^export[[:space:]]*TERRAFORM_PROVIDER_VERSION[[:space:]]*(\?|:)?=[[:space:]]*(.+)/\2/p'); \
 		echo Detected previous Terraform provider version: $${PREV_PROVIDER_VERSION}; \
 		echo Current Terraform provider version: $${TERRAFORM_PROVIDER_VERSION}; \
 		mkdir -p $(WORK_DIR); \
