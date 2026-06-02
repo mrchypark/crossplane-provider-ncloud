@@ -107,7 +107,7 @@
       "customType": "regex",
       "description": "Bump Crossplane CLI version in the Makefile",
       "fileMatch": ["^Makefile$"],
-      "matchStrings": ["CROSSPLANE_CLI_VERSION ??= (?<currentValue>.*?)\\n"],
+      "matchStrings": ["CROSSPLANE_CLI_VERSION \\??= (?<currentValue>.*?)\\n"],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "crossplane/crossplane"
     }

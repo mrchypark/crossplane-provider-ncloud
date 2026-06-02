@@ -1,3 +1,7 @@
 ## Code of Conduct
 
-crossplane-provider-ncloud is under [the Apache 2.0 license](LICENSE) with [notice](NOTICE).
+We expect everyone participating in crossplane-provider-ncloud to be respectful, constructive, and professional.
+
+Harassment, abusive language, discriminatory behavior, and repeated disruption are not acceptable in project spaces.
+
+Maintainers may remove comments, issues, pull requests, or other contributions that violate these expectations.
