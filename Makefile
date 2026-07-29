@@ -117,14 +117,23 @@ TERRAFORM := $(TOOLS_HOST_DIR)/terraform-$(TERRAFORM_VERSION)
 TERRAFORM_WORKDIR := $(WORK_DIR)/terraform
 TERRAFORM_PROVIDER_SCHEMA := config/schema.json
 
-# Local filesystem mirror standing in for the Terraform Registry, which does not
-# carry the fork. Mirror directories are addressed in lower case regardless of
-# how the source is spelled in configuration.
-TERRAFORM_PROVIDER_MIRROR := $(WORK_DIR)/provider-mirror
+# Install the provider from its GitHub release into a local filesystem mirror
+# rather than resolving it from the Terraform Registry. Required only while
+# TERRAFORM_PROVIDER_VERSION names a build the registry does not carry; set it
+# to false once it names a registry release and the schema is generated exactly
+# as it was before.
+TERRAFORM_PROVIDER_USE_MIRROR ?= true
+
+ifeq ($(TERRAFORM_PROVIDER_USE_MIRROR),true)
+# Mirror directories are addressed in lower case regardless of how the source is
+# spelled in configuration. The mirror lives under CACHE_DIR because a released
+# artifact is safe to keep across builds; WORK_DIR is wiped by `make clean`.
 TERRAFORM_PROVIDER_SOURCE_LOWER := $(shell printf '%s' "$(TERRAFORM_PROVIDER_SOURCE)" | tr '[:upper:]' '[:lower:]')
+TERRAFORM_PROVIDER_MIRROR := $(CACHE_DIR)/provider-mirror
 TERRAFORM_PROVIDER_MIRROR_DIR := $(TERRAFORM_PROVIDER_MIRROR)/registry.terraform.io/$(TERRAFORM_PROVIDER_SOURCE_LOWER)/$(TERRAFORM_PROVIDER_VERSION)/$(SAFEHOST_PLATFORM)
 TERRAFORM_PROVIDER_MIRRORED := $(TERRAFORM_PROVIDER_MIRROR_DIR)/$(TERRAFORM_NATIVE_PROVIDER_BINARY)
-TERRAFORM_MIRROR_CLI_CONFIG := $(TERRAFORM_WORKDIR)/mirror.tfrc
+TERRAFORM_INIT_FLAGS := -plugin-dir=$(TERRAFORM_PROVIDER_MIRROR)
+endif
 
 check-terraform-version:
 	@if [ "$(TERRAFORM_VERSION_VALID)" != "1" ]; then \
@@ -142,22 +151,26 @@ $(TERRAFORM): check-terraform-version
 	@rm -fr $(TOOLS_HOST_DIR)/tmp-terraform
 	@$(OK) installing terraform $(HOSTOS)-$(HOSTARCH)
 
+# Downloaded into a temporary directory and moved into place so that an
+# interrupted download cannot leave a partial binary that later runs mistake
+# for a complete one, matching how terraform itself is installed above.
 $(TERRAFORM_PROVIDER_MIRRORED):
 	@$(INFO) mirroring $(TERRAFORM_PROVIDER_DOWNLOAD_NAME) $(TERRAFORM_PROVIDER_VERSION) $(SAFEHOST_PLATFORM)
-	@mkdir -p $(TERRAFORM_PROVIDER_MIRROR_DIR) $(WORK_DIR)
-	@curl -fsSL $(TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX)/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)_$(TERRAFORM_PROVIDER_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(WORK_DIR)/tmp-provider.zip
-	@unzip -oq $(WORK_DIR)/tmp-provider.zip -d $(TERRAFORM_PROVIDER_MIRROR_DIR)
-	@chmod +x $(TERRAFORM_PROVIDER_MIRRORED)
-	@rm -f $(WORK_DIR)/tmp-provider.zip
+	@mkdir -p $(dir $(TERRAFORM_PROVIDER_MIRROR_DIR)) $(WORK_DIR)/tmp-provider
+	@curl -fsSL $(TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX)/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)_$(TERRAFORM_PROVIDER_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(WORK_DIR)/tmp-provider/provider.zip
+	@unzip -oq $(WORK_DIR)/tmp-provider/provider.zip -d $(WORK_DIR)/tmp-provider
+	@rm -f $(WORK_DIR)/tmp-provider/provider.zip
+	@chmod +x $(WORK_DIR)/tmp-provider/$(TERRAFORM_NATIVE_PROVIDER_BINARY)
+	@rm -fr $(TERRAFORM_PROVIDER_MIRROR_DIR)
+	@mv $(WORK_DIR)/tmp-provider $(TERRAFORM_PROVIDER_MIRROR_DIR)
 	@$(OK) mirroring $(TERRAFORM_PROVIDER_DOWNLOAD_NAME) $(TERRAFORM_PROVIDER_VERSION) $(SAFEHOST_PLATFORM)
 
 $(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM) $(TERRAFORM_PROVIDER_MIRRORED)
 	@$(INFO) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 	@mkdir -p $(TERRAFORM_WORKDIR) $(dir $(TERRAFORM_PROVIDER_SCHEMA))
 	@echo '{"terraform":[{"required_providers":[{"ncloud":{"source":"'"$(TERRAFORM_PROVIDER_SOURCE)"'","version":"'"$(TERRAFORM_PROVIDER_VERSION)"'"}}],"required_version":"'"$(TERRAFORM_VERSION)"'"}]}' > $(TERRAFORM_WORKDIR)/main.tf.json
-	@printf 'provider_installation {\n  filesystem_mirror {\n    path    = "%s"\n    include = ["registry.terraform.io/%s"]\n  }\n  direct {\n    exclude = ["registry.terraform.io/%s"]\n  }\n}\n' "$(TERRAFORM_PROVIDER_MIRROR)" "$(TERRAFORM_PROVIDER_SOURCE_LOWER)" "$(TERRAFORM_PROVIDER_SOURCE_LOWER)" > $(TERRAFORM_MIRROR_CLI_CONFIG)
-	@TF_CLI_CONFIG_FILE=$(TERRAFORM_MIRROR_CLI_CONFIG) $(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
-	@TF_CLI_CONFIG_FILE=$(TERRAFORM_MIRROR_CLI_CONFIG) $(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) providers schema -json=true > $(TERRAFORM_PROVIDER_SCHEMA) 2>> $(TERRAFORM_WORKDIR)/terraform-logs.txt
+	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init $(TERRAFORM_INIT_FLAGS) > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
+	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) providers schema -json=true > $(TERRAFORM_PROVIDER_SCHEMA) 2>> $(TERRAFORM_WORKDIR)/terraform-logs.txt
 	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 
 pull-docs:
