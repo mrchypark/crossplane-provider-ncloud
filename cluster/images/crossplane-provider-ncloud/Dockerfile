@@ -17,6 +17,11 @@ ARG TERRAFORM_PROVIDER_VERSION
 ARG TERRAFORM_PROVIDER_DOWNLOAD_NAME
 ARG TERRAFORM_NATIVE_PROVIDER_BINARY
 ARG TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX
+# Both linux digests are passed because a single buildx invocation may produce
+# both architectures; the matching one is selected by TARGETARCH below. These
+# are the same pins the Makefile verifies the host-side download against.
+ARG TERRAFORM_PROVIDER_SHA256_linux_amd64
+ARG TERRAFORM_PROVIDER_SHA256_linux_arm64
 
 ## End of - Provider-dependent configuration
 
@@ -29,6 +34,18 @@ RUN mkdir -p ${PLUGIN_DIR}
 ADD https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip /tmp
 ADD ${TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX}/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_${TERRAFORM_PROVIDER_VERSION}_${TARGETOS}_${TARGETARCH}.zip /tmp
 ADD terraformrc.hcl ${TF_CLI_CONFIG_FILE}
+
+RUN case "${TARGETOS}_${TARGETARCH}" in \
+      linux_amd64) expected="${TERRAFORM_PROVIDER_SHA256_linux_amd64}" ;; \
+      linux_arm64) expected="${TERRAFORM_PROVIDER_SHA256_linux_arm64}" ;; \
+      *) echo "no pinned provider digest for ${TARGETOS}_${TARGETARCH}" >&2; exit 1 ;; \
+    esac; \
+    if [ -z "${expected}" ]; then echo "pinned provider digest not supplied for ${TARGETOS}_${TARGETARCH}" >&2; exit 1; fi; \
+    actual=$(sha256sum /tmp/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_${TERRAFORM_PROVIDER_VERSION}_${TARGETOS}_${TARGETARCH}.zip | cut -d' ' -f1); \
+    if [ "${actual}" != "${expected}" ]; then \
+      echo "provider digest mismatch: expected ${expected}, actual ${actual}" >&2; \
+      exit 1; \
+    fi
 
 RUN unzip /tmp/terraform_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip -d /usr/local/bin \
   && chmod +x /usr/local/bin/terraform \

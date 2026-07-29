@@ -117,12 +117,30 @@ TERRAFORM := $(TOOLS_HOST_DIR)/terraform-$(TERRAFORM_VERSION)
 TERRAFORM_WORKDIR := $(WORK_DIR)/terraform
 TERRAFORM_PROVIDER_SCHEMA := config/schema.json
 
+# Terraform reads the invoking user's ~/.terraformrc unless TF_CLI_CONFIG_FILE
+# says otherwise, and `-plugin-dir` only constrains where `init` installs from.
+# A dev_overrides entry for this provider in a developer's own configuration
+# would therefore have `providers schema` report a locally built binary rather
+# than the version installed above. Both commands run against this controlled,
+# empty configuration so the generated schema depends only on the pinned inputs.
+TERRAFORM_CLI_CONFIG := $(TERRAFORM_WORKDIR)/cli.tfrc
+
 # Install the provider from its GitHub release into a local filesystem mirror
 # rather than resolving it from the Terraform Registry. Required only while
 # TERRAFORM_PROVIDER_VERSION names a build the registry does not carry; set it
 # to false once it names a registry release and the schema is generated exactly
 # as it was before.
 TERRAFORM_PROVIDER_USE_MIRROR ?= true
+
+# SHA-256 of each release asset, taken from the release's own SHA256SUMS. The
+# archives are verified against these before being installed, by both this
+# Makefile and the runtime image build, so a release asset that is replaced or
+# tampered with fails the build instead of silently changing the generated API.
+# These must be updated together with TERRAFORM_PROVIDER_VERSION.
+export TERRAFORM_PROVIDER_SHA256_darwin_amd64 ?= f509c9ea252ae7120a590af551755316f0ab6b7dbcb01803053dcf8641faf0f5
+export TERRAFORM_PROVIDER_SHA256_darwin_arm64 ?= 0064d08780ae2b35c8c959f9b871e6539b87194414d6b841c3939430a3fc1be0
+export TERRAFORM_PROVIDER_SHA256_linux_amd64 ?= f60bbf31be4e7a1c79adcbfb7be9ea4ba9ba5906743f9c69e4fe94fcf79956dc
+export TERRAFORM_PROVIDER_SHA256_linux_arm64 ?= 8338950701c8c308363d98fc58c7426ef8970f184eba1018d8226a89a647baa9
 
 ifeq ($(TERRAFORM_PROVIDER_USE_MIRROR),true)
 # Mirror directories are addressed in lower case regardless of how the source is
@@ -131,7 +149,11 @@ ifeq ($(TERRAFORM_PROVIDER_USE_MIRROR),true)
 TERRAFORM_PROVIDER_SOURCE_LOWER := $(shell printf '%s' "$(TERRAFORM_PROVIDER_SOURCE)" | tr '[:upper:]' '[:lower:]')
 TERRAFORM_PROVIDER_MIRROR := $(CACHE_DIR)/provider-mirror
 TERRAFORM_PROVIDER_MIRROR_DIR := $(TERRAFORM_PROVIDER_MIRROR)/registry.terraform.io/$(TERRAFORM_PROVIDER_SOURCE_LOWER)/$(TERRAFORM_PROVIDER_VERSION)/$(SAFEHOST_PLATFORM)
-TERRAFORM_PROVIDER_MIRRORED := $(TERRAFORM_PROVIDER_MIRROR_DIR)/$(TERRAFORM_NATIVE_PROVIDER_BINARY)
+TERRAFORM_PROVIDER_SHA256 := $(TERRAFORM_PROVIDER_SHA256_$(SAFEHOST_PLATFORM))
+# The digest is part of the cache identity, not just a check at download time:
+# a changed pin invalidates an already-populated mirror instead of reusing
+# whatever bytes a previous run happened to fetch under the same version.
+TERRAFORM_PROVIDER_MIRRORED := $(TERRAFORM_PROVIDER_MIRROR_DIR)/.verified-$(TERRAFORM_PROVIDER_SHA256)
 TERRAFORM_INIT_FLAGS := -plugin-dir=$(TERRAFORM_PROVIDER_MIRROR)
 endif
 
@@ -151,16 +173,30 @@ $(TERRAFORM): check-terraform-version
 	@rm -fr $(TOOLS_HOST_DIR)/tmp-terraform
 	@$(OK) installing terraform $(HOSTOS)-$(HOSTARCH)
 
-# Downloaded into a temporary directory and moved into place so that an
-# interrupted download cannot leave a partial binary that later runs mistake
-# for a complete one, matching how terraform itself is installed above.
+# Verified and unpacked in a temporary directory and moved into place only once
+# the digest matches, so neither an interrupted download nor an unexpected
+# archive can leave bytes behind that a later run treats as a good cache entry.
 $(TERRAFORM_PROVIDER_MIRRORED):
 	@$(INFO) mirroring $(TERRAFORM_PROVIDER_DOWNLOAD_NAME) $(TERRAFORM_PROVIDER_VERSION) $(SAFEHOST_PLATFORM)
+	@if [ -z "$(TERRAFORM_PROVIDER_SHA256)" ]; then \
+		echo "no pinned TERRAFORM_PROVIDER_SHA256_$(SAFEHOST_PLATFORM) for $(TERRAFORM_PROVIDER_VERSION)"; \
+		exit 1; \
+	fi
+	@rm -fr $(WORK_DIR)/tmp-provider
 	@mkdir -p $(dir $(TERRAFORM_PROVIDER_MIRROR_DIR)) $(WORK_DIR)/tmp-provider
 	@curl -fsSL $(TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX)/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)_$(TERRAFORM_PROVIDER_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(WORK_DIR)/tmp-provider/provider.zip
+	@actual=$$(if command -v sha256sum >/dev/null 2>&1; then sha256sum $(WORK_DIR)/tmp-provider/provider.zip; else shasum -a 256 $(WORK_DIR)/tmp-provider/provider.zip; fi | cut -d' ' -f1); \
+	if [ "$$actual" != "$(TERRAFORM_PROVIDER_SHA256)" ]; then \
+		echo "digest mismatch for $(TERRAFORM_PROVIDER_DOWNLOAD_NAME) $(TERRAFORM_PROVIDER_VERSION) $(SAFEHOST_PLATFORM)"; \
+		echo "  expected $(TERRAFORM_PROVIDER_SHA256)"; \
+		echo "  actual   $$actual"; \
+		rm -fr $(WORK_DIR)/tmp-provider; \
+		exit 1; \
+	fi
 	@unzip -oq $(WORK_DIR)/tmp-provider/provider.zip -d $(WORK_DIR)/tmp-provider
 	@rm -f $(WORK_DIR)/tmp-provider/provider.zip
 	@chmod +x $(WORK_DIR)/tmp-provider/$(TERRAFORM_NATIVE_PROVIDER_BINARY)
+	@touch $(WORK_DIR)/tmp-provider/$(notdir $(TERRAFORM_PROVIDER_MIRRORED))
 	@rm -fr $(TERRAFORM_PROVIDER_MIRROR_DIR)
 	@mv $(WORK_DIR)/tmp-provider $(TERRAFORM_PROVIDER_MIRROR_DIR)
 	@$(OK) mirroring $(TERRAFORM_PROVIDER_DOWNLOAD_NAME) $(TERRAFORM_PROVIDER_VERSION) $(SAFEHOST_PLATFORM)
@@ -169,8 +205,9 @@ $(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM) $(TERRAFORM_PROVIDER_MIRRORED)
 	@$(INFO) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 	@mkdir -p $(TERRAFORM_WORKDIR) $(dir $(TERRAFORM_PROVIDER_SCHEMA))
 	@echo '{"terraform":[{"required_providers":[{"ncloud":{"source":"'"$(TERRAFORM_PROVIDER_SOURCE)"'","version":"'"$(TERRAFORM_PROVIDER_VERSION)"'"}}],"required_version":"'"$(TERRAFORM_VERSION)"'"}]}' > $(TERRAFORM_WORKDIR)/main.tf.json
-	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init $(TERRAFORM_INIT_FLAGS) > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
-	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) providers schema -json=true > $(TERRAFORM_PROVIDER_SCHEMA) 2>> $(TERRAFORM_WORKDIR)/terraform-logs.txt
+	@: > $(TERRAFORM_CLI_CONFIG)
+	@TF_CLI_CONFIG_FILE=$(TERRAFORM_CLI_CONFIG) $(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init $(TERRAFORM_INIT_FLAGS) > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
+	@TF_CLI_CONFIG_FILE=$(TERRAFORM_CLI_CONFIG) $(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) providers schema -json=true > $(TERRAFORM_PROVIDER_SCHEMA) 2>> $(TERRAFORM_WORKDIR)/terraform-logs.txt
 	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 
 pull-docs:
