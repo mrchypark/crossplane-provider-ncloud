@@ -1,0 +1,14 @@
+apiVersion: subaccount.ncloud.crossplane.io/v1alpha1
+kind: Subaccount
+metadata:
+  name: sample-subaccount
+  namespace: default
+spec:
+  forProvider:
+    loginId: crossplane-sample
+    name: Crossplane Sample Sub Account
+    canApiGatewayAccess: true
+    canConsoleAccess: false
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

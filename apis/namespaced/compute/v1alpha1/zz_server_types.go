@@ -36,6 +36,8 @@ type BlockDevicePartitionListParameters struct {
 }
 
 type ServerInitParameters struct {
+	BaseBlockStorageSize *float64 `json:"baseBlockStorageSize,omitempty" tf:"base_block_storage_size,omitempty"`
+
 	BlockDevicePartitionList []BlockDevicePartitionListInitParameters `json:"blockDevicePartitionList,omitempty" tf:"block_device_partition_list,omitempty"`
 
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -210,6 +212,9 @@ type ServerObservation struct {
 }
 
 type ServerParameters struct {
+
+	// +kubebuilder:validation:Optional
+	BaseBlockStorageSize *float64 `json:"baseBlockStorageSize,omitempty" tf:"base_block_storage_size,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	BlockDevicePartitionList []BlockDevicePartitionListParameters `json:"blockDevicePartitionList,omitempty" tf:"block_device_partition_list,omitempty"`

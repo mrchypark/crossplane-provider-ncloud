@@ -59,6 +59,8 @@ spec:
             properties:
               forProvider:
                 properties:
+                  baseBlockStorageSize:
+                    type: number
                   blockDevicePartitionList:
                     items:
                       properties:
@@ -367,6 +369,8 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
+                  baseBlockStorageSize:
+                    type: number
                   blockDevicePartitionList:
                     items:
                       properties:

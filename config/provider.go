@@ -16,6 +16,7 @@ import (
 	nksCluster "github.com/mrchypark/crossplane-provider-ncloud/config/cluster/nks"
 	objectstorageCluster "github.com/mrchypark/crossplane-provider-ncloud/config/cluster/objectstorage"
 	sourceCluster "github.com/mrchypark/crossplane-provider-ncloud/config/cluster/source"
+	subaccountCluster "github.com/mrchypark/crossplane-provider-ncloud/config/cluster/subaccount"
 	analyticsNamespaced "github.com/mrchypark/crossplane-provider-ncloud/config/namespaced/analytics"
 	autoscalingNamespaced "github.com/mrchypark/crossplane-provider-ncloud/config/namespaced/autoscaling"
 	computeNamespaced "github.com/mrchypark/crossplane-provider-ncloud/config/namespaced/compute"
@@ -26,6 +27,7 @@ import (
 	nksNamespaced "github.com/mrchypark/crossplane-provider-ncloud/config/namespaced/nks"
 	objectstorageNamespaced "github.com/mrchypark/crossplane-provider-ncloud/config/namespaced/objectstorage"
 	sourceNamespaced "github.com/mrchypark/crossplane-provider-ncloud/config/namespaced/source"
+	subaccountNamespaced "github.com/mrchypark/crossplane-provider-ncloud/config/namespaced/subaccount"
 )
 
 const (
@@ -60,6 +62,7 @@ func GetProvider() *ujconfig.Provider {
 		nksCluster.Configure,
 		objectstorageCluster.Configure,
 		sourceCluster.Configure,
+		subaccountCluster.Configure,
 	} {
 		configure(pc)
 	}
@@ -92,6 +95,7 @@ func GetProviderNamespaced() *ujconfig.Provider {
 		nksNamespaced.Configure,
 		objectstorageNamespaced.Configure,
 		sourceNamespaced.Configure,
+		subaccountNamespaced.Configure,
 	} {
 		configure(pc)
 	}

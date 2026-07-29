@@ -456,6 +456,22 @@ resources:
         examples: []
         argumentDocs: {}
         importStatements: []
+    ncloud_subaccount:
+        subCategory: Sub Account
+        description: NAVER Cloud Platform sub account resource.
+        name: ncloud_subaccount
+        title: ncloud_subaccount Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
+    ncloud_subaccount_access_key:
+        subCategory: Sub Account
+        description: NAVER Cloud Platform sub account API access key resource.
+        name: ncloud_subaccount_access_key
+        title: ncloud_subaccount_access_key Resource - terraform-provider-ncloud
+        examples: []
+        argumentDocs: {}
+        importStatements: []
     ncloud_subnet:
         subCategory: Networking
         description: NAVER Cloud Platform subnet resource.
