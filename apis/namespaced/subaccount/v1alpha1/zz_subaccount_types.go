@@ -19,6 +19,8 @@ type APIAllowSourcesInitParameters struct {
 	// Source value: an IP address (CIDR allowed) for IP, or an instance number for VPC/VPC_SERVER.
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
 
+	// Type of the allowed API source.
+	// +kubebuilder:validation:Enum=IP;VPC;VPC_SERVER
 	// Type of the allowed API source (IP, VPC or VPC_SERVER).
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -28,6 +30,8 @@ type APIAllowSourcesObservation struct {
 	// Source value: an IP address (CIDR allowed) for IP, or an instance number for VPC/VPC_SERVER.
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
 
+	// Type of the allowed API source.
+	// +kubebuilder:validation:Enum=IP;VPC;VPC_SERVER
 	// Type of the allowed API source (IP, VPC or VPC_SERVER).
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -38,12 +42,18 @@ type APIAllowSourcesParameters struct {
 	// +kubebuilder:validation:Optional
 	Source *string `json:"source" tf:"source,omitempty"`
 
+	// Type of the allowed API source.
+	// +kubebuilder:validation:Enum=IP;VPC;VPC_SERVER
 	// Type of the allowed API source (IP, VPC or VPC_SERVER).
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
 
 type SubaccountInitParameters struct {
+
+	// Sources allowed to call APIs with this sub account's access keys. Omit to allow all.
+	// +kubebuilder:validation:MinItems=1
+	// +kubebuilder:validation:XValidation:rule="self.all(x, has(x.type) && has(x.source))",message="each entry requires type and source"
 	APIAllowSources []APIAllowSourcesInitParameters `json:"apiAllowSources,omitempty" tf:"api_allow_sources,omitempty"`
 
 	// Whether the sub account can access APIs through API Gateway. Required to issue access keys.
@@ -52,6 +62,8 @@ type SubaccountInitParameters struct {
 	// Whether the sub account can access the console. When enabled at creation, an initial password is generated and exposed once via `generated_password`.
 	CanConsoleAccess *bool `json:"canConsoleAccess,omitempty" tf:"can_console_access,omitempty"`
 
+	// IP addresses allowed to access the console. Omit to allow all.
+	// +kubebuilder:validation:MinItems=1
 	// List of IP addresses allowed to access the console. Omit to allow all.
 	ConsolePermitIps []*string `json:"consolePermitIps,omitempty" tf:"console_permit_ips,omitempty"`
 
@@ -61,6 +73,10 @@ type SubaccountInitParameters struct {
 	// Whether two-factor authentication is mandatory for console login.
 	IsMfaMandatory *bool `json:"isMfaMandatory,omitempty" tf:"is_mfa_mandatory,omitempty"`
 
+	// Login ID of the sub account.
+	// +kubebuilder:validation:MinLength=3
+	// +kubebuilder:validation:MaxLength=60
+	// +kubebuilder:validation:Pattern=`^[[:alpha:]][[:alnum:].@_\x2D]*$`
 	// Login ID of the sub account. Changing this creates a new sub account.
 	LoginID *string `json:"loginId,omitempty" tf:"login_id,omitempty"`
 
@@ -72,6 +88,10 @@ type SubaccountInitParameters struct {
 }
 
 type SubaccountObservation struct {
+
+	// Sources allowed to call APIs with this sub account's access keys. Omit to allow all.
+	// +kubebuilder:validation:MinItems=1
+	// +kubebuilder:validation:XValidation:rule="self.all(x, has(x.type) && has(x.source))",message="each entry requires type and source"
 	APIAllowSources []APIAllowSourcesObservation `json:"apiAllowSources,omitempty" tf:"api_allow_sources,omitempty"`
 
 	// Whether the sub account is active.
@@ -83,6 +103,8 @@ type SubaccountObservation struct {
 	// Whether the sub account can access the console. When enabled at creation, an initial password is generated and exposed once via `generated_password`.
 	CanConsoleAccess *bool `json:"canConsoleAccess,omitempty" tf:"can_console_access,omitempty"`
 
+	// IP addresses allowed to access the console. Omit to allow all.
+	// +kubebuilder:validation:MinItems=1
 	// List of IP addresses allowed to access the console. Omit to allow all.
 	ConsolePermitIps []*string `json:"consolePermitIps,omitempty" tf:"console_permit_ips,omitempty"`
 
@@ -97,6 +119,10 @@ type SubaccountObservation struct {
 	// Whether two-factor authentication is mandatory for console login.
 	IsMfaMandatory *bool `json:"isMfaMandatory,omitempty" tf:"is_mfa_mandatory,omitempty"`
 
+	// Login ID of the sub account.
+	// +kubebuilder:validation:MinLength=3
+	// +kubebuilder:validation:MaxLength=60
+	// +kubebuilder:validation:Pattern=`^[[:alpha:]][[:alnum:].@_\x2D]*$`
 	// Login ID of the sub account. Changing this creates a new sub account.
 	LoginID *string `json:"loginId,omitempty" tf:"login_id,omitempty"`
 
@@ -115,6 +141,9 @@ type SubaccountObservation struct {
 
 type SubaccountParameters struct {
 
+	// Sources allowed to call APIs with this sub account's access keys. Omit to allow all.
+	// +kubebuilder:validation:MinItems=1
+	// +kubebuilder:validation:XValidation:rule="self.all(x, has(x.type) && has(x.source))",message="each entry requires type and source"
 	// +kubebuilder:validation:Optional
 	APIAllowSources []APIAllowSourcesParameters `json:"apiAllowSources,omitempty" tf:"api_allow_sources,omitempty"`
 
@@ -126,6 +155,8 @@ type SubaccountParameters struct {
 	// +kubebuilder:validation:Optional
 	CanConsoleAccess *bool `json:"canConsoleAccess,omitempty" tf:"can_console_access,omitempty"`
 
+	// IP addresses allowed to access the console. Omit to allow all.
+	// +kubebuilder:validation:MinItems=1
 	// List of IP addresses allowed to access the console. Omit to allow all.
 	// +kubebuilder:validation:Optional
 	ConsolePermitIps []*string `json:"consolePermitIps,omitempty" tf:"console_permit_ips,omitempty"`
@@ -138,6 +169,10 @@ type SubaccountParameters struct {
 	// +kubebuilder:validation:Optional
 	IsMfaMandatory *bool `json:"isMfaMandatory,omitempty" tf:"is_mfa_mandatory,omitempty"`
 
+	// Login ID of the sub account.
+	// +kubebuilder:validation:MinLength=3
+	// +kubebuilder:validation:MaxLength=60
+	// +kubebuilder:validation:Pattern=`^[[:alpha:]][[:alnum:].@_\x2D]*$`
 	// Login ID of the sub account. Changing this creates a new sub account.
 	// +kubebuilder:validation:Optional
 	LoginID *string `json:"loginId,omitempty" tf:"login_id,omitempty"`

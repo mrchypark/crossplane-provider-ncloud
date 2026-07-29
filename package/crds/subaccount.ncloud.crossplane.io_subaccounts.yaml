@@ -60,6 +60,8 @@ spec:
               forProvider:
                 properties:
                   apiAllowSources:
+                    description: Sources allowed to call APIs with this sub account's
+                      access keys. Omit to allow all.
                     items:
                       properties:
                         source:
@@ -67,11 +69,20 @@ spec:
                             for IP, or an instance number for VPC/VPC_SERVER.'
                           type: string
                         type:
-                          description: Type of the allowed API source (IP, VPC or
-                            VPC_SERVER).
+                          description: |-
+                            Type of the allowed API source.
+                            Type of the allowed API source (IP, VPC or VPC_SERVER).
+                          enum:
+                          - IP
+                          - VPC
+                          - VPC_SERVER
                           type: string
                       type: object
+                    minItems: 1
                     type: array
+                    x-kubernetes-validations:
+                    - message: each entry requires type and source
+                      rule: self.all(x, has(x.type) && has(x.source))
                   canApiGatewayAccess:
                     description: Whether the sub account can access APIs through API
                       Gateway. Required to issue access keys.
@@ -82,10 +93,12 @@ spec:
                       once via `generated_password`.
                     type: boolean
                   consolePermitIps:
-                    description: List of IP addresses allowed to access the console.
-                      Omit to allow all.
+                    description: |-
+                      IP addresses allowed to access the console. Omit to allow all.
+                      List of IP addresses allowed to access the console. Omit to allow all.
                     items:
                       type: string
+                    minItems: 1
                     type: array
                   email:
                     description: Email address of the sub account.
@@ -95,8 +108,12 @@ spec:
                       console login.
                     type: boolean
                   loginId:
-                    description: Login ID of the sub account. Changing this creates
-                      a new sub account.
+                    description: |-
+                      Login ID of the sub account.
+                      Login ID of the sub account. Changing this creates a new sub account.
+                    maxLength: 60
+                    minLength: 3
+                    pattern: ^[[:alpha:]][[:alnum:].@_\x2D]*$
                     type: string
                   memo:
                     description: Memo for the sub account.
@@ -119,6 +136,8 @@ spec:
                   autoscaler.
                 properties:
                   apiAllowSources:
+                    description: Sources allowed to call APIs with this sub account's
+                      access keys. Omit to allow all.
                     items:
                       properties:
                         source:
@@ -126,11 +145,20 @@ spec:
                             for IP, or an instance number for VPC/VPC_SERVER.'
                           type: string
                         type:
-                          description: Type of the allowed API source (IP, VPC or
-                            VPC_SERVER).
+                          description: |-
+                            Type of the allowed API source.
+                            Type of the allowed API source (IP, VPC or VPC_SERVER).
+                          enum:
+                          - IP
+                          - VPC
+                          - VPC_SERVER
                           type: string
                       type: object
+                    minItems: 1
                     type: array
+                    x-kubernetes-validations:
+                    - message: each entry requires type and source
+                      rule: self.all(x, has(x.type) && has(x.source))
                   canApiGatewayAccess:
                     description: Whether the sub account can access APIs through API
                       Gateway. Required to issue access keys.
@@ -141,10 +169,12 @@ spec:
                       once via `generated_password`.
                     type: boolean
                   consolePermitIps:
-                    description: List of IP addresses allowed to access the console.
-                      Omit to allow all.
+                    description: |-
+                      IP addresses allowed to access the console. Omit to allow all.
+                      List of IP addresses allowed to access the console. Omit to allow all.
                     items:
                       type: string
+                    minItems: 1
                     type: array
                   email:
                     description: Email address of the sub account.
@@ -154,8 +184,12 @@ spec:
                       console login.
                     type: boolean
                   loginId:
-                    description: Login ID of the sub account. Changing this creates
-                      a new sub account.
+                    description: |-
+                      Login ID of the sub account.
+                      Login ID of the sub account. Changing this creates a new sub account.
+                    maxLength: 60
+                    minLength: 3
+                    pattern: ^[[:alpha:]][[:alnum:].@_\x2D]*$
                     type: string
                   memo:
                     description: Memo for the sub account.
@@ -240,6 +274,8 @@ spec:
                     description: Whether the sub account is active.
                     type: boolean
                   apiAllowSources:
+                    description: Sources allowed to call APIs with this sub account's
+                      access keys. Omit to allow all.
                     items:
                       properties:
                         source:
@@ -247,11 +283,20 @@ spec:
                             for IP, or an instance number for VPC/VPC_SERVER.'
                           type: string
                         type:
-                          description: Type of the allowed API source (IP, VPC or
-                            VPC_SERVER).
+                          description: |-
+                            Type of the allowed API source.
+                            Type of the allowed API source (IP, VPC or VPC_SERVER).
+                          enum:
+                          - IP
+                          - VPC
+                          - VPC_SERVER
                           type: string
                       type: object
+                    minItems: 1
                     type: array
+                    x-kubernetes-validations:
+                    - message: each entry requires type and source
+                      rule: self.all(x, has(x.type) && has(x.source))
                   canApiGatewayAccess:
                     description: Whether the sub account can access APIs through API
                       Gateway. Required to issue access keys.
@@ -262,10 +307,12 @@ spec:
                       once via `generated_password`.
                     type: boolean
                   consolePermitIps:
-                    description: List of IP addresses allowed to access the console.
-                      Omit to allow all.
+                    description: |-
+                      IP addresses allowed to access the console. Omit to allow all.
+                      List of IP addresses allowed to access the console. Omit to allow all.
                     items:
                       type: string
+                    minItems: 1
                     type: array
                   createTime:
                     description: Creation time of the sub account.
@@ -280,8 +327,12 @@ spec:
                       console login.
                     type: boolean
                   loginId:
-                    description: Login ID of the sub account. Changing this creates
-                      a new sub account.
+                    description: |-
+                      Login ID of the sub account.
+                      Login ID of the sub account. Changing this creates a new sub account.
+                    maxLength: 60
+                    minLength: 3
+                    pattern: ^[[:alpha:]][[:alnum:].@_\x2D]*$
                     type: string
                   memo:
                     description: Memo for the sub account.

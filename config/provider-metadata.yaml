@@ -462,7 +462,28 @@ resources:
         name: ncloud_subaccount
         title: ncloud_subaccount Resource - terraform-provider-ncloud
         examples: []
-        argumentDocs: {}
+        # Kubernetes validation the generator cannot derive from the Terraform
+        # schema is carried here: markers it does not recognise are passed
+        # through into the generated field comments and picked up by
+        # controller-gen. Note that the generator drops everything before the
+        # first "-" in a doc string, so these must contain no literal hyphen —
+        # hence the POSIX classes and \x2D below rather than [A-Za-z] and "-".
+        argumentDocs:
+            login_id: |-
+                Login ID of the sub account.
+                +kubebuilder:validation:MinLength=3
+                +kubebuilder:validation:MaxLength=60
+                +kubebuilder:validation:Pattern=`^[[:alpha:]][[:alnum:].@_\x2D]*$`
+            console_permit_ips: |-
+                IP addresses allowed to access the console. Omit to allow all.
+                +kubebuilder:validation:MinItems=1
+            api_allow_sources: |-
+                Sources allowed to call APIs with this sub account's access keys. Omit to allow all.
+                +kubebuilder:validation:MinItems=1
+                +kubebuilder:validation:XValidation:rule="self.all(x, has(x.type) && has(x.source))",message="each entry requires type and source"
+            api_allow_sources.type: |-
+                Type of the allowed API source.
+                +kubebuilder:validation:Enum=IP;VPC;VPC_SERVER
         importStatements: []
     ncloud_subaccount_access_key:
         subCategory: Sub Account
