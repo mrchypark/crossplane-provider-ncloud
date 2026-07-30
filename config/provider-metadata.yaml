@@ -493,7 +493,14 @@ resources:
         importStatements: []
     ncloud_subaccount_access_key:
         subCategory: Sub Account
-        description: NAVER Cloud Platform sub account API access key resource.
+        # The marker lines below are carried into the generated kind's comment
+        # (the description is rendered there verbatim), which is how a root
+        # level CEL rule can be expressed from metadata: sub_account_id is
+        # required by the provider but may arrive via reference or selector,
+        # in forProvider or initProvider, so no single field can carry it.
+        description: |-
+            NAVER Cloud Platform sub account API access key resource.
+            // +kubebuilder:validation:XValidation:rule="!('*' in self.spec.managementPolicies || 'Create' in self.spec.managementPolicies || 'Update' in self.spec.managementPolicies) || has(self.spec.forProvider.subAccountId) || has(self.spec.forProvider.subAccountIdRef) || has(self.spec.forProvider.subAccountIdSelector) || (has(self.spec.initProvider) && (has(self.spec.initProvider.subAccountId) || has(self.spec.initProvider.subAccountIdRef) || has(self.spec.initProvider.subAccountIdSelector)))",message="spec.forProvider.subAccountId, its reference or its selector is a required parameter"
         name: ncloud_subaccount_access_key
         title: ncloud_subaccount_access_key Resource - terraform-provider-ncloud
         examples: []

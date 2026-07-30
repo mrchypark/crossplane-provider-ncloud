@@ -87,6 +87,7 @@ type SubaccountAccessKeyStatus struct {
 // +kubebuilder:storageversion
 
 // SubaccountAccessKey is the Schema for the SubaccountAccessKeys API. NAVER Cloud Platform sub account API access key resource.
+// +kubebuilder:validation:XValidation:rule="!('*' in self.spec.managementPolicies || 'Create' in self.spec.managementPolicies || 'Update' in self.spec.managementPolicies) || has(self.spec.forProvider.subAccountId) || has(self.spec.forProvider.subAccountIdRef) || has(self.spec.forProvider.subAccountIdSelector) || (has(self.spec.initProvider) && (has(self.spec.initProvider.subAccountId) || has(self.spec.initProvider.subAccountIdRef) || has(self.spec.initProvider.subAccountIdSelector)))",message="spec.forProvider.subAccountId, its reference or its selector is a required parameter"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

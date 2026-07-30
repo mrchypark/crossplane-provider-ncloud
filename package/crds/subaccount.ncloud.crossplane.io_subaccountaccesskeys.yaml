@@ -379,6 +379,14 @@ spec:
         required:
         - spec
         type: object
+        x-kubernetes-validations:
+        - message: spec.forProvider.subAccountId, its reference or its selector is
+            a required parameter
+          rule: '!(''*'' in self.spec.managementPolicies || ''Create'' in self.spec.managementPolicies
+            || ''Update'' in self.spec.managementPolicies) || has(self.spec.forProvider.subAccountId)
+            || has(self.spec.forProvider.subAccountIdRef) || has(self.spec.forProvider.subAccountIdSelector)
+            || (has(self.spec.initProvider) && (has(self.spec.initProvider.subAccountId)
+            || has(self.spec.initProvider.subAccountIdRef) || has(self.spec.initProvider.subAccountIdSelector)))'
     served: true
     storage: true
     subresources:
