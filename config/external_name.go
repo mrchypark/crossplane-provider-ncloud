@@ -67,6 +67,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"ncloud_sourcedeploy_project_stage":          identifierFromProviderFromFields("{{ .first }}:0", "project_id", "projectId"),
 	"ncloud_sourcedeploy_project_stage_scenario": identifierFromProviderWithPlaceholder("0"),
 	"ncloud_sourcepipeline_project":              identifierFromProviderWithPlaceholder("0"),
+	"ncloud_subaccount":                          identifierFromProviderWithPlaceholder("00000000-0000-0000-0000-000000000000"),
+	"ncloud_subaccount_access_key":               identifierFromProviderWithPlaceholder("0"),
 	"ncloud_subnet":                              identifierFromProviderWithPlaceholder("0"),
 	"ncloud_vpc":                                 identifierFromProviderWithPlaceholder("0"),
 	"ncloud_vpc_peering":                         identifierFromProviderWithPlaceholder("0"),

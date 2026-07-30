@@ -70,6 +70,8 @@ import (
 	sourcedeployprojectstage "github.com/mrchypark/crossplane-provider-ncloud/internal/controller/namespaced/source/sourcedeployprojectstage"
 	sourcedeployprojectstagescenario "github.com/mrchypark/crossplane-provider-ncloud/internal/controller/namespaced/source/sourcedeployprojectstagescenario"
 	sourcepipelineproject "github.com/mrchypark/crossplane-provider-ncloud/internal/controller/namespaced/source/sourcepipelineproject"
+	subaccount "github.com/mrchypark/crossplane-provider-ncloud/internal/controller/namespaced/subaccount/subaccount"
+	subaccountaccesskey "github.com/mrchypark/crossplane-provider-ncloud/internal/controller/namespaced/subaccount/subaccountaccesskey"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
@@ -137,6 +139,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		sourcedeployprojectstage.Setup,
 		sourcedeployprojectstagescenario.Setup,
 		sourcepipelineproject.Setup,
+		subaccount.Setup,
+		subaccountaccesskey.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err
@@ -210,6 +214,8 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		sourcedeployprojectstage.SetupGated,
 		sourcedeployprojectstagescenario.SetupGated,
 		sourcepipelineproject.SetupGated,
+		subaccount.SetupGated,
+		subaccountaccesskey.SetupGated,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err

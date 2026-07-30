@@ -1,0 +1,18 @@
+apiVersion: subaccount.ncloud.crossplane.io/v1alpha1
+kind: SubaccountAccessKey
+metadata:
+  name: sample-subaccount-access-key
+  namespace: default
+spec:
+  forProvider:
+    subAccountIdRef:
+      name: sample-subaccount
+  # The secret key is returned by the API only when the key is issued and can
+  # never be recovered afterwards, so it is published here under the key
+  # attribute.secret_key. The access key id is not sensitive and is read from
+  # status.atProvider.accessKey instead.
+  writeConnectionSecretToRef:
+    name: sample-subaccount-access-key
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

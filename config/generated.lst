@@ -56,6 +56,8 @@
   "ncloud_sourcedeploy_project_stage",
   "ncloud_sourcedeploy_project_stage_scenario",
   "ncloud_sourcepipeline_project",
+  "ncloud_subaccount",
+  "ncloud_subaccount_access_key",
   "ncloud_subnet",
   "ncloud_vpc",
   "ncloud_vpc_peering"

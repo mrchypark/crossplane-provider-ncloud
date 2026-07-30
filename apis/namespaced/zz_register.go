@@ -20,6 +20,7 @@ import (
 	v1alpha1nks "github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/nks/v1alpha1"
 	v1alpha1objectstorage "github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/objectstorage/v1alpha1"
 	v1alpha1source "github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/source/v1alpha1"
+	v1alpha1subaccount "github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/subaccount/v1alpha1"
 	v1alpha1namespaced "github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/v1alpha1"
 	v1beta1 "github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/v1beta1"
 )
@@ -37,6 +38,7 @@ func init() {
 		v1alpha1nks.SchemeBuilder.AddToScheme,
 		v1alpha1objectstorage.SchemeBuilder.AddToScheme,
 		v1alpha1source.SchemeBuilder.AddToScheme,
+		v1alpha1subaccount.SchemeBuilder.AddToScheme,
 		v1alpha1namespaced.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
 	)
