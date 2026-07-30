@@ -380,13 +380,15 @@ spec:
         - spec
         type: object
         x-kubernetes-validations:
-        - message: spec.forProvider.subAccountId, its reference or its selector is
-            a required parameter
-          rule: '!(''*'' in self.spec.managementPolicies || ''Create'' in self.spec.managementPolicies
-            || ''Update'' in self.spec.managementPolicies) || has(self.spec.forProvider.subAccountId)
-            || has(self.spec.forProvider.subAccountIdRef) || has(self.spec.forProvider.subAccountIdSelector)
-            || (has(self.spec.initProvider) && (has(self.spec.initProvider.subAccountId)
-            || has(self.spec.initProvider.subAccountIdRef) || has(self.spec.initProvider.subAccountIdSelector)))'
+        - message: a nonempty spec.forProvider or spec.initProvider subAccountId,
+            reference name, or selector is required
+          rule: (has(self.spec.forProvider.subAccountId) && size(self.spec.forProvider.subAccountId)
+            > 0) || (has(self.spec.forProvider.subAccountIdRef) && has(self.spec.forProvider.subAccountIdRef.name)
+            && size(self.spec.forProvider.subAccountIdRef.name) > 0) || has(self.spec.forProvider.subAccountIdSelector)
+            || (has(self.spec.initProvider) && ((has(self.spec.initProvider.subAccountId)
+            && size(self.spec.initProvider.subAccountId) > 0) || (has(self.spec.initProvider.subAccountIdRef)
+            && has(self.spec.initProvider.subAccountIdRef.name) && size(self.spec.initProvider.subAccountIdRef.name)
+            > 0) || has(self.spec.initProvider.subAccountIdSelector)))
     served: true
     storage: true
     subresources:

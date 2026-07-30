@@ -470,10 +470,8 @@ resources:
         # hence the POSIX classes and \x2D below rather than [A-Za-z] and "-".
         argumentDocs:
             email: |-
-                Email address of the sub account.
                 +kubebuilder:validation:MinLength=1
             memo: |-
-                Memo for the sub account.
                 +kubebuilder:validation:MinLength=1
             login_id: |-
                 Login ID of the sub account.
@@ -497,10 +495,11 @@ resources:
         # (the description is rendered there verbatim), which is how a root
         # level CEL rule can be expressed from metadata: sub_account_id is
         # required by the provider but may arrive via reference or selector,
-        # in forProvider or initProvider, so no single field can carry it.
+        # in forProvider or initProvider, so no single field can carry it. The
+        # provider needs that identity even while only observing the resource.
         description: |-
             NAVER Cloud Platform sub account API access key resource.
-            // +kubebuilder:validation:XValidation:rule="!('*' in self.spec.managementPolicies || 'Create' in self.spec.managementPolicies || 'Update' in self.spec.managementPolicies) || has(self.spec.forProvider.subAccountId) || has(self.spec.forProvider.subAccountIdRef) || has(self.spec.forProvider.subAccountIdSelector) || (has(self.spec.initProvider) && (has(self.spec.initProvider.subAccountId) || has(self.spec.initProvider.subAccountIdRef) || has(self.spec.initProvider.subAccountIdSelector)))",message="spec.forProvider.subAccountId, its reference or its selector is a required parameter"
+            // +kubebuilder:validation:XValidation:rule="(has(self.spec.forProvider.subAccountId) && size(self.spec.forProvider.subAccountId) > 0) || (has(self.spec.forProvider.subAccountIdRef) && has(self.spec.forProvider.subAccountIdRef.name) && size(self.spec.forProvider.subAccountIdRef.name) > 0) || has(self.spec.forProvider.subAccountIdSelector) || (has(self.spec.initProvider) && ((has(self.spec.initProvider.subAccountId) && size(self.spec.initProvider.subAccountId) > 0) || (has(self.spec.initProvider.subAccountIdRef) && has(self.spec.initProvider.subAccountIdRef.name) && size(self.spec.initProvider.subAccountIdRef.name) > 0) || has(self.spec.initProvider.subAccountIdSelector)))",message="a nonempty spec.forProvider or spec.initProvider subAccountId, reference name, or selector is required"
         name: ncloud_subaccount_access_key
         title: ncloud_subaccount_access_key Resource - terraform-provider-ncloud
         examples: []

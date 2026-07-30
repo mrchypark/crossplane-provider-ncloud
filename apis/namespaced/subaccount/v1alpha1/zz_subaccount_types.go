@@ -67,7 +67,6 @@ type SubaccountInitParameters struct {
 	// List of IP addresses allowed to access the console. Omit to allow all.
 	ConsolePermitIps []*string `json:"consolePermitIps,omitempty" tf:"console_permit_ips,omitempty"`
 
-	// Email address of the sub account.
 	// +kubebuilder:validation:MinLength=1
 	// Email address of the sub account.
 	Email *string `json:"email,omitempty" tf:"email,omitempty"`
@@ -82,7 +81,6 @@ type SubaccountInitParameters struct {
 	// Login ID of the sub account. Changing this creates a new sub account.
 	LoginID *string `json:"loginId,omitempty" tf:"login_id,omitempty"`
 
-	// Memo for the sub account.
 	// +kubebuilder:validation:MinLength=1
 	// Memo for the sub account.
 	Memo *string `json:"memo,omitempty" tf:"memo,omitempty"`
@@ -115,7 +113,6 @@ type SubaccountObservation struct {
 	// Creation time of the sub account.
 	CreateTime *string `json:"createTime,omitempty" tf:"create_time,omitempty"`
 
-	// Email address of the sub account.
 	// +kubebuilder:validation:MinLength=1
 	// Email address of the sub account.
 	Email *string `json:"email,omitempty" tf:"email,omitempty"`
@@ -132,7 +129,6 @@ type SubaccountObservation struct {
 	// Login ID of the sub account. Changing this creates a new sub account.
 	LoginID *string `json:"loginId,omitempty" tf:"login_id,omitempty"`
 
-	// Memo for the sub account.
 	// +kubebuilder:validation:MinLength=1
 	// Memo for the sub account.
 	Memo *string `json:"memo,omitempty" tf:"memo,omitempty"`
@@ -169,7 +165,6 @@ type SubaccountParameters struct {
 	// +kubebuilder:validation:Optional
 	ConsolePermitIps []*string `json:"consolePermitIps,omitempty" tf:"console_permit_ips,omitempty"`
 
-	// Email address of the sub account.
 	// +kubebuilder:validation:MinLength=1
 	// Email address of the sub account.
 	// +kubebuilder:validation:Optional
@@ -187,7 +182,6 @@ type SubaccountParameters struct {
 	// +kubebuilder:validation:Optional
 	LoginID *string `json:"loginId,omitempty" tf:"login_id,omitempty"`
 
-	// Memo for the sub account.
 	// +kubebuilder:validation:MinLength=1
 	// Memo for the sub account.
 	// +kubebuilder:validation:Optional
