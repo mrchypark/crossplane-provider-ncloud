@@ -101,7 +101,10 @@ spec:
                     minItems: 1
                     type: array
                   email:
-                    description: Email address of the sub account.
+                    description: |-
+                      Email address of the sub account.
+                      Email address of the sub account.
+                    minLength: 1
                     type: string
                   isMfaMandatory:
                     description: Whether two-factor authentication is mandatory for
@@ -116,7 +119,10 @@ spec:
                     pattern: ^[[:alpha:]][[:alnum:].@_\x2D]*$
                     type: string
                   memo:
-                    description: Memo for the sub account.
+                    description: |-
+                      Memo for the sub account.
+                      Memo for the sub account.
+                    minLength: 1
                     type: string
                   name:
                     description: Name of the sub account.
@@ -177,7 +183,10 @@ spec:
                     minItems: 1
                     type: array
                   email:
-                    description: Email address of the sub account.
+                    description: |-
+                      Email address of the sub account.
+                      Email address of the sub account.
+                    minLength: 1
                     type: string
                   isMfaMandatory:
                     description: Whether two-factor authentication is mandatory for
@@ -192,7 +201,10 @@ spec:
                     pattern: ^[[:alpha:]][[:alnum:].@_\x2D]*$
                     type: string
                   memo:
-                    description: Memo for the sub account.
+                    description: |-
+                      Memo for the sub account.
+                      Memo for the sub account.
+                    minLength: 1
                     type: string
                   name:
                     description: Name of the sub account.
@@ -318,7 +330,10 @@ spec:
                     description: Creation time of the sub account.
                     type: string
                   email:
-                    description: Email address of the sub account.
+                    description: |-
+                      Email address of the sub account.
+                      Email address of the sub account.
+                    minLength: 1
                     type: string
                   id:
                     type: string
@@ -335,7 +350,10 @@ spec:
                     pattern: ^[[:alpha:]][[:alnum:].@_\x2D]*$
                     type: string
                   memo:
-                    description: Memo for the sub account.
+                    description: |-
+                      Memo for the sub account.
+                      Memo for the sub account.
+                    minLength: 1
                     type: string
                   name:
                     description: Name of the sub account.

@@ -469,6 +469,12 @@ resources:
         # first "-" in a doc string, so these must contain no literal hyphen —
         # hence the POSIX classes and \x2D below rather than [A-Za-z] and "-".
         argumentDocs:
+            email: |-
+                Email address of the sub account.
+                +kubebuilder:validation:MinLength=1
+            memo: |-
+                Memo for the sub account.
+                +kubebuilder:validation:MinLength=1
             login_id: |-
                 Login ID of the sub account.
                 +kubebuilder:validation:MinLength=3
