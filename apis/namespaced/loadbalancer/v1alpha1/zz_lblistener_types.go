@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type LbListenerInitParameters struct {
@@ -21,11 +20,11 @@ type LbListenerInitParameters struct {
 
 	// Reference to a Lb in loadbalancer to populate loadBalancerNo.
 	// +kubebuilder:validation:Optional
-	LoadBalancerNoRef *v1.NamespacedReference `json:"loadBalancerNoRef,omitempty" tf:"-"`
+	LoadBalancerNoRef *v2.NamespacedReference `json:"loadBalancerNoRef,omitempty" tf:"-"`
 
 	// Selector for a Lb in loadbalancer to populate loadBalancerNo.
 	// +kubebuilder:validation:Optional
-	LoadBalancerNoSelector *v1.NamespacedSelector `json:"loadBalancerNoSelector,omitempty" tf:"-"`
+	LoadBalancerNoSelector *v2.NamespacedSelector `json:"loadBalancerNoSelector,omitempty" tf:"-"`
 
 	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
@@ -40,11 +39,11 @@ type LbListenerInitParameters struct {
 
 	// Reference to a LbTargetGroup in loadbalancer to populate targetGroupNo.
 	// +kubebuilder:validation:Optional
-	TargetGroupNoRef *v1.NamespacedReference `json:"targetGroupNoRef,omitempty" tf:"-"`
+	TargetGroupNoRef *v2.NamespacedReference `json:"targetGroupNoRef,omitempty" tf:"-"`
 
 	// Selector for a LbTargetGroup in loadbalancer to populate targetGroupNo.
 	// +kubebuilder:validation:Optional
-	TargetGroupNoSelector *v1.NamespacedSelector `json:"targetGroupNoSelector,omitempty" tf:"-"`
+	TargetGroupNoSelector *v2.NamespacedSelector `json:"targetGroupNoSelector,omitempty" tf:"-"`
 
 	UseHttp2 *bool `json:"useHttp2,omitempty" tf:"use_http2,omitempty"`
 }
@@ -79,11 +78,11 @@ type LbListenerParameters struct {
 
 	// Reference to a Lb in loadbalancer to populate loadBalancerNo.
 	// +kubebuilder:validation:Optional
-	LoadBalancerNoRef *v1.NamespacedReference `json:"loadBalancerNoRef,omitempty" tf:"-"`
+	LoadBalancerNoRef *v2.NamespacedReference `json:"loadBalancerNoRef,omitempty" tf:"-"`
 
 	// Selector for a Lb in loadbalancer to populate loadBalancerNo.
 	// +kubebuilder:validation:Optional
-	LoadBalancerNoSelector *v1.NamespacedSelector `json:"loadBalancerNoSelector,omitempty" tf:"-"`
+	LoadBalancerNoSelector *v2.NamespacedSelector `json:"loadBalancerNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
@@ -103,11 +102,11 @@ type LbListenerParameters struct {
 
 	// Reference to a LbTargetGroup in loadbalancer to populate targetGroupNo.
 	// +kubebuilder:validation:Optional
-	TargetGroupNoRef *v1.NamespacedReference `json:"targetGroupNoRef,omitempty" tf:"-"`
+	TargetGroupNoRef *v2.NamespacedReference `json:"targetGroupNoRef,omitempty" tf:"-"`
 
 	// Selector for a LbTargetGroup in loadbalancer to populate targetGroupNo.
 	// +kubebuilder:validation:Optional
-	TargetGroupNoSelector *v1.NamespacedSelector `json:"targetGroupNoSelector,omitempty" tf:"-"`
+	TargetGroupNoSelector *v2.NamespacedSelector `json:"targetGroupNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	UseHttp2 *bool `json:"useHttp2,omitempty" tf:"use_http2,omitempty"`
@@ -132,8 +131,8 @@ type LbListenerSpec struct {
 
 // LbListenerStatus defines the observed state of LbListener.
 type LbListenerStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        LbListenerObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               LbListenerObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type SubnetInitParameters struct {
@@ -24,11 +23,11 @@ type SubnetInitParameters struct {
 
 	// Reference to a NetworkACL in network to populate networkAclNo.
 	// +kubebuilder:validation:Optional
-	NetworkACLNoRef *v1.NamespacedReference `json:"networkAclNoRef,omitempty" tf:"-"`
+	NetworkACLNoRef *v2.NamespacedReference `json:"networkAclNoRef,omitempty" tf:"-"`
 
 	// Selector for a NetworkACL in network to populate networkAclNo.
 	// +kubebuilder:validation:Optional
-	NetworkACLNoSelector *v1.NamespacedSelector `json:"networkAclNoSelector,omitempty" tf:"-"`
+	NetworkACLNoSelector *v2.NamespacedSelector `json:"networkAclNoSelector,omitempty" tf:"-"`
 
 	Subnet *string `json:"subnet,omitempty" tf:"subnet,omitempty"`
 
@@ -42,11 +41,11 @@ type SubnetInitParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 
 	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
@@ -85,11 +84,11 @@ type SubnetParameters struct {
 
 	// Reference to a NetworkACL in network to populate networkAclNo.
 	// +kubebuilder:validation:Optional
-	NetworkACLNoRef *v1.NamespacedReference `json:"networkAclNoRef,omitempty" tf:"-"`
+	NetworkACLNoRef *v2.NamespacedReference `json:"networkAclNoRef,omitempty" tf:"-"`
 
 	// Selector for a NetworkACL in network to populate networkAclNo.
 	// +kubebuilder:validation:Optional
-	NetworkACLNoSelector *v1.NamespacedSelector `json:"networkAclNoSelector,omitempty" tf:"-"`
+	NetworkACLNoSelector *v2.NamespacedSelector `json:"networkAclNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Subnet *string `json:"subnet,omitempty" tf:"subnet,omitempty"`
@@ -107,11 +106,11 @@ type SubnetParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
@@ -136,8 +135,8 @@ type SubnetSpec struct {
 
 // SubnetStatus defines the observed state of Subnet.
 type SubnetStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        SubnetObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               SubnetObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

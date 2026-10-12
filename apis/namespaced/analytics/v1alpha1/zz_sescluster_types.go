@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ClusterNodeListInitParameters struct {
@@ -110,7 +109,7 @@ type SearchEngineInitParameters struct {
 
 	UserName *string `json:"userName,omitempty" tf:"user_name,omitempty"`
 
-	UserPasswordSecretRef v1.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
+	UserPasswordSecretRef v2.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
 
 	VersionCode *string `json:"versionCode,omitempty" tf:"version_code,omitempty"`
 }
@@ -134,7 +133,7 @@ type SearchEngineParameters struct {
 	UserName *string `json:"userName" tf:"user_name,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	UserPasswordSecretRef v1.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
+	UserPasswordSecretRef v2.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	VersionCode *string `json:"versionCode" tf:"version_code,omitempty"`
@@ -150,11 +149,11 @@ type SesClusterInitParameters struct {
 
 	// Reference to a LoginKey in compute to populate loginKeyName.
 	// +kubebuilder:validation:Optional
-	LoginKeyNameRef *v1.NamespacedReference `json:"loginKeyNameRef,omitempty" tf:"-"`
+	LoginKeyNameRef *v2.NamespacedReference `json:"loginKeyNameRef,omitempty" tf:"-"`
 
 	// Selector for a LoginKey in compute to populate loginKeyName.
 	// +kubebuilder:validation:Optional
-	LoginKeyNameSelector *v1.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
+	LoginKeyNameSelector *v2.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
 
 	ManagerNode []SesClusterManagerNodeInitParameters `json:"managerNode,omitempty" tf:"manager_node,omitempty"`
 
@@ -169,11 +168,11 @@ type SesClusterInitParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 }
 
 type SesClusterManagerNodeInitParameters struct {
@@ -255,11 +254,11 @@ type SesClusterParameters struct {
 
 	// Reference to a LoginKey in compute to populate loginKeyName.
 	// +kubebuilder:validation:Optional
-	LoginKeyNameRef *v1.NamespacedReference `json:"loginKeyNameRef,omitempty" tf:"-"`
+	LoginKeyNameRef *v2.NamespacedReference `json:"loginKeyNameRef,omitempty" tf:"-"`
 
 	// Selector for a LoginKey in compute to populate loginKeyName.
 	// +kubebuilder:validation:Optional
-	LoginKeyNameSelector *v1.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
+	LoginKeyNameSelector *v2.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	ManagerNode []SesClusterManagerNodeParameters `json:"managerNode,omitempty" tf:"manager_node,omitempty"`
@@ -279,11 +278,11 @@ type SesClusterParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 }
 
 // SesClusterSpec defines the desired state of SesCluster
@@ -305,8 +304,8 @@ type SesClusterSpec struct {
 
 // SesClusterStatus defines the observed state of SesCluster.
 type SesClusterStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        SesClusterObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               SesClusterObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

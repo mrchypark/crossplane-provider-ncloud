@@ -6,204 +6,204 @@
 
 package v1alpha1
 
-import xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+import xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 
 // GetCondition of this ObjectstorageBucket.
-func (mg *ObjectstorageBucket) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *ObjectstorageBucket) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this ObjectstorageBucket.
-func (mg *ObjectstorageBucket) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *ObjectstorageBucket) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this ObjectstorageBucket.
-func (mg *ObjectstorageBucket) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *ObjectstorageBucket) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this ObjectstorageBucket.
-func (mg *ObjectstorageBucket) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *ObjectstorageBucket) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this ObjectstorageBucket.
-func (mg *ObjectstorageBucket) SetConditions(c ...xpv1.Condition) {
+func (mg *ObjectstorageBucket) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this ObjectstorageBucket.
-func (mg *ObjectstorageBucket) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *ObjectstorageBucket) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this ObjectstorageBucket.
-func (mg *ObjectstorageBucket) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *ObjectstorageBucket) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this ObjectstorageBucket.
-func (mg *ObjectstorageBucket) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *ObjectstorageBucket) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this ObjectstorageBucketACL.
-func (mg *ObjectstorageBucketACL) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *ObjectstorageBucketACL) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this ObjectstorageBucketACL.
-func (mg *ObjectstorageBucketACL) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *ObjectstorageBucketACL) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this ObjectstorageBucketACL.
-func (mg *ObjectstorageBucketACL) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *ObjectstorageBucketACL) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this ObjectstorageBucketACL.
-func (mg *ObjectstorageBucketACL) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *ObjectstorageBucketACL) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this ObjectstorageBucketACL.
-func (mg *ObjectstorageBucketACL) SetConditions(c ...xpv1.Condition) {
+func (mg *ObjectstorageBucketACL) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this ObjectstorageBucketACL.
-func (mg *ObjectstorageBucketACL) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *ObjectstorageBucketACL) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this ObjectstorageBucketACL.
-func (mg *ObjectstorageBucketACL) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *ObjectstorageBucketACL) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this ObjectstorageBucketACL.
-func (mg *ObjectstorageBucketACL) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *ObjectstorageBucketACL) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this ObjectstorageObject.
-func (mg *ObjectstorageObject) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *ObjectstorageObject) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this ObjectstorageObject.
-func (mg *ObjectstorageObject) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *ObjectstorageObject) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this ObjectstorageObject.
-func (mg *ObjectstorageObject) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *ObjectstorageObject) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this ObjectstorageObject.
-func (mg *ObjectstorageObject) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *ObjectstorageObject) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this ObjectstorageObject.
-func (mg *ObjectstorageObject) SetConditions(c ...xpv1.Condition) {
+func (mg *ObjectstorageObject) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this ObjectstorageObject.
-func (mg *ObjectstorageObject) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *ObjectstorageObject) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this ObjectstorageObject.
-func (mg *ObjectstorageObject) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *ObjectstorageObject) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this ObjectstorageObject.
-func (mg *ObjectstorageObject) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *ObjectstorageObject) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this ObjectstorageObjectACL.
-func (mg *ObjectstorageObjectACL) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *ObjectstorageObjectACL) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this ObjectstorageObjectACL.
-func (mg *ObjectstorageObjectACL) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *ObjectstorageObjectACL) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this ObjectstorageObjectACL.
-func (mg *ObjectstorageObjectACL) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *ObjectstorageObjectACL) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this ObjectstorageObjectACL.
-func (mg *ObjectstorageObjectACL) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *ObjectstorageObjectACL) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this ObjectstorageObjectACL.
-func (mg *ObjectstorageObjectACL) SetConditions(c ...xpv1.Condition) {
+func (mg *ObjectstorageObjectACL) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this ObjectstorageObjectACL.
-func (mg *ObjectstorageObjectACL) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *ObjectstorageObjectACL) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this ObjectstorageObjectACL.
-func (mg *ObjectstorageObjectACL) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *ObjectstorageObjectACL) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this ObjectstorageObjectACL.
-func (mg *ObjectstorageObjectACL) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *ObjectstorageObjectACL) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this ObjectstorageObjectCopy.
-func (mg *ObjectstorageObjectCopy) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *ObjectstorageObjectCopy) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this ObjectstorageObjectCopy.
-func (mg *ObjectstorageObjectCopy) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *ObjectstorageObjectCopy) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this ObjectstorageObjectCopy.
-func (mg *ObjectstorageObjectCopy) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *ObjectstorageObjectCopy) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this ObjectstorageObjectCopy.
-func (mg *ObjectstorageObjectCopy) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *ObjectstorageObjectCopy) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this ObjectstorageObjectCopy.
-func (mg *ObjectstorageObjectCopy) SetConditions(c ...xpv1.Condition) {
+func (mg *ObjectstorageObjectCopy) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this ObjectstorageObjectCopy.
-func (mg *ObjectstorageObjectCopy) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *ObjectstorageObjectCopy) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this ObjectstorageObjectCopy.
-func (mg *ObjectstorageObjectCopy) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *ObjectstorageObjectCopy) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this ObjectstorageObjectCopy.
-func (mg *ObjectstorageObjectCopy) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *ObjectstorageObjectCopy) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }

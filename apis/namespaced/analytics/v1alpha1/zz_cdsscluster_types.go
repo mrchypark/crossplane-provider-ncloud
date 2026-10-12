@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type BrokerNodesInitParameters struct {
@@ -59,11 +58,11 @@ type CdssClusterInitParameters struct {
 
 	// Reference to a CdssConfigGroup in analytics to populate configGroupNo.
 	// +kubebuilder:validation:Optional
-	ConfigGroupNoRef *v1.NamespacedReference `json:"configGroupNoRef,omitempty" tf:"-"`
+	ConfigGroupNoRef *v2.NamespacedReference `json:"configGroupNoRef,omitempty" tf:"-"`
 
 	// Selector for a CdssConfigGroup in analytics to populate configGroupNo.
 	// +kubebuilder:validation:Optional
-	ConfigGroupNoSelector *v1.NamespacedSelector `json:"configGroupNoSelector,omitempty" tf:"-"`
+	ConfigGroupNoSelector *v2.NamespacedSelector `json:"configGroupNoSelector,omitempty" tf:"-"`
 
 	KafkaVersionCode *string `json:"kafkaVersionCode,omitempty" tf:"kafka_version_code,omitempty"`
 
@@ -78,11 +77,11 @@ type CdssClusterInitParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 }
 
 type CdssClusterObservation struct {
@@ -121,11 +120,11 @@ type CdssClusterParameters struct {
 
 	// Reference to a CdssConfigGroup in analytics to populate configGroupNo.
 	// +kubebuilder:validation:Optional
-	ConfigGroupNoRef *v1.NamespacedReference `json:"configGroupNoRef,omitempty" tf:"-"`
+	ConfigGroupNoRef *v2.NamespacedReference `json:"configGroupNoRef,omitempty" tf:"-"`
 
 	// Selector for a CdssConfigGroup in analytics to populate configGroupNo.
 	// +kubebuilder:validation:Optional
-	ConfigGroupNoSelector *v1.NamespacedSelector `json:"configGroupNoSelector,omitempty" tf:"-"`
+	ConfigGroupNoSelector *v2.NamespacedSelector `json:"configGroupNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	KafkaVersionCode *string `json:"kafkaVersionCode,omitempty" tf:"kafka_version_code,omitempty"`
@@ -145,17 +144,17 @@ type CdssClusterParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 }
 
 type CmakInitParameters struct {
 	UserName *string `json:"userName,omitempty" tf:"user_name,omitempty"`
 
-	UserPasswordSecretRef v1.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
+	UserPasswordSecretRef v2.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
 }
 
 type CmakObservation struct {
@@ -168,7 +167,7 @@ type CmakParameters struct {
 	UserName *string `json:"userName" tf:"user_name,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	UserPasswordSecretRef v1.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
+	UserPasswordSecretRef v2.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
 }
 
 type EndpointsInitParameters struct {
@@ -237,8 +236,8 @@ type CdssClusterSpec struct {
 
 // CdssClusterStatus defines the observed state of CdssCluster.
 type CdssClusterStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        CdssClusterObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               CdssClusterObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

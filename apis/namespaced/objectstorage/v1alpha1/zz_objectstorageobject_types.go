@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ObjectstorageObjectInitParameters struct {
@@ -22,11 +21,11 @@ type ObjectstorageObjectInitParameters struct {
 
 	// Reference to a ObjectstorageBucket in objectstorage to populate bucket.
 	// +kubebuilder:validation:Optional
-	BucketRef *v1.NamespacedReference `json:"bucketRef,omitempty" tf:"-"`
+	BucketRef *v2.NamespacedReference `json:"bucketRef,omitempty" tf:"-"`
 
 	// Selector for a ObjectstorageBucket in objectstorage to populate bucket.
 	// +kubebuilder:validation:Optional
-	BucketSelector *v1.NamespacedSelector `json:"bucketSelector,omitempty" tf:"-"`
+	BucketSelector *v2.NamespacedSelector `json:"bucketSelector,omitempty" tf:"-"`
 
 	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
 
@@ -34,7 +33,7 @@ type ObjectstorageObjectInitParameters struct {
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
 	// (Required) Path of the object
-	SourceSecretRef v1.LocalSecretKeySelector `json:"sourceSecretRef" tf:"-"`
+	SourceSecretRef v2.LocalSecretKeySelector `json:"sourceSecretRef" tf:"-"`
 }
 
 type ObjectstorageObjectObservation struct {
@@ -78,11 +77,11 @@ type ObjectstorageObjectParameters struct {
 
 	// Reference to a ObjectstorageBucket in objectstorage to populate bucket.
 	// +kubebuilder:validation:Optional
-	BucketRef *v1.NamespacedReference `json:"bucketRef,omitempty" tf:"-"`
+	BucketRef *v2.NamespacedReference `json:"bucketRef,omitempty" tf:"-"`
 
 	// Selector for a ObjectstorageBucket in objectstorage to populate bucket.
 	// +kubebuilder:validation:Optional
-	BucketSelector *v1.NamespacedSelector `json:"bucketSelector,omitempty" tf:"-"`
+	BucketSelector *v2.NamespacedSelector `json:"bucketSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
@@ -93,7 +92,7 @@ type ObjectstorageObjectParameters struct {
 
 	// (Required) Path of the object
 	// +kubebuilder:validation:Optional
-	SourceSecretRef v1.LocalSecretKeySelector `json:"sourceSecretRef" tf:"-"`
+	SourceSecretRef v2.LocalSecretKeySelector `json:"sourceSecretRef" tf:"-"`
 }
 
 // ObjectstorageObjectSpec defines the desired state of ObjectstorageObject
@@ -115,8 +114,8 @@ type ObjectstorageObjectSpec struct {
 
 // ObjectstorageObjectStatus defines the observed state of ObjectstorageObject.
 type ObjectstorageObjectStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ObjectstorageObjectObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ObjectstorageObjectObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

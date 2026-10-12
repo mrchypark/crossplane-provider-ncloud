@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type AccessEntriesInitParameters struct {
@@ -122,22 +121,22 @@ type NksClusterInitParameters struct {
 
 	// Reference to a Subnet in network to populate lbPrivateSubnetNo.
 	// +kubebuilder:validation:Optional
-	LBPrivateSubnetNoRef *v1.NamespacedReference `json:"lbPrivateSubnetNoRef,omitempty" tf:"-"`
+	LBPrivateSubnetNoRef *v2.NamespacedReference `json:"lbPrivateSubnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate lbPrivateSubnetNo.
 	// +kubebuilder:validation:Optional
-	LBPrivateSubnetNoSelector *v1.NamespacedSelector `json:"lbPrivateSubnetNoSelector,omitempty" tf:"-"`
+	LBPrivateSubnetNoSelector *v2.NamespacedSelector `json:"lbPrivateSubnetNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1.Subnet
 	LBPublicSubnetNo *string `json:"lbPublicSubnetNo,omitempty" tf:"lb_public_subnet_no,omitempty"`
 
 	// Reference to a Subnet in network to populate lbPublicSubnetNo.
 	// +kubebuilder:validation:Optional
-	LBPublicSubnetNoRef *v1.NamespacedReference `json:"lbPublicSubnetNoRef,omitempty" tf:"-"`
+	LBPublicSubnetNoRef *v2.NamespacedReference `json:"lbPublicSubnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate lbPublicSubnetNo.
 	// +kubebuilder:validation:Optional
-	LBPublicSubnetNoSelector *v1.NamespacedSelector `json:"lbPublicSubnetNoSelector,omitempty" tf:"-"`
+	LBPublicSubnetNoSelector *v2.NamespacedSelector `json:"lbPublicSubnetNoSelector,omitempty" tf:"-"`
 
 	Log []LogInitParameters `json:"log,omitempty" tf:"log,omitempty"`
 
@@ -146,11 +145,11 @@ type NksClusterInitParameters struct {
 
 	// Reference to a LoginKey in compute to populate loginKeyName.
 	// +kubebuilder:validation:Optional
-	LoginKeyNameRef *v1.NamespacedReference `json:"loginKeyNameRef,omitempty" tf:"-"`
+	LoginKeyNameRef *v2.NamespacedReference `json:"loginKeyNameRef,omitempty" tf:"-"`
 
 	// Selector for a LoginKey in compute to populate loginKeyName.
 	// +kubebuilder:validation:Optional
-	LoginKeyNameSelector *v1.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
+	LoginKeyNameSelector *v2.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
 
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -167,22 +166,22 @@ type NksClusterInitParameters struct {
 
 	// References to Subnet in network to populate subnetNoList.
 	// +kubebuilder:validation:Optional
-	SubnetNoRefs []v1.NamespacedReference `json:"subnetNoRefs,omitempty" tf:"-"`
+	SubnetNoRefs []v2.NamespacedReference `json:"subnetNoRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Subnet in network to populate subnetNoList.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1.Vpc
 	VPCNo *string `json:"vpcNo,omitempty" tf:"vpc_no,omitempty"`
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 
 	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
@@ -277,11 +276,11 @@ type NksClusterParameters struct {
 
 	// Reference to a Subnet in network to populate lbPrivateSubnetNo.
 	// +kubebuilder:validation:Optional
-	LBPrivateSubnetNoRef *v1.NamespacedReference `json:"lbPrivateSubnetNoRef,omitempty" tf:"-"`
+	LBPrivateSubnetNoRef *v2.NamespacedReference `json:"lbPrivateSubnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate lbPrivateSubnetNo.
 	// +kubebuilder:validation:Optional
-	LBPrivateSubnetNoSelector *v1.NamespacedSelector `json:"lbPrivateSubnetNoSelector,omitempty" tf:"-"`
+	LBPrivateSubnetNoSelector *v2.NamespacedSelector `json:"lbPrivateSubnetNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1.Subnet
 	// +kubebuilder:validation:Optional
@@ -289,11 +288,11 @@ type NksClusterParameters struct {
 
 	// Reference to a Subnet in network to populate lbPublicSubnetNo.
 	// +kubebuilder:validation:Optional
-	LBPublicSubnetNoRef *v1.NamespacedReference `json:"lbPublicSubnetNoRef,omitempty" tf:"-"`
+	LBPublicSubnetNoRef *v2.NamespacedReference `json:"lbPublicSubnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate lbPublicSubnetNo.
 	// +kubebuilder:validation:Optional
-	LBPublicSubnetNoSelector *v1.NamespacedSelector `json:"lbPublicSubnetNoSelector,omitempty" tf:"-"`
+	LBPublicSubnetNoSelector *v2.NamespacedSelector `json:"lbPublicSubnetNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Log []LogParameters `json:"log,omitempty" tf:"log,omitempty"`
@@ -304,11 +303,11 @@ type NksClusterParameters struct {
 
 	// Reference to a LoginKey in compute to populate loginKeyName.
 	// +kubebuilder:validation:Optional
-	LoginKeyNameRef *v1.NamespacedReference `json:"loginKeyNameRef,omitempty" tf:"-"`
+	LoginKeyNameRef *v2.NamespacedReference `json:"loginKeyNameRef,omitempty" tf:"-"`
 
 	// Selector for a LoginKey in compute to populate loginKeyName.
 	// +kubebuilder:validation:Optional
-	LoginKeyNameSelector *v1.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
+	LoginKeyNameSelector *v2.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -330,11 +329,11 @@ type NksClusterParameters struct {
 
 	// References to Subnet in network to populate subnetNoList.
 	// +kubebuilder:validation:Optional
-	SubnetNoRefs []v1.NamespacedReference `json:"subnetNoRefs,omitempty" tf:"-"`
+	SubnetNoRefs []v2.NamespacedReference `json:"subnetNoRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Subnet in network to populate subnetNoList.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1.Vpc
 	// +kubebuilder:validation:Optional
@@ -342,11 +341,11 @@ type NksClusterParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
@@ -466,8 +465,8 @@ type NksClusterSpec struct {
 
 // NksClusterStatus defines the observed state of NksCluster.
 type NksClusterStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        NksClusterObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               NksClusterObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

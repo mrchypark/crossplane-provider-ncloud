@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type AutoScalingScheduleInitParameters struct {
@@ -21,11 +20,11 @@ type AutoScalingScheduleInitParameters struct {
 
 	// Reference to a AutoScalingGroup in autoscaling to populate autoScalingGroupNo.
 	// +kubebuilder:validation:Optional
-	AutoScalingGroupNoRef *v1.NamespacedReference `json:"autoScalingGroupNoRef,omitempty" tf:"-"`
+	AutoScalingGroupNoRef *v2.NamespacedReference `json:"autoScalingGroupNoRef,omitempty" tf:"-"`
 
 	// Selector for a AutoScalingGroup in autoscaling to populate autoScalingGroupNo.
 	// +kubebuilder:validation:Optional
-	AutoScalingGroupNoSelector *v1.NamespacedSelector `json:"autoScalingGroupNoSelector,omitempty" tf:"-"`
+	AutoScalingGroupNoSelector *v2.NamespacedSelector `json:"autoScalingGroupNoSelector,omitempty" tf:"-"`
 
 	DesiredCapacity *float64 `json:"desiredCapacity,omitempty" tf:"desired_capacity,omitempty"`
 
@@ -74,11 +73,11 @@ type AutoScalingScheduleParameters struct {
 
 	// Reference to a AutoScalingGroup in autoscaling to populate autoScalingGroupNo.
 	// +kubebuilder:validation:Optional
-	AutoScalingGroupNoRef *v1.NamespacedReference `json:"autoScalingGroupNoRef,omitempty" tf:"-"`
+	AutoScalingGroupNoRef *v2.NamespacedReference `json:"autoScalingGroupNoRef,omitempty" tf:"-"`
 
 	// Selector for a AutoScalingGroup in autoscaling to populate autoScalingGroupNo.
 	// +kubebuilder:validation:Optional
-	AutoScalingGroupNoSelector *v1.NamespacedSelector `json:"autoScalingGroupNoSelector,omitempty" tf:"-"`
+	AutoScalingGroupNoSelector *v2.NamespacedSelector `json:"autoScalingGroupNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	DesiredCapacity *float64 `json:"desiredCapacity,omitempty" tf:"desired_capacity,omitempty"`
@@ -124,8 +123,8 @@ type AutoScalingScheduleSpec struct {
 
 // AutoScalingScheduleStatus defines the observed state of AutoScalingSchedule.
 type AutoScalingScheduleStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        AutoScalingScheduleObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               AutoScalingScheduleObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type AccessControlGroupInitParameters struct {
@@ -24,11 +23,11 @@ type AccessControlGroupInitParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 }
 
 type AccessControlGroupObservation struct {
@@ -59,11 +58,11 @@ type AccessControlGroupParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 }
 
 // AccessControlGroupSpec defines the desired state of AccessControlGroup
@@ -85,8 +84,8 @@ type AccessControlGroupSpec struct {
 
 // AccessControlGroupStatus defines the observed state of AccessControlGroup.
 type AccessControlGroupStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        AccessControlGroupObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               AccessControlGroupObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

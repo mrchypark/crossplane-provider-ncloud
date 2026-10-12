@@ -6,84 +6,84 @@
 
 package v1alpha1
 
-import xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+import xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 
 // GetCondition of this Subaccount.
-func (mg *Subaccount) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *Subaccount) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this Subaccount.
-func (mg *Subaccount) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *Subaccount) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this Subaccount.
-func (mg *Subaccount) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *Subaccount) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this Subaccount.
-func (mg *Subaccount) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *Subaccount) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this Subaccount.
-func (mg *Subaccount) SetConditions(c ...xpv1.Condition) {
+func (mg *Subaccount) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this Subaccount.
-func (mg *Subaccount) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *Subaccount) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this Subaccount.
-func (mg *Subaccount) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *Subaccount) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this Subaccount.
-func (mg *Subaccount) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *Subaccount) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this SubaccountAccessKey.
-func (mg *SubaccountAccessKey) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *SubaccountAccessKey) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this SubaccountAccessKey.
-func (mg *SubaccountAccessKey) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *SubaccountAccessKey) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this SubaccountAccessKey.
-func (mg *SubaccountAccessKey) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *SubaccountAccessKey) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this SubaccountAccessKey.
-func (mg *SubaccountAccessKey) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *SubaccountAccessKey) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this SubaccountAccessKey.
-func (mg *SubaccountAccessKey) SetConditions(c ...xpv1.Condition) {
+func (mg *SubaccountAccessKey) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this SubaccountAccessKey.
-func (mg *SubaccountAccessKey) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *SubaccountAccessKey) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this SubaccountAccessKey.
-func (mg *SubaccountAccessKey) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *SubaccountAccessKey) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this SubaccountAccessKey.
-func (mg *SubaccountAccessKey) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *SubaccountAccessKey) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }

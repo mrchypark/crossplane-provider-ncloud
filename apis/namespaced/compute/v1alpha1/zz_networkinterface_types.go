@@ -10,19 +10,18 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type NetworkInterfaceInitParameters struct {
 
 	// References to AccessControlGroup in compute to populate accessControlGroups.
 	// +kubebuilder:validation:Optional
-	AccessControlGroupRefs []v1.NamespacedReference `json:"accessControlGroupRefs,omitempty" tf:"-"`
+	AccessControlGroupRefs []v2.NamespacedReference `json:"accessControlGroupRefs,omitempty" tf:"-"`
 
 	// Selector for a list of AccessControlGroup in compute to populate accessControlGroups.
 	// +kubebuilder:validation:Optional
-	AccessControlGroupSelector *v1.NamespacedSelector `json:"accessControlGroupSelector,omitempty" tf:"-"`
+	AccessControlGroupSelector *v2.NamespacedSelector `json:"accessControlGroupSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/compute/v1alpha1.AccessControlGroup
 	// +crossplane:generate:reference:refFieldName=AccessControlGroupRefs
@@ -41,22 +40,22 @@ type NetworkInterfaceInitParameters struct {
 
 	// Reference to a Server in compute to populate serverInstanceNo.
 	// +kubebuilder:validation:Optional
-	ServerInstanceNoRef *v1.NamespacedReference `json:"serverInstanceNoRef,omitempty" tf:"-"`
+	ServerInstanceNoRef *v2.NamespacedReference `json:"serverInstanceNoRef,omitempty" tf:"-"`
 
 	// Selector for a Server in compute to populate serverInstanceNo.
 	// +kubebuilder:validation:Optional
-	ServerInstanceNoSelector *v1.NamespacedSelector `json:"serverInstanceNoSelector,omitempty" tf:"-"`
+	ServerInstanceNoSelector *v2.NamespacedSelector `json:"serverInstanceNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1.Subnet
 	SubnetNo *string `json:"subnetNo,omitempty" tf:"subnet_no,omitempty"`
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 }
 
 type NetworkInterfaceObservation struct {
@@ -89,11 +88,11 @@ type NetworkInterfaceParameters struct {
 
 	// References to AccessControlGroup in compute to populate accessControlGroups.
 	// +kubebuilder:validation:Optional
-	AccessControlGroupRefs []v1.NamespacedReference `json:"accessControlGroupRefs,omitempty" tf:"-"`
+	AccessControlGroupRefs []v2.NamespacedReference `json:"accessControlGroupRefs,omitempty" tf:"-"`
 
 	// Selector for a list of AccessControlGroup in compute to populate accessControlGroups.
 	// +kubebuilder:validation:Optional
-	AccessControlGroupSelector *v1.NamespacedSelector `json:"accessControlGroupSelector,omitempty" tf:"-"`
+	AccessControlGroupSelector *v2.NamespacedSelector `json:"accessControlGroupSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/compute/v1alpha1.AccessControlGroup
 	// +crossplane:generate:reference:refFieldName=AccessControlGroupRefs
@@ -117,11 +116,11 @@ type NetworkInterfaceParameters struct {
 
 	// Reference to a Server in compute to populate serverInstanceNo.
 	// +kubebuilder:validation:Optional
-	ServerInstanceNoRef *v1.NamespacedReference `json:"serverInstanceNoRef,omitempty" tf:"-"`
+	ServerInstanceNoRef *v2.NamespacedReference `json:"serverInstanceNoRef,omitempty" tf:"-"`
 
 	// Selector for a Server in compute to populate serverInstanceNo.
 	// +kubebuilder:validation:Optional
-	ServerInstanceNoSelector *v1.NamespacedSelector `json:"serverInstanceNoSelector,omitempty" tf:"-"`
+	ServerInstanceNoSelector *v2.NamespacedSelector `json:"serverInstanceNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1.Subnet
 	// +kubebuilder:validation:Optional
@@ -129,11 +128,11 @@ type NetworkInterfaceParameters struct {
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 }
 
 // NetworkInterfaceSpec defines the desired state of NetworkInterface
@@ -155,8 +154,8 @@ type NetworkInterfaceSpec struct {
 
 // NetworkInterfaceStatus defines the observed state of NetworkInterface.
 type NetworkInterfaceStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        NetworkInterfaceObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               NetworkInterfaceObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

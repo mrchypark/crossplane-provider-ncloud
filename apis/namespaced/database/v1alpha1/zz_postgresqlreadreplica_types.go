@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type PostgresqlReadReplicaInitParameters struct {
@@ -21,11 +20,11 @@ type PostgresqlReadReplicaInitParameters struct {
 
 	// Reference to a Postgresql in database to populate postgresqlInstanceNo.
 	// +kubebuilder:validation:Optional
-	PostgresqlInstanceNoRef *v1.NamespacedReference `json:"postgresqlInstanceNoRef,omitempty" tf:"-"`
+	PostgresqlInstanceNoRef *v2.NamespacedReference `json:"postgresqlInstanceNoRef,omitempty" tf:"-"`
 
 	// Selector for a Postgresql in database to populate postgresqlInstanceNo.
 	// +kubebuilder:validation:Optional
-	PostgresqlInstanceNoSelector *v1.NamespacedSelector `json:"postgresqlInstanceNoSelector,omitempty" tf:"-"`
+	PostgresqlInstanceNoSelector *v2.NamespacedSelector `json:"postgresqlInstanceNoSelector,omitempty" tf:"-"`
 
 	SubnetNo *string `json:"subnetNo,omitempty" tf:"subnet_no,omitempty"`
 }
@@ -48,11 +47,11 @@ type PostgresqlReadReplicaParameters struct {
 
 	// Reference to a Postgresql in database to populate postgresqlInstanceNo.
 	// +kubebuilder:validation:Optional
-	PostgresqlInstanceNoRef *v1.NamespacedReference `json:"postgresqlInstanceNoRef,omitempty" tf:"-"`
+	PostgresqlInstanceNoRef *v2.NamespacedReference `json:"postgresqlInstanceNoRef,omitempty" tf:"-"`
 
 	// Selector for a Postgresql in database to populate postgresqlInstanceNo.
 	// +kubebuilder:validation:Optional
-	PostgresqlInstanceNoSelector *v1.NamespacedSelector `json:"postgresqlInstanceNoSelector,omitempty" tf:"-"`
+	PostgresqlInstanceNoSelector *v2.NamespacedSelector `json:"postgresqlInstanceNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	SubnetNo *string `json:"subnetNo,omitempty" tf:"subnet_no,omitempty"`
@@ -117,8 +116,8 @@ type PostgresqlReadReplicaSpec struct {
 
 // PostgresqlReadReplicaStatus defines the observed state of PostgresqlReadReplica.
 type PostgresqlReadReplicaStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        PostgresqlReadReplicaObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               PostgresqlReadReplicaObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

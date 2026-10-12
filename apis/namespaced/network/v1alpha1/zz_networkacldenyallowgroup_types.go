@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type NetworkACLDenyAllowGroupInitParameters struct {
@@ -27,11 +26,11 @@ type NetworkACLDenyAllowGroupInitParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 }
 
 type NetworkACLDenyAllowGroupObservation struct {
@@ -67,11 +66,11 @@ type NetworkACLDenyAllowGroupParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 }
 
 // NetworkACLDenyAllowGroupSpec defines the desired state of NetworkACLDenyAllowGroup
@@ -93,8 +92,8 @@ type NetworkACLDenyAllowGroupSpec struct {
 
 // NetworkACLDenyAllowGroupStatus defines the observed state of NetworkACLDenyAllowGroup.
 type NetworkACLDenyAllowGroupStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        NetworkACLDenyAllowGroupObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               NetworkACLDenyAllowGroupObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type AutoScalingGroupInitParameters struct {
@@ -23,11 +22,11 @@ type AutoScalingGroupInitParameters struct {
 
 	// References to AccessControlGroup in compute to populate accessControlGroupNoList.
 	// +kubebuilder:validation:Optional
-	AccessControlGroupNoRefs []v1.NamespacedReference `json:"accessControlGroupNoRefs,omitempty" tf:"-"`
+	AccessControlGroupNoRefs []v2.NamespacedReference `json:"accessControlGroupNoRefs,omitempty" tf:"-"`
 
 	// Selector for a list of AccessControlGroup in compute to populate accessControlGroupNoList.
 	// +kubebuilder:validation:Optional
-	AccessControlGroupNoSelector *v1.NamespacedSelector `json:"accessControlGroupNoSelector,omitempty" tf:"-"`
+	AccessControlGroupNoSelector *v2.NamespacedSelector `json:"accessControlGroupNoSelector,omitempty" tf:"-"`
 
 	DefaultCooldown *float64 `json:"defaultCooldown,omitempty" tf:"default_cooldown,omitempty"`
 
@@ -44,11 +43,11 @@ type AutoScalingGroupInitParameters struct {
 
 	// Reference to a LaunchConfiguration in compute to populate launchConfigurationNo.
 	// +kubebuilder:validation:Optional
-	LaunchConfigurationNoRef *v1.NamespacedReference `json:"launchConfigurationNoRef,omitempty" tf:"-"`
+	LaunchConfigurationNoRef *v2.NamespacedReference `json:"launchConfigurationNoRef,omitempty" tf:"-"`
 
 	// Selector for a LaunchConfiguration in compute to populate launchConfigurationNo.
 	// +kubebuilder:validation:Optional
-	LaunchConfigurationNoSelector *v1.NamespacedSelector `json:"launchConfigurationNoSelector,omitempty" tf:"-"`
+	LaunchConfigurationNoSelector *v2.NamespacedSelector `json:"launchConfigurationNoSelector,omitempty" tf:"-"`
 
 	MaxSize *float64 `json:"maxSize,omitempty" tf:"max_size,omitempty"`
 
@@ -63,11 +62,11 @@ type AutoScalingGroupInitParameters struct {
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/loadbalancer/v1alpha1.LbTargetGroup
 	// +crossplane:generate:reference:refFieldName=TargetGroupRefs
@@ -76,11 +75,11 @@ type AutoScalingGroupInitParameters struct {
 
 	// References to LbTargetGroup in loadbalancer to populate targetGroupList.
 	// +kubebuilder:validation:Optional
-	TargetGroupRefs []v1.NamespacedReference `json:"targetGroupRefs,omitempty" tf:"-"`
+	TargetGroupRefs []v2.NamespacedReference `json:"targetGroupRefs,omitempty" tf:"-"`
 
 	// Selector for a list of LbTargetGroup in loadbalancer to populate targetGroupList.
 	// +kubebuilder:validation:Optional
-	TargetGroupSelector *v1.NamespacedSelector `json:"targetGroupSelector,omitempty" tf:"-"`
+	TargetGroupSelector *v2.NamespacedSelector `json:"targetGroupSelector,omitempty" tf:"-"`
 
 	WaitForCapacityTimeout *string `json:"waitForCapacityTimeout,omitempty" tf:"wait_for_capacity_timeout,omitempty"`
 }
@@ -133,11 +132,11 @@ type AutoScalingGroupParameters struct {
 
 	// References to AccessControlGroup in compute to populate accessControlGroupNoList.
 	// +kubebuilder:validation:Optional
-	AccessControlGroupNoRefs []v1.NamespacedReference `json:"accessControlGroupNoRefs,omitempty" tf:"-"`
+	AccessControlGroupNoRefs []v2.NamespacedReference `json:"accessControlGroupNoRefs,omitempty" tf:"-"`
 
 	// Selector for a list of AccessControlGroup in compute to populate accessControlGroupNoList.
 	// +kubebuilder:validation:Optional
-	AccessControlGroupNoSelector *v1.NamespacedSelector `json:"accessControlGroupNoSelector,omitempty" tf:"-"`
+	AccessControlGroupNoSelector *v2.NamespacedSelector `json:"accessControlGroupNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	DefaultCooldown *float64 `json:"defaultCooldown,omitempty" tf:"default_cooldown,omitempty"`
@@ -160,11 +159,11 @@ type AutoScalingGroupParameters struct {
 
 	// Reference to a LaunchConfiguration in compute to populate launchConfigurationNo.
 	// +kubebuilder:validation:Optional
-	LaunchConfigurationNoRef *v1.NamespacedReference `json:"launchConfigurationNoRef,omitempty" tf:"-"`
+	LaunchConfigurationNoRef *v2.NamespacedReference `json:"launchConfigurationNoRef,omitempty" tf:"-"`
 
 	// Selector for a LaunchConfiguration in compute to populate launchConfigurationNo.
 	// +kubebuilder:validation:Optional
-	LaunchConfigurationNoSelector *v1.NamespacedSelector `json:"launchConfigurationNoSelector,omitempty" tf:"-"`
+	LaunchConfigurationNoSelector *v2.NamespacedSelector `json:"launchConfigurationNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	MaxSize *float64 `json:"maxSize,omitempty" tf:"max_size,omitempty"`
@@ -184,11 +183,11 @@ type AutoScalingGroupParameters struct {
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/loadbalancer/v1alpha1.LbTargetGroup
 	// +crossplane:generate:reference:refFieldName=TargetGroupRefs
@@ -198,11 +197,11 @@ type AutoScalingGroupParameters struct {
 
 	// References to LbTargetGroup in loadbalancer to populate targetGroupList.
 	// +kubebuilder:validation:Optional
-	TargetGroupRefs []v1.NamespacedReference `json:"targetGroupRefs,omitempty" tf:"-"`
+	TargetGroupRefs []v2.NamespacedReference `json:"targetGroupRefs,omitempty" tf:"-"`
 
 	// Selector for a list of LbTargetGroup in loadbalancer to populate targetGroupList.
 	// +kubebuilder:validation:Optional
-	TargetGroupSelector *v1.NamespacedSelector `json:"targetGroupSelector,omitempty" tf:"-"`
+	TargetGroupSelector *v2.NamespacedSelector `json:"targetGroupSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	WaitForCapacityTimeout *string `json:"waitForCapacityTimeout,omitempty" tf:"wait_for_capacity_timeout,omitempty"`
@@ -227,8 +226,8 @@ type AutoScalingGroupSpec struct {
 
 // AutoScalingGroupStatus defines the observed state of AutoScalingGroup.
 type AutoScalingGroupStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        AutoScalingGroupObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               AutoScalingGroupObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

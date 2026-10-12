@@ -9,7 +9,7 @@
 package v1alpha1
 
 import (
-	"github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	"github.com/crossplane/crossplane/apis/v2/core/v2"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -603,12 +603,12 @@ func (in *NksClusterInitParameters) DeepCopyInto(out *NksClusterInitParameters) 
 	}
 	if in.LBPrivateSubnetNoRef != nil {
 		in, out := &in.LBPrivateSubnetNoRef, &out.LBPrivateSubnetNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.LBPrivateSubnetNoSelector != nil {
 		in, out := &in.LBPrivateSubnetNoSelector, &out.LBPrivateSubnetNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.LBPublicSubnetNo != nil {
@@ -618,12 +618,12 @@ func (in *NksClusterInitParameters) DeepCopyInto(out *NksClusterInitParameters) 
 	}
 	if in.LBPublicSubnetNoRef != nil {
 		in, out := &in.LBPublicSubnetNoRef, &out.LBPublicSubnetNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.LBPublicSubnetNoSelector != nil {
 		in, out := &in.LBPublicSubnetNoSelector, &out.LBPublicSubnetNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.Log != nil {
@@ -640,12 +640,12 @@ func (in *NksClusterInitParameters) DeepCopyInto(out *NksClusterInitParameters) 
 	}
 	if in.LoginKeyNameRef != nil {
 		in, out := &in.LoginKeyNameRef, &out.LoginKeyNameRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.LoginKeyNameSelector != nil {
 		in, out := &in.LoginKeyNameSelector, &out.LoginKeyNameSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.Name != nil {
@@ -683,14 +683,14 @@ func (in *NksClusterInitParameters) DeepCopyInto(out *NksClusterInitParameters) 
 	}
 	if in.SubnetNoRefs != nil {
 		in, out := &in.SubnetNoRefs, &out.SubnetNoRefs
-		*out = make([]v1.NamespacedReference, len(*in))
+		*out = make([]v2.NamespacedReference, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
 	if in.SubnetNoSelector != nil {
 		in, out := &in.SubnetNoSelector, &out.SubnetNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.VPCNo != nil {
@@ -700,12 +700,12 @@ func (in *NksClusterInitParameters) DeepCopyInto(out *NksClusterInitParameters) 
 	}
 	if in.VPCNoRef != nil {
 		in, out := &in.VPCNoRef, &out.VPCNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.VPCNoSelector != nil {
 		in, out := &in.VPCNoSelector, &out.VPCNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.Zone != nil {
@@ -965,12 +965,12 @@ func (in *NksClusterParameters) DeepCopyInto(out *NksClusterParameters) {
 	}
 	if in.LBPrivateSubnetNoRef != nil {
 		in, out := &in.LBPrivateSubnetNoRef, &out.LBPrivateSubnetNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.LBPrivateSubnetNoSelector != nil {
 		in, out := &in.LBPrivateSubnetNoSelector, &out.LBPrivateSubnetNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.LBPublicSubnetNo != nil {
@@ -980,12 +980,12 @@ func (in *NksClusterParameters) DeepCopyInto(out *NksClusterParameters) {
 	}
 	if in.LBPublicSubnetNoRef != nil {
 		in, out := &in.LBPublicSubnetNoRef, &out.LBPublicSubnetNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.LBPublicSubnetNoSelector != nil {
 		in, out := &in.LBPublicSubnetNoSelector, &out.LBPublicSubnetNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.Log != nil {
@@ -1002,12 +1002,12 @@ func (in *NksClusterParameters) DeepCopyInto(out *NksClusterParameters) {
 	}
 	if in.LoginKeyNameRef != nil {
 		in, out := &in.LoginKeyNameRef, &out.LoginKeyNameRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.LoginKeyNameSelector != nil {
 		in, out := &in.LoginKeyNameSelector, &out.LoginKeyNameSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.Name != nil {
@@ -1045,14 +1045,14 @@ func (in *NksClusterParameters) DeepCopyInto(out *NksClusterParameters) {
 	}
 	if in.SubnetNoRefs != nil {
 		in, out := &in.SubnetNoRefs, &out.SubnetNoRefs
-		*out = make([]v1.NamespacedReference, len(*in))
+		*out = make([]v2.NamespacedReference, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
 	if in.SubnetNoSelector != nil {
 		in, out := &in.SubnetNoSelector, &out.SubnetNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.VPCNo != nil {
@@ -1062,12 +1062,12 @@ func (in *NksClusterParameters) DeepCopyInto(out *NksClusterParameters) {
 	}
 	if in.VPCNoRef != nil {
 		in, out := &in.VPCNoRef, &out.VPCNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.VPCNoSelector != nil {
 		in, out := &in.VPCNoSelector, &out.VPCNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.Zone != nil {
@@ -1108,7 +1108,7 @@ func (in *NksClusterSpec) DeepCopy() *NksClusterSpec {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *NksClusterStatus) DeepCopyInto(out *NksClusterStatus) {
 	*out = *in
-	in.ResourceStatus.DeepCopyInto(&out.ResourceStatus)
+	in.ManagedResourceStatus.DeepCopyInto(&out.ManagedResourceStatus)
 	in.AtProvider.DeepCopyInto(&out.AtProvider)
 }
 
@@ -1166,12 +1166,12 @@ func (in *NksNodePoolInitParameters) DeepCopyInto(out *NksNodePoolInitParameters
 	}
 	if in.ClusterUUIDRef != nil {
 		in, out := &in.ClusterUUIDRef, &out.ClusterUUIDRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.ClusterUUIDSelector != nil {
 		in, out := &in.ClusterUUIDSelector, &out.ClusterUUIDSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.FabricCluster != nil {
@@ -1433,12 +1433,12 @@ func (in *NksNodePoolParameters) DeepCopyInto(out *NksNodePoolParameters) {
 	}
 	if in.ClusterUUIDRef != nil {
 		in, out := &in.ClusterUUIDRef, &out.ClusterUUIDRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.ClusterUUIDSelector != nil {
 		in, out := &in.ClusterUUIDSelector, &out.ClusterUUIDSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.FabricCluster != nil {
@@ -1551,7 +1551,7 @@ func (in *NksNodePoolSpec) DeepCopy() *NksNodePoolSpec {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *NksNodePoolStatus) DeepCopyInto(out *NksNodePoolStatus) {
 	*out = *in
-	in.ResourceStatus.DeepCopyInto(&out.ResourceStatus)
+	in.ManagedResourceStatus.DeepCopyInto(&out.ManagedResourceStatus)
 	in.AtProvider.DeepCopyInto(&out.AtProvider)
 }
 

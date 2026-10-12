@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type BlockStorageSnapshotInitParameters struct {
@@ -22,11 +21,11 @@ type BlockStorageSnapshotInitParameters struct {
 
 	// Reference to a BlockStorage in compute to populate blockStorageInstanceNo.
 	// +kubebuilder:validation:Optional
-	BlockStorageInstanceNoRef *v1.NamespacedReference `json:"blockStorageInstanceNoRef,omitempty" tf:"-"`
+	BlockStorageInstanceNoRef *v2.NamespacedReference `json:"blockStorageInstanceNoRef,omitempty" tf:"-"`
 
 	// Selector for a BlockStorage in compute to populate blockStorageInstanceNo.
 	// +kubebuilder:validation:Optional
-	BlockStorageInstanceNoSelector *v1.NamespacedSelector `json:"blockStorageInstanceNoSelector,omitempty" tf:"-"`
+	BlockStorageInstanceNoSelector *v2.NamespacedSelector `json:"blockStorageInstanceNoSelector,omitempty" tf:"-"`
 
 	// Descriptions on a snapshot to create
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -76,11 +75,11 @@ type BlockStorageSnapshotParameters struct {
 
 	// Reference to a BlockStorage in compute to populate blockStorageInstanceNo.
 	// +kubebuilder:validation:Optional
-	BlockStorageInstanceNoRef *v1.NamespacedReference `json:"blockStorageInstanceNoRef,omitempty" tf:"-"`
+	BlockStorageInstanceNoRef *v2.NamespacedReference `json:"blockStorageInstanceNoRef,omitempty" tf:"-"`
 
 	// Selector for a BlockStorage in compute to populate blockStorageInstanceNo.
 	// +kubebuilder:validation:Optional
-	BlockStorageInstanceNoSelector *v1.NamespacedSelector `json:"blockStorageInstanceNoSelector,omitempty" tf:"-"`
+	BlockStorageInstanceNoSelector *v2.NamespacedSelector `json:"blockStorageInstanceNoSelector,omitempty" tf:"-"`
 
 	// Descriptions on a snapshot to create
 	// +kubebuilder:validation:Optional
@@ -110,8 +109,8 @@ type BlockStorageSnapshotSpec struct {
 
 // BlockStorageSnapshotStatus defines the observed state of BlockStorageSnapshot.
 type BlockStorageSnapshotStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        BlockStorageSnapshotObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               BlockStorageSnapshotObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

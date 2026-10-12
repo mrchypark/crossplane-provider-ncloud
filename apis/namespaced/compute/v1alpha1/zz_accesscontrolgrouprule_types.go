@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type AccessControlGroupRuleInitParameters struct {
@@ -21,11 +20,11 @@ type AccessControlGroupRuleInitParameters struct {
 
 	// Reference to a AccessControlGroup in compute to populate accessControlGroupNo.
 	// +kubebuilder:validation:Optional
-	AccessControlGroupNoRef *v1.NamespacedReference `json:"accessControlGroupNoRef,omitempty" tf:"-"`
+	AccessControlGroupNoRef *v2.NamespacedReference `json:"accessControlGroupNoRef,omitempty" tf:"-"`
 
 	// Selector for a AccessControlGroup in compute to populate accessControlGroupNo.
 	// +kubebuilder:validation:Optional
-	AccessControlGroupNoSelector *v1.NamespacedSelector `json:"accessControlGroupNoSelector,omitempty" tf:"-"`
+	AccessControlGroupNoSelector *v2.NamespacedSelector `json:"accessControlGroupNoSelector,omitempty" tf:"-"`
 
 	Inbound []InboundInitParameters `json:"inbound,omitempty" tf:"inbound,omitempty"`
 
@@ -50,11 +49,11 @@ type AccessControlGroupRuleParameters struct {
 
 	// Reference to a AccessControlGroup in compute to populate accessControlGroupNo.
 	// +kubebuilder:validation:Optional
-	AccessControlGroupNoRef *v1.NamespacedReference `json:"accessControlGroupNoRef,omitempty" tf:"-"`
+	AccessControlGroupNoRef *v2.NamespacedReference `json:"accessControlGroupNoRef,omitempty" tf:"-"`
 
 	// Selector for a AccessControlGroup in compute to populate accessControlGroupNo.
 	// +kubebuilder:validation:Optional
-	AccessControlGroupNoSelector *v1.NamespacedSelector `json:"accessControlGroupNoSelector,omitempty" tf:"-"`
+	AccessControlGroupNoSelector *v2.NamespacedSelector `json:"accessControlGroupNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Inbound []InboundParameters `json:"inbound,omitempty" tf:"inbound,omitempty"`
@@ -166,8 +165,8 @@ type AccessControlGroupRuleSpec struct {
 
 // AccessControlGroupRuleStatus defines the observed state of AccessControlGroupRule.
 type AccessControlGroupRuleStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        AccessControlGroupRuleObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               AccessControlGroupRuleObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

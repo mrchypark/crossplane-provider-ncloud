@@ -223,3 +223,77 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 	}
 	return nil
 }
+
+// SetupWebhookWithManager registers conversion webhooks for all resource kinds in the group.
+func SetupWebhookWithManager(mgr ctrl.Manager) error {
+	for _, setup := range []func(ctrl.Manager) error{
+		cdsscluster.SetupWebhookWithManager,
+		cdssconfiggroup.SetupWebhookWithManager,
+		hadoop.SetupWebhookWithManager,
+		sescluster.SetupWebhookWithManager,
+		autoscalinggroup.SetupWebhookWithManager,
+		autoscalingpolicy.SetupWebhookWithManager,
+		autoscalingschedule.SetupWebhookWithManager,
+		accesscontrolgroup.SetupWebhookWithManager,
+		accesscontrolgrouprule.SetupWebhookWithManager,
+		blockstorage.SetupWebhookWithManager,
+		blockstoragesnapshot.SetupWebhookWithManager,
+		initscript.SetupWebhookWithManager,
+		launchconfiguration.SetupWebhookWithManager,
+		loginkey.SetupWebhookWithManager,
+		networkinterface.SetupWebhookWithManager,
+		placementgroup.SetupWebhookWithManager,
+		publicip.SetupWebhookWithManager,
+		server.SetupWebhookWithManager,
+		mongodb.SetupWebhookWithManager,
+		mongodbusers.SetupWebhookWithManager,
+		mssql.SetupWebhookWithManager,
+		mysql.SetupWebhookWithManager,
+		mysqldatabases.SetupWebhookWithManager,
+		mysqlrecovery.SetupWebhookWithManager,
+		mysqlslave.SetupWebhookWithManager,
+		mysqlusers.SetupWebhookWithManager,
+		postgresql.SetupWebhookWithManager,
+		postgresqldatabases.SetupWebhookWithManager,
+		postgresqlreadreplica.SetupWebhookWithManager,
+		postgresqlusers.SetupWebhookWithManager,
+		redis.SetupWebhookWithManager,
+		redisconfiggroup.SetupWebhookWithManager,
+		lb.SetupWebhookWithManager,
+		lblistener.SetupWebhookWithManager,
+		lbtargetgroup.SetupWebhookWithManager,
+		lbtargetgroupattachment.SetupWebhookWithManager,
+		nasvolume.SetupWebhookWithManager,
+		natgateway.SetupWebhookWithManager,
+		networkacl.SetupWebhookWithManager,
+		networkacldenyallowgroup.SetupWebhookWithManager,
+		networkaclrule.SetupWebhookWithManager,
+		route.SetupWebhookWithManager,
+		routetable.SetupWebhookWithManager,
+		routetableassociation.SetupWebhookWithManager,
+		subnet.SetupWebhookWithManager,
+		vpc.SetupWebhookWithManager,
+		vpcpeering.SetupWebhookWithManager,
+		nkscluster.SetupWebhookWithManager,
+		nksnodepool.SetupWebhookWithManager,
+		objectstoragebucket.SetupWebhookWithManager,
+		objectstoragebucketacl.SetupWebhookWithManager,
+		objectstorageobject.SetupWebhookWithManager,
+		objectstorageobjectacl.SetupWebhookWithManager,
+		objectstorageobjectcopy.SetupWebhookWithManager,
+		providerconfig.SetupWebhookWithManager,
+		sourcebuildproject.SetupWebhookWithManager,
+		sourcecommitrepository.SetupWebhookWithManager,
+		sourcedeployproject.SetupWebhookWithManager,
+		sourcedeployprojectstage.SetupWebhookWithManager,
+		sourcedeployprojectstagescenario.SetupWebhookWithManager,
+		sourcepipelineproject.SetupWebhookWithManager,
+		subaccount.SetupWebhookWithManager,
+		subaccountaccesskey.SetupWebhookWithManager,
+	} {
+		if err := setup(mgr); err != nil {
+			return err
+		}
+	}
+	return nil
+}

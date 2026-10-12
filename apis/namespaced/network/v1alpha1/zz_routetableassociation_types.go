@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type RouteTableAssociationInitParameters struct {
@@ -21,22 +20,22 @@ type RouteTableAssociationInitParameters struct {
 
 	// Reference to a RouteTable in network to populate routeTableNo.
 	// +kubebuilder:validation:Optional
-	RouteTableNoRef *v1.NamespacedReference `json:"routeTableNoRef,omitempty" tf:"-"`
+	RouteTableNoRef *v2.NamespacedReference `json:"routeTableNoRef,omitempty" tf:"-"`
 
 	// Selector for a RouteTable in network to populate routeTableNo.
 	// +kubebuilder:validation:Optional
-	RouteTableNoSelector *v1.NamespacedSelector `json:"routeTableNoSelector,omitempty" tf:"-"`
+	RouteTableNoSelector *v2.NamespacedSelector `json:"routeTableNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1.Subnet
 	SubnetNo *string `json:"subnetNo,omitempty" tf:"subnet_no,omitempty"`
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 }
 
 type RouteTableAssociationObservation struct {
@@ -55,11 +54,11 @@ type RouteTableAssociationParameters struct {
 
 	// Reference to a RouteTable in network to populate routeTableNo.
 	// +kubebuilder:validation:Optional
-	RouteTableNoRef *v1.NamespacedReference `json:"routeTableNoRef,omitempty" tf:"-"`
+	RouteTableNoRef *v2.NamespacedReference `json:"routeTableNoRef,omitempty" tf:"-"`
 
 	// Selector for a RouteTable in network to populate routeTableNo.
 	// +kubebuilder:validation:Optional
-	RouteTableNoSelector *v1.NamespacedSelector `json:"routeTableNoSelector,omitempty" tf:"-"`
+	RouteTableNoSelector *v2.NamespacedSelector `json:"routeTableNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1.Subnet
 	// +kubebuilder:validation:Optional
@@ -67,11 +66,11 @@ type RouteTableAssociationParameters struct {
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 }
 
 // RouteTableAssociationSpec defines the desired state of RouteTableAssociation
@@ -93,8 +92,8 @@ type RouteTableAssociationSpec struct {
 
 // RouteTableAssociationStatus defines the observed state of RouteTableAssociation.
 type RouteTableAssociationStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RouteTableAssociationObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RouteTableAssociationObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

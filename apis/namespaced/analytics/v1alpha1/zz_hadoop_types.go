@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type HadoopInitParameters struct {
@@ -21,7 +20,7 @@ type HadoopInitParameters struct {
 
 	AdminUserName *string `json:"adminUserName,omitempty" tf:"admin_user_name,omitempty"`
 
-	AdminUserPasswordSecretRef v1.LocalSecretKeySelector `json:"adminUserPasswordSecretRef" tf:"-"`
+	AdminUserPasswordSecretRef v2.LocalSecretKeySelector `json:"adminUserPasswordSecretRef" tf:"-"`
 
 	BootstrapScript *string `json:"bootstrapScript,omitempty" tf:"bootstrap_script,omitempty"`
 
@@ -30,11 +29,11 @@ type HadoopInitParameters struct {
 
 	// Reference to a ObjectstorageBucket in objectstorage to populate bucketName.
 	// +kubebuilder:validation:Optional
-	BucketNameRef *v1.NamespacedReference `json:"bucketNameRef,omitempty" tf:"-"`
+	BucketNameRef *v2.NamespacedReference `json:"bucketNameRef,omitempty" tf:"-"`
 
 	// Selector for a ObjectstorageBucket in objectstorage to populate bucketName.
 	// +kubebuilder:validation:Optional
-	BucketNameSelector *v1.NamespacedSelector `json:"bucketNameSelector,omitempty" tf:"-"`
+	BucketNameSelector *v2.NamespacedSelector `json:"bucketNameSelector,omitempty" tf:"-"`
 
 	ClusterName *string `json:"clusterName,omitempty" tf:"cluster_name,omitempty"`
 
@@ -48,18 +47,18 @@ type HadoopInitParameters struct {
 
 	// Reference to a Subnet in network to populate edgeNodeSubnetNo.
 	// +kubebuilder:validation:Optional
-	EdgeNodeSubnetNoRef *v1.NamespacedReference `json:"edgeNodeSubnetNoRef,omitempty" tf:"-"`
+	EdgeNodeSubnetNoRef *v2.NamespacedReference `json:"edgeNodeSubnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate edgeNodeSubnetNo.
 	// +kubebuilder:validation:Optional
-	EdgeNodeSubnetNoSelector *v1.NamespacedSelector `json:"edgeNodeSubnetNoSelector,omitempty" tf:"-"`
+	EdgeNodeSubnetNoSelector *v2.NamespacedSelector `json:"edgeNodeSubnetNoSelector,omitempty" tf:"-"`
 
 	EngineVersionCode *string `json:"engineVersionCode,omitempty" tf:"engine_version_code,omitempty"`
 
 	// default: latest version
 	ImageProductCode *string `json:"imageProductCode,omitempty" tf:"image_product_code,omitempty"`
 
-	KdcPasswordSecretRef *v1.LocalSecretKeySelector `json:"kdcPasswordSecretRef,omitempty" tf:"-"`
+	KdcPasswordSecretRef *v2.LocalSecretKeySelector `json:"kdcPasswordSecretRef,omitempty" tf:"-"`
 
 	KdcRealm *string `json:"kdcRealm,omitempty" tf:"kdc_realm,omitempty"`
 
@@ -68,11 +67,11 @@ type HadoopInitParameters struct {
 
 	// Reference to a LoginKey in compute to populate loginKeyName.
 	// +kubebuilder:validation:Optional
-	LoginKeyNameRef *v1.NamespacedReference `json:"loginKeyNameRef,omitempty" tf:"-"`
+	LoginKeyNameRef *v2.NamespacedReference `json:"loginKeyNameRef,omitempty" tf:"-"`
 
 	// Selector for a LoginKey in compute to populate loginKeyName.
 	// +kubebuilder:validation:Optional
-	LoginKeyNameSelector *v1.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
+	LoginKeyNameSelector *v2.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
 
 	MasterNodeDataStorageSize *float64 `json:"masterNodeDataStorageSize,omitempty" tf:"master_node_data_storage_size,omitempty"`
 
@@ -87,11 +86,11 @@ type HadoopInitParameters struct {
 
 	// Reference to a Subnet in network to populate masterNodeSubnetNo.
 	// +kubebuilder:validation:Optional
-	MasterNodeSubnetNoRef *v1.NamespacedReference `json:"masterNodeSubnetNoRef,omitempty" tf:"-"`
+	MasterNodeSubnetNoRef *v2.NamespacedReference `json:"masterNodeSubnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate masterNodeSubnetNo.
 	// +kubebuilder:validation:Optional
-	MasterNodeSubnetNoSelector *v1.NamespacedSelector `json:"masterNodeSubnetNoSelector,omitempty" tf:"-"`
+	MasterNodeSubnetNoSelector *v2.NamespacedSelector `json:"masterNodeSubnetNoSelector,omitempty" tf:"-"`
 
 	// default: false
 	UseBootstrapScript *bool `json:"useBootstrapScript,omitempty" tf:"use_bootstrap_script,omitempty"`
@@ -106,11 +105,11 @@ type HadoopInitParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 
 	WorkerNodeCount *float64 `json:"workerNodeCount,omitempty" tf:"worker_node_count,omitempty"`
 
@@ -127,11 +126,11 @@ type HadoopInitParameters struct {
 
 	// Reference to a Subnet in network to populate workerNodeSubnetNo.
 	// +kubebuilder:validation:Optional
-	WorkerNodeSubnetNoRef *v1.NamespacedReference `json:"workerNodeSubnetNoRef,omitempty" tf:"-"`
+	WorkerNodeSubnetNoRef *v2.NamespacedReference `json:"workerNodeSubnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate workerNodeSubnetNo.
 	// +kubebuilder:validation:Optional
-	WorkerNodeSubnetNoSelector *v1.NamespacedSelector `json:"workerNodeSubnetNoSelector,omitempty" tf:"-"`
+	WorkerNodeSubnetNoSelector *v2.NamespacedSelector `json:"workerNodeSubnetNoSelector,omitempty" tf:"-"`
 }
 
 type HadoopObservation struct {
@@ -221,7 +220,7 @@ type HadoopParameters struct {
 	AdminUserName *string `json:"adminUserName,omitempty" tf:"admin_user_name,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	AdminUserPasswordSecretRef v1.LocalSecretKeySelector `json:"adminUserPasswordSecretRef" tf:"-"`
+	AdminUserPasswordSecretRef v2.LocalSecretKeySelector `json:"adminUserPasswordSecretRef" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	BootstrapScript *string `json:"bootstrapScript,omitempty" tf:"bootstrap_script,omitempty"`
@@ -232,11 +231,11 @@ type HadoopParameters struct {
 
 	// Reference to a ObjectstorageBucket in objectstorage to populate bucketName.
 	// +kubebuilder:validation:Optional
-	BucketNameRef *v1.NamespacedReference `json:"bucketNameRef,omitempty" tf:"-"`
+	BucketNameRef *v2.NamespacedReference `json:"bucketNameRef,omitempty" tf:"-"`
 
 	// Selector for a ObjectstorageBucket in objectstorage to populate bucketName.
 	// +kubebuilder:validation:Optional
-	BucketNameSelector *v1.NamespacedSelector `json:"bucketNameSelector,omitempty" tf:"-"`
+	BucketNameSelector *v2.NamespacedSelector `json:"bucketNameSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	ClusterName *string `json:"clusterName,omitempty" tf:"cluster_name,omitempty"`
@@ -254,11 +253,11 @@ type HadoopParameters struct {
 
 	// Reference to a Subnet in network to populate edgeNodeSubnetNo.
 	// +kubebuilder:validation:Optional
-	EdgeNodeSubnetNoRef *v1.NamespacedReference `json:"edgeNodeSubnetNoRef,omitempty" tf:"-"`
+	EdgeNodeSubnetNoRef *v2.NamespacedReference `json:"edgeNodeSubnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate edgeNodeSubnetNo.
 	// +kubebuilder:validation:Optional
-	EdgeNodeSubnetNoSelector *v1.NamespacedSelector `json:"edgeNodeSubnetNoSelector,omitempty" tf:"-"`
+	EdgeNodeSubnetNoSelector *v2.NamespacedSelector `json:"edgeNodeSubnetNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	EngineVersionCode *string `json:"engineVersionCode,omitempty" tf:"engine_version_code,omitempty"`
@@ -268,7 +267,7 @@ type HadoopParameters struct {
 	ImageProductCode *string `json:"imageProductCode,omitempty" tf:"image_product_code,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	KdcPasswordSecretRef *v1.LocalSecretKeySelector `json:"kdcPasswordSecretRef,omitempty" tf:"-"`
+	KdcPasswordSecretRef *v2.LocalSecretKeySelector `json:"kdcPasswordSecretRef,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	KdcRealm *string `json:"kdcRealm,omitempty" tf:"kdc_realm,omitempty"`
@@ -279,11 +278,11 @@ type HadoopParameters struct {
 
 	// Reference to a LoginKey in compute to populate loginKeyName.
 	// +kubebuilder:validation:Optional
-	LoginKeyNameRef *v1.NamespacedReference `json:"loginKeyNameRef,omitempty" tf:"-"`
+	LoginKeyNameRef *v2.NamespacedReference `json:"loginKeyNameRef,omitempty" tf:"-"`
 
 	// Selector for a LoginKey in compute to populate loginKeyName.
 	// +kubebuilder:validation:Optional
-	LoginKeyNameSelector *v1.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
+	LoginKeyNameSelector *v2.NamespacedSelector `json:"loginKeyNameSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	MasterNodeDataStorageSize *float64 `json:"masterNodeDataStorageSize,omitempty" tf:"master_node_data_storage_size,omitempty"`
@@ -302,11 +301,11 @@ type HadoopParameters struct {
 
 	// Reference to a Subnet in network to populate masterNodeSubnetNo.
 	// +kubebuilder:validation:Optional
-	MasterNodeSubnetNoRef *v1.NamespacedReference `json:"masterNodeSubnetNoRef,omitempty" tf:"-"`
+	MasterNodeSubnetNoRef *v2.NamespacedReference `json:"masterNodeSubnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate masterNodeSubnetNo.
 	// +kubebuilder:validation:Optional
-	MasterNodeSubnetNoSelector *v1.NamespacedSelector `json:"masterNodeSubnetNoSelector,omitempty" tf:"-"`
+	MasterNodeSubnetNoSelector *v2.NamespacedSelector `json:"masterNodeSubnetNoSelector,omitempty" tf:"-"`
 
 	// default: false
 	// +kubebuilder:validation:Optional
@@ -325,11 +324,11 @@ type HadoopParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	WorkerNodeCount *float64 `json:"workerNodeCount,omitempty" tf:"worker_node_count,omitempty"`
@@ -351,11 +350,11 @@ type HadoopParameters struct {
 
 	// Reference to a Subnet in network to populate workerNodeSubnetNo.
 	// +kubebuilder:validation:Optional
-	WorkerNodeSubnetNoRef *v1.NamespacedReference `json:"workerNodeSubnetNoRef,omitempty" tf:"-"`
+	WorkerNodeSubnetNoRef *v2.NamespacedReference `json:"workerNodeSubnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate workerNodeSubnetNo.
 	// +kubebuilder:validation:Optional
-	WorkerNodeSubnetNoSelector *v1.NamespacedSelector `json:"workerNodeSubnetNoSelector,omitempty" tf:"-"`
+	WorkerNodeSubnetNoSelector *v2.NamespacedSelector `json:"workerNodeSubnetNoSelector,omitempty" tf:"-"`
 }
 
 type HadoopServerListInitParameters struct {
@@ -411,8 +410,8 @@ type HadoopSpec struct {
 
 // HadoopStatus defines the observed state of Hadoop.
 type HadoopStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        HadoopObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               HadoopObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

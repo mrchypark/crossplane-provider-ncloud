@@ -187,6 +187,10 @@ func main() {
 		namespacedOpts.ChangeLogOptions = &clo
 	}
 
+	if *certsDir != "" {
+		kingpin.FatalIfError(controllerNamespaced.SetupWebhookWithManager(mgr), "Cannot setup namespaced Ncloud webhooks")
+	}
+
 	canSafeStart, err := canWatchCRD(context.TODO(), mgr)
 	kingpin.FatalIfError(err, "SafeStart precheck failed")
 	if canSafeStart {
