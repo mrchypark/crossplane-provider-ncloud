@@ -52,7 +52,7 @@ NPROCS ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 1)
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell n=$$(( $(NPROCS) / 2 )); if [ "$$n" -lt 1 ]; then echo 1; else echo "$$n"; fi)
 
-GO_REQUIRED_VERSION ?= 1.26.9
+GO_REQUIRED_VERSION ?= 1.27.2
 # golangci-lint has v2.x releases. Keep this value without a leading "v":
 # golang.mk adds "v" for the GitHub release URL, while the tarball name omits it.
 GOLANGCILINT_VERSION ?= 2.14.0
