@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type MySQLDatabaseListInitParameters struct {
@@ -36,11 +35,11 @@ type MysqlDatabasesInitParameters struct {
 
 	// Reference to a Mysql in database to populate mysqlInstanceNo.
 	// +kubebuilder:validation:Optional
-	MySQLInstanceNoRef *v1.NamespacedReference `json:"mysqlInstanceNoRef,omitempty" tf:"-"`
+	MySQLInstanceNoRef *v2.NamespacedReference `json:"mysqlInstanceNoRef,omitempty" tf:"-"`
 
 	// Selector for a Mysql in database to populate mysqlInstanceNo.
 	// +kubebuilder:validation:Optional
-	MySQLInstanceNoSelector *v1.NamespacedSelector `json:"mysqlInstanceNoSelector,omitempty" tf:"-"`
+	MySQLInstanceNoSelector *v2.NamespacedSelector `json:"mysqlInstanceNoSelector,omitempty" tf:"-"`
 }
 
 type MysqlDatabasesObservation struct {
@@ -62,11 +61,11 @@ type MysqlDatabasesParameters struct {
 
 	// Reference to a Mysql in database to populate mysqlInstanceNo.
 	// +kubebuilder:validation:Optional
-	MySQLInstanceNoRef *v1.NamespacedReference `json:"mysqlInstanceNoRef,omitempty" tf:"-"`
+	MySQLInstanceNoRef *v2.NamespacedReference `json:"mysqlInstanceNoRef,omitempty" tf:"-"`
 
 	// Selector for a Mysql in database to populate mysqlInstanceNo.
 	// +kubebuilder:validation:Optional
-	MySQLInstanceNoSelector *v1.NamespacedSelector `json:"mysqlInstanceNoSelector,omitempty" tf:"-"`
+	MySQLInstanceNoSelector *v2.NamespacedSelector `json:"mysqlInstanceNoSelector,omitempty" tf:"-"`
 }
 
 // MysqlDatabasesSpec defines the desired state of MysqlDatabases
@@ -88,8 +87,8 @@ type MysqlDatabasesSpec struct {
 
 // MysqlDatabasesStatus defines the observed state of MysqlDatabases.
 type MysqlDatabasesStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        MysqlDatabasesObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               MysqlDatabasesObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

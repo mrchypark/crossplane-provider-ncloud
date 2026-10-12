@@ -6,84 +6,84 @@
 
 package v1alpha1
 
-import xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+import xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 
 // GetCondition of this NksCluster.
-func (mg *NksCluster) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *NksCluster) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this NksCluster.
-func (mg *NksCluster) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *NksCluster) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this NksCluster.
-func (mg *NksCluster) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *NksCluster) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this NksCluster.
-func (mg *NksCluster) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *NksCluster) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this NksCluster.
-func (mg *NksCluster) SetConditions(c ...xpv1.Condition) {
+func (mg *NksCluster) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this NksCluster.
-func (mg *NksCluster) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *NksCluster) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this NksCluster.
-func (mg *NksCluster) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *NksCluster) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this NksCluster.
-func (mg *NksCluster) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *NksCluster) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this NksNodePool.
-func (mg *NksNodePool) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *NksNodePool) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this NksNodePool.
-func (mg *NksNodePool) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *NksNodePool) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this NksNodePool.
-func (mg *NksNodePool) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *NksNodePool) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this NksNodePool.
-func (mg *NksNodePool) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *NksNodePool) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this NksNodePool.
-func (mg *NksNodePool) SetConditions(c ...xpv1.Condition) {
+func (mg *NksNodePool) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this NksNodePool.
-func (mg *NksNodePool) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *NksNodePool) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this NksNodePool.
-func (mg *NksNodePool) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *NksNodePool) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this NksNodePool.
-func (mg *NksNodePool) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *NksNodePool) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }

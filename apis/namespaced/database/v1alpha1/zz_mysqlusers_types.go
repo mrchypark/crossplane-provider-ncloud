@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type MySQLUserListInitParameters struct {
@@ -23,7 +22,7 @@ type MySQLUserListInitParameters struct {
 
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	PasswordSecretRef v1.LocalSecretKeySelector `json:"passwordSecretRef" tf:"-"`
+	PasswordSecretRef v2.LocalSecretKeySelector `json:"passwordSecretRef" tf:"-"`
 }
 
 type MySQLUserListObservation struct {
@@ -51,7 +50,7 @@ type MySQLUserListParameters struct {
 	Name *string `json:"name" tf:"name,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	PasswordSecretRef v1.LocalSecretKeySelector `json:"passwordSecretRef" tf:"-"`
+	PasswordSecretRef v2.LocalSecretKeySelector `json:"passwordSecretRef" tf:"-"`
 }
 
 type MysqlUsersInitParameters struct {
@@ -61,11 +60,11 @@ type MysqlUsersInitParameters struct {
 
 	// Reference to a Mysql in database to populate mysqlInstanceNo.
 	// +kubebuilder:validation:Optional
-	MySQLInstanceNoRef *v1.NamespacedReference `json:"mysqlInstanceNoRef,omitempty" tf:"-"`
+	MySQLInstanceNoRef *v2.NamespacedReference `json:"mysqlInstanceNoRef,omitempty" tf:"-"`
 
 	// Selector for a Mysql in database to populate mysqlInstanceNo.
 	// +kubebuilder:validation:Optional
-	MySQLInstanceNoSelector *v1.NamespacedSelector `json:"mysqlInstanceNoSelector,omitempty" tf:"-"`
+	MySQLInstanceNoSelector *v2.NamespacedSelector `json:"mysqlInstanceNoSelector,omitempty" tf:"-"`
 
 	MySQLUserList []MySQLUserListInitParameters `json:"mysqlUserList,omitempty" tf:"mysql_user_list,omitempty"`
 }
@@ -86,11 +85,11 @@ type MysqlUsersParameters struct {
 
 	// Reference to a Mysql in database to populate mysqlInstanceNo.
 	// +kubebuilder:validation:Optional
-	MySQLInstanceNoRef *v1.NamespacedReference `json:"mysqlInstanceNoRef,omitempty" tf:"-"`
+	MySQLInstanceNoRef *v2.NamespacedReference `json:"mysqlInstanceNoRef,omitempty" tf:"-"`
 
 	// Selector for a Mysql in database to populate mysqlInstanceNo.
 	// +kubebuilder:validation:Optional
-	MySQLInstanceNoSelector *v1.NamespacedSelector `json:"mysqlInstanceNoSelector,omitempty" tf:"-"`
+	MySQLInstanceNoSelector *v2.NamespacedSelector `json:"mysqlInstanceNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	MySQLUserList []MySQLUserListParameters `json:"mysqlUserList,omitempty" tf:"mysql_user_list,omitempty"`
@@ -115,8 +114,8 @@ type MysqlUsersSpec struct {
 
 // MysqlUsersStatus defines the observed state of MysqlUsers.
 type MysqlUsersStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        MysqlUsersObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               MysqlUsersObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

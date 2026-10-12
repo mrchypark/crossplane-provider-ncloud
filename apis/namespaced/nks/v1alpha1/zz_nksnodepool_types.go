@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type AutoscaleInitParameters struct {
@@ -100,11 +99,11 @@ type NksNodePoolInitParameters struct {
 
 	// Reference to a NksCluster in nks to populate clusterUuid.
 	// +kubebuilder:validation:Optional
-	ClusterUUIDRef *v1.NamespacedReference `json:"clusterUuidRef,omitempty" tf:"-"`
+	ClusterUUIDRef *v2.NamespacedReference `json:"clusterUuidRef,omitempty" tf:"-"`
 
 	// Selector for a NksCluster in nks to populate clusterUuid.
 	// +kubebuilder:validation:Optional
-	ClusterUUIDSelector *v1.NamespacedSelector `json:"clusterUuidSelector,omitempty" tf:"-"`
+	ClusterUUIDSelector *v2.NamespacedSelector `json:"clusterUuidSelector,omitempty" tf:"-"`
 
 	// Fabric cluster pool configuration
 	FabricCluster []FabricClusterInitParameters `json:"fabricCluster,omitempty" tf:"fabric_cluster,omitempty"`
@@ -184,11 +183,11 @@ type NksNodePoolParameters struct {
 
 	// Reference to a NksCluster in nks to populate clusterUuid.
 	// +kubebuilder:validation:Optional
-	ClusterUUIDRef *v1.NamespacedReference `json:"clusterUuidRef,omitempty" tf:"-"`
+	ClusterUUIDRef *v2.NamespacedReference `json:"clusterUuidRef,omitempty" tf:"-"`
 
 	// Selector for a NksCluster in nks to populate clusterUuid.
 	// +kubebuilder:validation:Optional
-	ClusterUUIDSelector *v1.NamespacedSelector `json:"clusterUuidSelector,omitempty" tf:"-"`
+	ClusterUUIDSelector *v2.NamespacedSelector `json:"clusterUuidSelector,omitempty" tf:"-"`
 
 	// Fabric cluster pool configuration
 	// +kubebuilder:validation:Optional
@@ -302,8 +301,8 @@ type NksNodePoolSpec struct {
 
 // NksNodePoolStatus defines the observed state of NksNodePool.
 type NksNodePoolStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        NksNodePoolObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               NksNodePoolObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

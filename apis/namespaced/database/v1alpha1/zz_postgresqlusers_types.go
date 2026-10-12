@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type PostgresqlUserListInitParameters struct {
@@ -19,7 +18,7 @@ type PostgresqlUserListInitParameters struct {
 
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	PasswordSecretRef v1.LocalSecretKeySelector `json:"passwordSecretRef" tf:"-"`
+	PasswordSecretRef v2.LocalSecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	ReplicationRole *bool `json:"replicationRole,omitempty" tf:"replication_role,omitempty"`
 }
@@ -41,7 +40,7 @@ type PostgresqlUserListParameters struct {
 	Name *string `json:"name" tf:"name,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	PasswordSecretRef v1.LocalSecretKeySelector `json:"passwordSecretRef" tf:"-"`
+	PasswordSecretRef v2.LocalSecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	ReplicationRole *bool `json:"replicationRole" tf:"replication_role,omitempty"`
@@ -82,8 +81,8 @@ type PostgresqlUsersSpec struct {
 
 // PostgresqlUsersStatus defines the observed state of PostgresqlUsers.
 type PostgresqlUsersStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        PostgresqlUsersObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               PostgresqlUsersObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

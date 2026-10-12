@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type GrantsGranteeInitParameters struct {
@@ -52,11 +51,11 @@ type ObjectstorageObjectACLInitParameters struct {
 
 	// Reference to a ObjectstorageObject in objectstorage to populate objectId.
 	// +kubebuilder:validation:Optional
-	ObjectIDRef *v1.NamespacedReference `json:"objectIdRef,omitempty" tf:"-"`
+	ObjectIDRef *v2.NamespacedReference `json:"objectIdRef,omitempty" tf:"-"`
 
 	// Selector for a ObjectstorageObject in objectstorage to populate objectId.
 	// +kubebuilder:validation:Optional
-	ObjectIDSelector *v1.NamespacedSelector `json:"objectIdSelector,omitempty" tf:"-"`
+	ObjectIDSelector *v2.NamespacedSelector `json:"objectIdSelector,omitempty" tf:"-"`
 
 	Rule *string `json:"rule,omitempty" tf:"rule,omitempty"`
 }
@@ -85,11 +84,11 @@ type ObjectstorageObjectACLParameters struct {
 
 	// Reference to a ObjectstorageObject in objectstorage to populate objectId.
 	// +kubebuilder:validation:Optional
-	ObjectIDRef *v1.NamespacedReference `json:"objectIdRef,omitempty" tf:"-"`
+	ObjectIDRef *v2.NamespacedReference `json:"objectIdRef,omitempty" tf:"-"`
 
 	// Selector for a ObjectstorageObject in objectstorage to populate objectId.
 	// +kubebuilder:validation:Optional
-	ObjectIDSelector *v1.NamespacedSelector `json:"objectIdSelector,omitempty" tf:"-"`
+	ObjectIDSelector *v2.NamespacedSelector `json:"objectIdSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Rule *string `json:"rule,omitempty" tf:"rule,omitempty"`
@@ -114,8 +113,8 @@ type ObjectstorageObjectACLSpec struct {
 
 // ObjectstorageObjectACLStatus defines the observed state of ObjectstorageObjectACL.
 type ObjectstorageObjectACLStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ObjectstorageObjectACLObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ObjectstorageObjectACLObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

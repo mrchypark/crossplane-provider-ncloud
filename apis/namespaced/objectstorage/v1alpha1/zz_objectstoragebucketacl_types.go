@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type GranteeInitParameters struct {
@@ -52,11 +51,11 @@ type ObjectstorageBucketACLInitParameters struct {
 
 	// Reference to a ObjectstorageBucket in objectstorage to populate bucketName.
 	// +kubebuilder:validation:Optional
-	BucketNameRef *v1.NamespacedReference `json:"bucketNameRef,omitempty" tf:"-"`
+	BucketNameRef *v2.NamespacedReference `json:"bucketNameRef,omitempty" tf:"-"`
 
 	// Selector for a ObjectstorageBucket in objectstorage to populate bucketName.
 	// +kubebuilder:validation:Optional
-	BucketNameSelector *v1.NamespacedSelector `json:"bucketNameSelector,omitempty" tf:"-"`
+	BucketNameSelector *v2.NamespacedSelector `json:"bucketNameSelector,omitempty" tf:"-"`
 
 	Rule *string `json:"rule,omitempty" tf:"rule,omitempty"`
 }
@@ -84,11 +83,11 @@ type ObjectstorageBucketACLParameters struct {
 
 	// Reference to a ObjectstorageBucket in objectstorage to populate bucketName.
 	// +kubebuilder:validation:Optional
-	BucketNameRef *v1.NamespacedReference `json:"bucketNameRef,omitempty" tf:"-"`
+	BucketNameRef *v2.NamespacedReference `json:"bucketNameRef,omitempty" tf:"-"`
 
 	// Selector for a ObjectstorageBucket in objectstorage to populate bucketName.
 	// +kubebuilder:validation:Optional
-	BucketNameSelector *v1.NamespacedSelector `json:"bucketNameSelector,omitempty" tf:"-"`
+	BucketNameSelector *v2.NamespacedSelector `json:"bucketNameSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Rule *string `json:"rule,omitempty" tf:"rule,omitempty"`
@@ -113,8 +112,8 @@ type ObjectstorageBucketACLSpec struct {
 
 // ObjectstorageBucketACLStatus defines the observed state of ObjectstorageBucketACL.
 type ObjectstorageBucketACLStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ObjectstorageBucketACLObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ObjectstorageBucketACLObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -6,124 +6,124 @@
 
 package v1alpha1
 
-import xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+import xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 
 // GetCondition of this AutoScalingGroup.
-func (mg *AutoScalingGroup) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *AutoScalingGroup) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this AutoScalingGroup.
-func (mg *AutoScalingGroup) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *AutoScalingGroup) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this AutoScalingGroup.
-func (mg *AutoScalingGroup) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *AutoScalingGroup) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this AutoScalingGroup.
-func (mg *AutoScalingGroup) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *AutoScalingGroup) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this AutoScalingGroup.
-func (mg *AutoScalingGroup) SetConditions(c ...xpv1.Condition) {
+func (mg *AutoScalingGroup) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this AutoScalingGroup.
-func (mg *AutoScalingGroup) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *AutoScalingGroup) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this AutoScalingGroup.
-func (mg *AutoScalingGroup) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *AutoScalingGroup) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this AutoScalingGroup.
-func (mg *AutoScalingGroup) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *AutoScalingGroup) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this AutoScalingPolicy.
-func (mg *AutoScalingPolicy) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *AutoScalingPolicy) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this AutoScalingPolicy.
-func (mg *AutoScalingPolicy) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *AutoScalingPolicy) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this AutoScalingPolicy.
-func (mg *AutoScalingPolicy) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *AutoScalingPolicy) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this AutoScalingPolicy.
-func (mg *AutoScalingPolicy) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *AutoScalingPolicy) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this AutoScalingPolicy.
-func (mg *AutoScalingPolicy) SetConditions(c ...xpv1.Condition) {
+func (mg *AutoScalingPolicy) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this AutoScalingPolicy.
-func (mg *AutoScalingPolicy) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *AutoScalingPolicy) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this AutoScalingPolicy.
-func (mg *AutoScalingPolicy) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *AutoScalingPolicy) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this AutoScalingPolicy.
-func (mg *AutoScalingPolicy) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *AutoScalingPolicy) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this AutoScalingSchedule.
-func (mg *AutoScalingSchedule) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *AutoScalingSchedule) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetManagementPolicies of this AutoScalingSchedule.
-func (mg *AutoScalingSchedule) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *AutoScalingSchedule) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this AutoScalingSchedule.
-func (mg *AutoScalingSchedule) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+func (mg *AutoScalingSchedule) GetProviderConfigReference() *xpv2.ProviderConfigReference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this AutoScalingSchedule.
-func (mg *AutoScalingSchedule) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+func (mg *AutoScalingSchedule) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this AutoScalingSchedule.
-func (mg *AutoScalingSchedule) SetConditions(c ...xpv1.Condition) {
+func (mg *AutoScalingSchedule) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetManagementPolicies of this AutoScalingSchedule.
-func (mg *AutoScalingSchedule) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *AutoScalingSchedule) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this AutoScalingSchedule.
-func (mg *AutoScalingSchedule) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+func (mg *AutoScalingSchedule) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this AutoScalingSchedule.
-func (mg *AutoScalingSchedule) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+func (mg *AutoScalingSchedule) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }

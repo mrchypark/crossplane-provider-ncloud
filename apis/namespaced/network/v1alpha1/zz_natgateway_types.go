@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type NatGatewayInitParameters struct {
@@ -24,22 +23,22 @@ type NatGatewayInitParameters struct {
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1.Vpc
 	VPCNo *string `json:"vpcNo,omitempty" tf:"vpc_no,omitempty"`
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 
 	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
@@ -82,11 +81,11 @@ type NatGatewayParameters struct {
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1.Vpc
 	// +kubebuilder:validation:Optional
@@ -94,11 +93,11 @@ type NatGatewayParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
@@ -123,8 +122,8 @@ type NatGatewaySpec struct {
 
 // NatGatewayStatus defines the observed state of NatGateway.
 type NatGatewayStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        NatGatewayObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               NatGatewayObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type MySQLServerListInitParameters struct {
@@ -99,15 +98,15 @@ type MysqlInitParameters struct {
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	UserName *string `json:"userName,omitempty" tf:"user_name,omitempty"`
 
-	UserPasswordSecretRef v1.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
+	UserPasswordSecretRef v2.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
 }
 
 type MysqlObservation struct {
@@ -235,17 +234,17 @@ type MysqlParameters struct {
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	UserName *string `json:"userName,omitempty" tf:"user_name,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	UserPasswordSecretRef v1.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
+	UserPasswordSecretRef v2.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
 }
 
 // MysqlSpec defines the desired state of Mysql
@@ -267,8 +266,8 @@ type MysqlSpec struct {
 
 // MysqlStatus defines the observed state of Mysql.
 type MysqlStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        MysqlObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               MysqlObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

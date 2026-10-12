@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type MongodbInitParameters struct {
@@ -63,28 +62,28 @@ type MongodbInitParameters struct {
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	// Access username, which will be used for DB admin.
 	UserName *string `json:"userName,omitempty" tf:"user_name,omitempty"`
 
 	// Access password for user, which will be used for DB admin.
-	UserPasswordSecretRef v1.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
+	UserPasswordSecretRef v2.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1.Vpc
 	VPCNo *string `json:"vpcNo,omitempty" tf:"vpc_no,omitempty"`
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 }
 
 type MongodbObservation struct {
@@ -223,11 +222,11 @@ type MongodbParameters struct {
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	// Access username, which will be used for DB admin.
 	// +kubebuilder:validation:Optional
@@ -235,7 +234,7 @@ type MongodbParameters struct {
 
 	// Access password for user, which will be used for DB admin.
 	// +kubebuilder:validation:Optional
-	UserPasswordSecretRef v1.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
+	UserPasswordSecretRef v2.LocalSecretKeySelector `json:"userPasswordSecretRef" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/network/v1alpha1.Vpc
 	// +kubebuilder:validation:Optional
@@ -243,11 +242,11 @@ type MongodbParameters struct {
 
 	// Reference to a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoRef *v1.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
+	VPCNoRef *v2.NamespacedReference `json:"vpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate vpcNo.
 	// +kubebuilder:validation:Optional
-	VPCNoSelector *v1.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
+	VPCNoSelector *v2.NamespacedSelector `json:"vpcNoSelector,omitempty" tf:"-"`
 }
 
 type MongodbServerListInitParameters struct {
@@ -303,8 +302,8 @@ type MongodbSpec struct {
 
 // MongodbStatus defines the observed state of Mongodb.
 type MongodbStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        MongodbObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               MongodbObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

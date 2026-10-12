@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type LbTargetGroupAttachmentInitParameters struct {
@@ -21,11 +20,11 @@ type LbTargetGroupAttachmentInitParameters struct {
 
 	// Reference to a LbTargetGroup in loadbalancer to populate targetGroupNo.
 	// +kubebuilder:validation:Optional
-	TargetGroupNoRef *v1.NamespacedReference `json:"targetGroupNoRef,omitempty" tf:"-"`
+	TargetGroupNoRef *v2.NamespacedReference `json:"targetGroupNoRef,omitempty" tf:"-"`
 
 	// Selector for a LbTargetGroup in loadbalancer to populate targetGroupNo.
 	// +kubebuilder:validation:Optional
-	TargetGroupNoSelector *v1.NamespacedSelector `json:"targetGroupNoSelector,omitempty" tf:"-"`
+	TargetGroupNoSelector *v2.NamespacedSelector `json:"targetGroupNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/compute/v1alpha1.Server
 	// +crossplane:generate:reference:refFieldName=TargetNoRefs
@@ -34,11 +33,11 @@ type LbTargetGroupAttachmentInitParameters struct {
 
 	// References to Server in compute to populate targetNoList.
 	// +kubebuilder:validation:Optional
-	TargetNoRefs []v1.NamespacedReference `json:"targetNoRefs,omitempty" tf:"-"`
+	TargetNoRefs []v2.NamespacedReference `json:"targetNoRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Server in compute to populate targetNoList.
 	// +kubebuilder:validation:Optional
-	TargetNoSelector *v1.NamespacedSelector `json:"targetNoSelector,omitempty" tf:"-"`
+	TargetNoSelector *v2.NamespacedSelector `json:"targetNoSelector,omitempty" tf:"-"`
 }
 
 type LbTargetGroupAttachmentObservation struct {
@@ -57,11 +56,11 @@ type LbTargetGroupAttachmentParameters struct {
 
 	// Reference to a LbTargetGroup in loadbalancer to populate targetGroupNo.
 	// +kubebuilder:validation:Optional
-	TargetGroupNoRef *v1.NamespacedReference `json:"targetGroupNoRef,omitempty" tf:"-"`
+	TargetGroupNoRef *v2.NamespacedReference `json:"targetGroupNoRef,omitempty" tf:"-"`
 
 	// Selector for a LbTargetGroup in loadbalancer to populate targetGroupNo.
 	// +kubebuilder:validation:Optional
-	TargetGroupNoSelector *v1.NamespacedSelector `json:"targetGroupNoSelector,omitempty" tf:"-"`
+	TargetGroupNoSelector *v2.NamespacedSelector `json:"targetGroupNoSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/compute/v1alpha1.Server
 	// +crossplane:generate:reference:refFieldName=TargetNoRefs
@@ -71,11 +70,11 @@ type LbTargetGroupAttachmentParameters struct {
 
 	// References to Server in compute to populate targetNoList.
 	// +kubebuilder:validation:Optional
-	TargetNoRefs []v1.NamespacedReference `json:"targetNoRefs,omitempty" tf:"-"`
+	TargetNoRefs []v2.NamespacedReference `json:"targetNoRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Server in compute to populate targetNoList.
 	// +kubebuilder:validation:Optional
-	TargetNoSelector *v1.NamespacedSelector `json:"targetNoSelector,omitempty" tf:"-"`
+	TargetNoSelector *v2.NamespacedSelector `json:"targetNoSelector,omitempty" tf:"-"`
 }
 
 // LbTargetGroupAttachmentSpec defines the desired state of LbTargetGroupAttachment
@@ -97,8 +96,8 @@ type LbTargetGroupAttachmentSpec struct {
 
 // LbTargetGroupAttachmentStatus defines the observed state of LbTargetGroupAttachment.
 type LbTargetGroupAttachmentStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        LbTargetGroupAttachmentObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               LbTargetGroupAttachmentObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

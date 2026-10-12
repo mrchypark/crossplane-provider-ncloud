@@ -5,6 +5,7 @@ import (
 	"github.com/crossplane/crossplane-runtime/v2/pkg/reconciler/providerconfig"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 	"github.com/crossplane/upjet/v2/pkg/controller"
+	"github.com/pkg/errors"
 	ctrl "sigs.k8s.io/controller-runtime"
 
 	"github.com/mrchypark/crossplane-provider-ncloud/apis/namespaced/v1beta1"
@@ -17,6 +18,17 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		return err
 	}
 	return setupNamespaced(mgr, o)
+}
+
+// SetupWebhookWithManager registers conversion webhooks for provider configs.
+func SetupWebhookWithManager(mgr ctrl.Manager) error {
+	if err := ctrl.NewWebhookManagedBy(mgr, &v1beta1.ProviderConfig{}).Complete(); err != nil {
+		return errors.Wrap(err, "cannot register webhook for the kind v1beta1.ProviderConfig")
+	}
+	if err := ctrl.NewWebhookManagedBy(mgr, &v1beta1.ClusterProviderConfig{}).Complete(); err != nil {
+		return errors.Wrap(err, "cannot register webhook for the kind v1beta1.ClusterProviderConfig")
+	}
+	return nil
 }
 
 // setupCluster adds a controller that reconciles ClusterProviderConfigs by accounting for

@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type AutoScalingPolicyInitParameters struct {
@@ -22,11 +21,11 @@ type AutoScalingPolicyInitParameters struct {
 
 	// Reference to a AutoScalingGroup in autoscaling to populate autoScalingGroupNo.
 	// +kubebuilder:validation:Optional
-	AutoScalingGroupNoRef *v1.NamespacedReference `json:"autoScalingGroupNoRef,omitempty" tf:"-"`
+	AutoScalingGroupNoRef *v2.NamespacedReference `json:"autoScalingGroupNoRef,omitempty" tf:"-"`
 
 	// Selector for a AutoScalingGroup in autoscaling to populate autoScalingGroupNo.
 	// +kubebuilder:validation:Optional
-	AutoScalingGroupNoSelector *v1.NamespacedSelector `json:"autoScalingGroupNoSelector,omitempty" tf:"-"`
+	AutoScalingGroupNoSelector *v2.NamespacedSelector `json:"autoScalingGroupNoSelector,omitempty" tf:"-"`
 
 	Cooldown *float64 `json:"cooldown,omitempty" tf:"cooldown,omitempty"`
 
@@ -64,11 +63,11 @@ type AutoScalingPolicyParameters struct {
 
 	// Reference to a AutoScalingGroup in autoscaling to populate autoScalingGroupNo.
 	// +kubebuilder:validation:Optional
-	AutoScalingGroupNoRef *v1.NamespacedReference `json:"autoScalingGroupNoRef,omitempty" tf:"-"`
+	AutoScalingGroupNoRef *v2.NamespacedReference `json:"autoScalingGroupNoRef,omitempty" tf:"-"`
 
 	// Selector for a AutoScalingGroup in autoscaling to populate autoScalingGroupNo.
 	// +kubebuilder:validation:Optional
-	AutoScalingGroupNoSelector *v1.NamespacedSelector `json:"autoScalingGroupNoSelector,omitempty" tf:"-"`
+	AutoScalingGroupNoSelector *v2.NamespacedSelector `json:"autoScalingGroupNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Cooldown *float64 `json:"cooldown,omitempty" tf:"cooldown,omitempty"`
@@ -102,8 +101,8 @@ type AutoScalingPolicySpec struct {
 
 // AutoScalingPolicyStatus defines the observed state of AutoScalingPolicy.
 type AutoScalingPolicyStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        AutoScalingPolicyObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               AutoScalingPolicyObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

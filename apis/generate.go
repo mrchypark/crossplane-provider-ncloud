@@ -9,7 +9,7 @@
 
 // Remove generated files
 //go:generate rm -rf cluster ../internal/controller/cluster ../examples-generated/cluster
-//go:generate bash -c "find . -iname 'zz_*' ! -iname 'zz_generated.managed*.go' -delete"
+//go:generate bash -c "find . -iname 'zz_*' -delete"
 //go:generate bash -c "find . -type d -empty -delete"
 //go:generate bash -c "if [ -d ../internal/controller ]; then find ../internal/controller -iname 'zz_*' -delete; fi"
 //go:generate bash -c "if [ -d ../internal/controller ]; then find ../internal/controller -type d -empty -delete; fi"

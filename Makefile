@@ -52,10 +52,10 @@ NPROCS ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 1)
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell n=$$(( $(NPROCS) / 2 )); if [ "$$n" -lt 1 ]; then echo 1; else echo "$$n"; fi)
 
-GO_REQUIRED_VERSION ?= 1.24
+GO_REQUIRED_VERSION ?= 1.27.2
 # golangci-lint has v2.x releases. Keep this value without a leading "v":
 # golang.mk adds "v" for the GitHub release URL, while the tarball name omits it.
-GOLANGCILINT_VERSION ?= 2.12.1
+GOLANGCILINT_VERSION ?= 2.14.0
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
 GO_SUBDIRS += cmd internal apis
@@ -64,12 +64,12 @@ GO_SUBDIRS += cmd internal apis
 # ====================================================================================
 # Setup Kubernetes tools
 
-KIND_VERSION = v0.31.0
+KIND_VERSION = v0.33.0
 UPTEST_VERSION = v2.2.0
 CRDDIFF_VERSION = v0.12.1
-CROSSPLANE_CLI_VERSION = v2.2.1
+CROSSPLANE_CLI_VERSION = v2.5.0
 # for e2e testing
-CROSSPLANE_VERSION = 2.2.1
+CROSSPLANE_VERSION = 2.4.2
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
@@ -275,7 +275,7 @@ CROSSPLANE_NAMESPACE = crossplane-system
 # - UPTEST_DATASOURCE_PATH (optional), please see https://github.com/crossplane/uptest#injecting-dynamic-values-and-datasource
 uptest: $(UPTEST) $(KUBECTL) $(CHAINSAW) $(CROSSPLANE_CLI)
 	@$(INFO) running automated tests
-	@KUBECTL=$(KUBECTL) CHAINSAW=$(CHAINSAW) CROSSPLANE_CLI=$(CROSSPLANE_CLI) CROSSPLANE_NAMESPACE=$(CROSSPLANE_NAMESPACE) $(UPTEST) e2e "${UPTEST_EXAMPLE_LIST}" --data-source="${UPTEST_DATASOURCE_PATH}" --setup-script=cluster/test/setup.sh --default-conditions="Test" || $(FAIL)
+	@KUBECTL=$(KUBECTL) CHAINSAW=$(CHAINSAW) CROSSPLANE_CLI=$(CROSSPLANE_CLI) CROSSPLANE_NAMESPACE=$(CROSSPLANE_NAMESPACE) $(UPTEST) e2e "${UPTEST_EXAMPLE_LIST}" --data-source="${UPTEST_DATASOURCE_PATH}" --setup-script=cluster/test/setup.sh --default-conditions="Test" $(if $(filter true,$(CROSSPLANE_CLI_SPLIT)),--use-library-mode) || $(FAIL)
 	@$(OK) running automated tests
 
 local-deploy: build controlplane.up local.xpkg.deploy.provider.$(PROJECT_NAME)

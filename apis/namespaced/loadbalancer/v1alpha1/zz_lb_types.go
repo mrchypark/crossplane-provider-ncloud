@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type LbInitParameters struct {
@@ -30,11 +29,11 @@ type LbInitParameters struct {
 
 	// References to Subnet in network to populate subnetNoList.
 	// +kubebuilder:validation:Optional
-	SubnetNoRefs []v1.NamespacedReference `json:"subnetNoRefs,omitempty" tf:"-"`
+	SubnetNoRefs []v2.NamespacedReference `json:"subnetNoRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Subnet in network to populate subnetNoList.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	ThroughputType *string `json:"throughputType,omitempty" tf:"throughput_type,omitempty"`
 
@@ -91,11 +90,11 @@ type LbParameters struct {
 
 	// References to Subnet in network to populate subnetNoList.
 	// +kubebuilder:validation:Optional
-	SubnetNoRefs []v1.NamespacedReference `json:"subnetNoRefs,omitempty" tf:"-"`
+	SubnetNoRefs []v2.NamespacedReference `json:"subnetNoRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Subnet in network to populate subnetNoList.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	ThroughputType *string `json:"throughputType,omitempty" tf:"throughput_type,omitempty"`
@@ -123,8 +122,8 @@ type LbSpec struct {
 
 // LbStatus defines the observed state of Lb.
 type LbStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        LbObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               LbObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

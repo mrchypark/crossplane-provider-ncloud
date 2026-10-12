@@ -9,7 +9,7 @@
 package v1alpha1
 
 import (
-	"github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	"github.com/crossplane/crossplane/apis/v2/core/v2"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -56,14 +56,14 @@ func (in *AutoScalingGroupInitParameters) DeepCopyInto(out *AutoScalingGroupInit
 	}
 	if in.AccessControlGroupNoRefs != nil {
 		in, out := &in.AccessControlGroupNoRefs, &out.AccessControlGroupNoRefs
-		*out = make([]v1.NamespacedReference, len(*in))
+		*out = make([]v2.NamespacedReference, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
 	if in.AccessControlGroupNoSelector != nil {
 		in, out := &in.AccessControlGroupNoSelector, &out.AccessControlGroupNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.DefaultCooldown != nil {
@@ -98,12 +98,12 @@ func (in *AutoScalingGroupInitParameters) DeepCopyInto(out *AutoScalingGroupInit
 	}
 	if in.LaunchConfigurationNoRef != nil {
 		in, out := &in.LaunchConfigurationNoRef, &out.LaunchConfigurationNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.LaunchConfigurationNoSelector != nil {
 		in, out := &in.LaunchConfigurationNoSelector, &out.LaunchConfigurationNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.MaxSize != nil {
@@ -133,12 +133,12 @@ func (in *AutoScalingGroupInitParameters) DeepCopyInto(out *AutoScalingGroupInit
 	}
 	if in.SubnetNoRef != nil {
 		in, out := &in.SubnetNoRef, &out.SubnetNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.SubnetNoSelector != nil {
 		in, out := &in.SubnetNoSelector, &out.SubnetNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.TargetGroupList != nil {
@@ -154,14 +154,14 @@ func (in *AutoScalingGroupInitParameters) DeepCopyInto(out *AutoScalingGroupInit
 	}
 	if in.TargetGroupRefs != nil {
 		in, out := &in.TargetGroupRefs, &out.TargetGroupRefs
-		*out = make([]v1.NamespacedReference, len(*in))
+		*out = make([]v2.NamespacedReference, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
 	if in.TargetGroupSelector != nil {
 		in, out := &in.TargetGroupSelector, &out.TargetGroupSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.WaitForCapacityTimeout != nil {
@@ -352,14 +352,14 @@ func (in *AutoScalingGroupParameters) DeepCopyInto(out *AutoScalingGroupParamete
 	}
 	if in.AccessControlGroupNoRefs != nil {
 		in, out := &in.AccessControlGroupNoRefs, &out.AccessControlGroupNoRefs
-		*out = make([]v1.NamespacedReference, len(*in))
+		*out = make([]v2.NamespacedReference, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
 	if in.AccessControlGroupNoSelector != nil {
 		in, out := &in.AccessControlGroupNoSelector, &out.AccessControlGroupNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.DefaultCooldown != nil {
@@ -394,12 +394,12 @@ func (in *AutoScalingGroupParameters) DeepCopyInto(out *AutoScalingGroupParamete
 	}
 	if in.LaunchConfigurationNoRef != nil {
 		in, out := &in.LaunchConfigurationNoRef, &out.LaunchConfigurationNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.LaunchConfigurationNoSelector != nil {
 		in, out := &in.LaunchConfigurationNoSelector, &out.LaunchConfigurationNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.MaxSize != nil {
@@ -429,12 +429,12 @@ func (in *AutoScalingGroupParameters) DeepCopyInto(out *AutoScalingGroupParamete
 	}
 	if in.SubnetNoRef != nil {
 		in, out := &in.SubnetNoRef, &out.SubnetNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.SubnetNoSelector != nil {
 		in, out := &in.SubnetNoSelector, &out.SubnetNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.TargetGroupList != nil {
@@ -450,14 +450,14 @@ func (in *AutoScalingGroupParameters) DeepCopyInto(out *AutoScalingGroupParamete
 	}
 	if in.TargetGroupRefs != nil {
 		in, out := &in.TargetGroupRefs, &out.TargetGroupRefs
-		*out = make([]v1.NamespacedReference, len(*in))
+		*out = make([]v2.NamespacedReference, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
 	if in.TargetGroupSelector != nil {
 		in, out := &in.TargetGroupSelector, &out.TargetGroupSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.WaitForCapacityTimeout != nil {
@@ -498,7 +498,7 @@ func (in *AutoScalingGroupSpec) DeepCopy() *AutoScalingGroupSpec {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *AutoScalingGroupStatus) DeepCopyInto(out *AutoScalingGroupStatus) {
 	*out = *in
-	in.ResourceStatus.DeepCopyInto(&out.ResourceStatus)
+	in.ManagedResourceStatus.DeepCopyInto(&out.ManagedResourceStatus)
 	in.AtProvider.DeepCopyInto(&out.AtProvider)
 }
 
@@ -554,12 +554,12 @@ func (in *AutoScalingPolicyInitParameters) DeepCopyInto(out *AutoScalingPolicyIn
 	}
 	if in.AutoScalingGroupNoRef != nil {
 		in, out := &in.AutoScalingGroupNoRef, &out.AutoScalingGroupNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.AutoScalingGroupNoSelector != nil {
 		in, out := &in.AutoScalingGroupNoSelector, &out.AutoScalingGroupNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.Cooldown != nil {
@@ -691,12 +691,12 @@ func (in *AutoScalingPolicyParameters) DeepCopyInto(out *AutoScalingPolicyParame
 	}
 	if in.AutoScalingGroupNoRef != nil {
 		in, out := &in.AutoScalingGroupNoRef, &out.AutoScalingGroupNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.AutoScalingGroupNoSelector != nil {
 		in, out := &in.AutoScalingGroupNoSelector, &out.AutoScalingGroupNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.Cooldown != nil {
@@ -752,7 +752,7 @@ func (in *AutoScalingPolicySpec) DeepCopy() *AutoScalingPolicySpec {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *AutoScalingPolicyStatus) DeepCopyInto(out *AutoScalingPolicyStatus) {
 	*out = *in
-	in.ResourceStatus.DeepCopyInto(&out.ResourceStatus)
+	in.ManagedResourceStatus.DeepCopyInto(&out.ManagedResourceStatus)
 	in.AtProvider.DeepCopyInto(&out.AtProvider)
 }
 
@@ -803,12 +803,12 @@ func (in *AutoScalingScheduleInitParameters) DeepCopyInto(out *AutoScalingSchedu
 	}
 	if in.AutoScalingGroupNoRef != nil {
 		in, out := &in.AutoScalingGroupNoRef, &out.AutoScalingGroupNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.AutoScalingGroupNoSelector != nil {
 		in, out := &in.AutoScalingGroupNoSelector, &out.AutoScalingGroupNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.DesiredCapacity != nil {
@@ -970,12 +970,12 @@ func (in *AutoScalingScheduleParameters) DeepCopyInto(out *AutoScalingSchedulePa
 	}
 	if in.AutoScalingGroupNoRef != nil {
 		in, out := &in.AutoScalingGroupNoRef, &out.AutoScalingGroupNoRef
-		*out = new(v1.NamespacedReference)
+		*out = new(v2.NamespacedReference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.AutoScalingGroupNoSelector != nil {
 		in, out := &in.AutoScalingGroupNoSelector, &out.AutoScalingGroupNoSelector
-		*out = new(v1.NamespacedSelector)
+		*out = new(v2.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.DesiredCapacity != nil {
@@ -1051,7 +1051,7 @@ func (in *AutoScalingScheduleSpec) DeepCopy() *AutoScalingScheduleSpec {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *AutoScalingScheduleStatus) DeepCopyInto(out *AutoScalingScheduleStatus) {
 	*out = *in
-	in.ResourceStatus.DeepCopyInto(&out.ResourceStatus)
+	in.ManagedResourceStatus.DeepCopyInto(&out.ManagedResourceStatus)
 	in.AtProvider.DeepCopyInto(&out.AtProvider)
 }
 

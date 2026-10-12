@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type SubaccountAccessKeyInitParameters struct {
@@ -22,11 +21,11 @@ type SubaccountAccessKeyInitParameters struct {
 
 	// Reference to a Subaccount in subaccount to populate subAccountId.
 	// +kubebuilder:validation:Optional
-	SubAccountIDRef *v1.NamespacedReference `json:"subAccountIdRef,omitempty" tf:"-"`
+	SubAccountIDRef *v2.NamespacedReference `json:"subAccountIdRef,omitempty" tf:"-"`
 
 	// Selector for a Subaccount in subaccount to populate subAccountId.
 	// +kubebuilder:validation:Optional
-	SubAccountIDSelector *v1.NamespacedSelector `json:"subAccountIdSelector,omitempty" tf:"-"`
+	SubAccountIDSelector *v2.NamespacedSelector `json:"subAccountIdSelector,omitempty" tf:"-"`
 }
 
 type SubaccountAccessKeyObservation struct {
@@ -52,11 +51,11 @@ type SubaccountAccessKeyParameters struct {
 
 	// Reference to a Subaccount in subaccount to populate subAccountId.
 	// +kubebuilder:validation:Optional
-	SubAccountIDRef *v1.NamespacedReference `json:"subAccountIdRef,omitempty" tf:"-"`
+	SubAccountIDRef *v2.NamespacedReference `json:"subAccountIdRef,omitempty" tf:"-"`
 
 	// Selector for a Subaccount in subaccount to populate subAccountId.
 	// +kubebuilder:validation:Optional
-	SubAccountIDSelector *v1.NamespacedSelector `json:"subAccountIdSelector,omitempty" tf:"-"`
+	SubAccountIDSelector *v2.NamespacedSelector `json:"subAccountIdSelector,omitempty" tf:"-"`
 }
 
 // SubaccountAccessKeySpec defines the desired state of SubaccountAccessKey
@@ -78,8 +77,8 @@ type SubaccountAccessKeySpec struct {
 
 // SubaccountAccessKeyStatus defines the observed state of SubaccountAccessKey.
 type SubaccountAccessKeyStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        SubaccountAccessKeyObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               SubaccountAccessKeyObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

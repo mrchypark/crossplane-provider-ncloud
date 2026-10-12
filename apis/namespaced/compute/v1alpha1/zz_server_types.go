@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type BlockDevicePartitionListInitParameters struct {
@@ -49,11 +48,11 @@ type ServerInitParameters struct {
 
 	// Reference to a InitScript in compute to populate initScriptNo.
 	// +kubebuilder:validation:Optional
-	InitScriptNoRef *v1.NamespacedReference `json:"initScriptNoRef,omitempty" tf:"-"`
+	InitScriptNoRef *v2.NamespacedReference `json:"initScriptNoRef,omitempty" tf:"-"`
 
 	// Selector for a InitScript in compute to populate initScriptNo.
 	// +kubebuilder:validation:Optional
-	InitScriptNoSelector *v1.NamespacedSelector `json:"initScriptNoSelector,omitempty" tf:"-"`
+	InitScriptNoSelector *v2.NamespacedSelector `json:"initScriptNoSelector,omitempty" tf:"-"`
 
 	IsEncryptedBaseBlockStorageVolume *bool `json:"isEncryptedBaseBlockStorageVolume,omitempty" tf:"is_encrypted_base_block_storage_volume,omitempty"`
 
@@ -84,11 +83,11 @@ type ServerInitParameters struct {
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
@@ -100,11 +99,11 @@ type ServerNetworkInterfaceInitParameters struct {
 
 	// Reference to a NetworkInterface in compute to populate networkInterfaceNo.
 	// +kubebuilder:validation:Optional
-	NetworkInterfaceNoRef *v1.NamespacedReference `json:"networkInterfaceNoRef,omitempty" tf:"-"`
+	NetworkInterfaceNoRef *v2.NamespacedReference `json:"networkInterfaceNoRef,omitempty" tf:"-"`
 
 	// Selector for a NetworkInterface in compute to populate networkInterfaceNo.
 	// +kubebuilder:validation:Optional
-	NetworkInterfaceNoSelector *v1.NamespacedSelector `json:"networkInterfaceNoSelector,omitempty" tf:"-"`
+	NetworkInterfaceNoSelector *v2.NamespacedSelector `json:"networkInterfaceNoSelector,omitempty" tf:"-"`
 
 	Order *float64 `json:"order,omitempty" tf:"order,omitempty"`
 }
@@ -127,11 +126,11 @@ type ServerNetworkInterfaceParameters struct {
 
 	// Reference to a NetworkInterface in compute to populate networkInterfaceNo.
 	// +kubebuilder:validation:Optional
-	NetworkInterfaceNoRef *v1.NamespacedReference `json:"networkInterfaceNoRef,omitempty" tf:"-"`
+	NetworkInterfaceNoRef *v2.NamespacedReference `json:"networkInterfaceNoRef,omitempty" tf:"-"`
 
 	// Selector for a NetworkInterface in compute to populate networkInterfaceNo.
 	// +kubebuilder:validation:Optional
-	NetworkInterfaceNoSelector *v1.NamespacedSelector `json:"networkInterfaceNoSelector,omitempty" tf:"-"`
+	NetworkInterfaceNoSelector *v2.NamespacedSelector `json:"networkInterfaceNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Order *float64 `json:"order" tf:"order,omitempty"`
@@ -231,11 +230,11 @@ type ServerParameters struct {
 
 	// Reference to a InitScript in compute to populate initScriptNo.
 	// +kubebuilder:validation:Optional
-	InitScriptNoRef *v1.NamespacedReference `json:"initScriptNoRef,omitempty" tf:"-"`
+	InitScriptNoRef *v2.NamespacedReference `json:"initScriptNoRef,omitempty" tf:"-"`
 
 	// Selector for a InitScript in compute to populate initScriptNo.
 	// +kubebuilder:validation:Optional
-	InitScriptNoSelector *v1.NamespacedSelector `json:"initScriptNoSelector,omitempty" tf:"-"`
+	InitScriptNoSelector *v2.NamespacedSelector `json:"initScriptNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	IsEncryptedBaseBlockStorageVolume *bool `json:"isEncryptedBaseBlockStorageVolume,omitempty" tf:"is_encrypted_base_block_storage_volume,omitempty"`
@@ -279,11 +278,11 @@ type ServerParameters struct {
 
 	// Reference to a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoRef *v1.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
+	SubnetNoRef *v2.NamespacedReference `json:"subnetNoRef,omitempty" tf:"-"`
 
 	// Selector for a Subnet in network to populate subnetNo.
 	// +kubebuilder:validation:Optional
-	SubnetNoSelector *v1.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
+	SubnetNoSelector *v2.NamespacedSelector `json:"subnetNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
@@ -308,8 +307,8 @@ type ServerSpec struct {
 
 // ServerStatus defines the observed state of Server.
 type ServerStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ServerObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ServerObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

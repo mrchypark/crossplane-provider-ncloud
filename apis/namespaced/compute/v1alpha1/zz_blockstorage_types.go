@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type BlockStorageInitParameters struct {
@@ -30,11 +29,11 @@ type BlockStorageInitParameters struct {
 
 	// Reference to a Server in compute to populate serverInstanceNo.
 	// +kubebuilder:validation:Optional
-	ServerInstanceNoRef *v1.NamespacedReference `json:"serverInstanceNoRef,omitempty" tf:"-"`
+	ServerInstanceNoRef *v2.NamespacedReference `json:"serverInstanceNoRef,omitempty" tf:"-"`
 
 	// Selector for a Server in compute to populate serverInstanceNo.
 	// +kubebuilder:validation:Optional
-	ServerInstanceNoSelector *v1.NamespacedSelector `json:"serverInstanceNoSelector,omitempty" tf:"-"`
+	ServerInstanceNoSelector *v2.NamespacedSelector `json:"serverInstanceNoSelector,omitempty" tf:"-"`
 
 	Size *float64 `json:"size,omitempty" tf:"size,omitempty"`
 
@@ -114,11 +113,11 @@ type BlockStorageParameters struct {
 
 	// Reference to a Server in compute to populate serverInstanceNo.
 	// +kubebuilder:validation:Optional
-	ServerInstanceNoRef *v1.NamespacedReference `json:"serverInstanceNoRef,omitempty" tf:"-"`
+	ServerInstanceNoRef *v2.NamespacedReference `json:"serverInstanceNoRef,omitempty" tf:"-"`
 
 	// Selector for a Server in compute to populate serverInstanceNo.
 	// +kubebuilder:validation:Optional
-	ServerInstanceNoSelector *v1.NamespacedSelector `json:"serverInstanceNoSelector,omitempty" tf:"-"`
+	ServerInstanceNoSelector *v2.NamespacedSelector `json:"serverInstanceNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Size *float64 `json:"size,omitempty" tf:"size,omitempty"`
@@ -155,8 +154,8 @@ type BlockStorageSpec struct {
 
 // BlockStorageStatus defines the observed state of BlockStorage.
 type BlockStorageStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        BlockStorageObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               BlockStorageObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

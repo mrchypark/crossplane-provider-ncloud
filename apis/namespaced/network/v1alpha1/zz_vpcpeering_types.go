@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type VpcPeeringInitParameters struct {
@@ -24,11 +23,11 @@ type VpcPeeringInitParameters struct {
 
 	// Reference to a Vpc in network to populate sourceVpcNo.
 	// +kubebuilder:validation:Optional
-	SourceVPCNoRef *v1.NamespacedReference `json:"sourceVpcNoRef,omitempty" tf:"-"`
+	SourceVPCNoRef *v2.NamespacedReference `json:"sourceVpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate sourceVpcNo.
 	// +kubebuilder:validation:Optional
-	SourceVPCNoSelector *v1.NamespacedSelector `json:"sourceVpcNoSelector,omitempty" tf:"-"`
+	SourceVPCNoSelector *v2.NamespacedSelector `json:"sourceVpcNoSelector,omitempty" tf:"-"`
 
 	TargetVPCLoginID *string `json:"targetVpcLoginId,omitempty" tf:"target_vpc_login_id,omitempty"`
 
@@ -37,11 +36,11 @@ type VpcPeeringInitParameters struct {
 
 	// Reference to a Vpc in network to populate targetVpcNo.
 	// +kubebuilder:validation:Optional
-	TargetVPCNoRef *v1.NamespacedReference `json:"targetVpcNoRef,omitempty" tf:"-"`
+	TargetVPCNoRef *v2.NamespacedReference `json:"targetVpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate targetVpcNo.
 	// +kubebuilder:validation:Optional
-	TargetVPCNoSelector *v1.NamespacedSelector `json:"targetVpcNoSelector,omitempty" tf:"-"`
+	TargetVPCNoSelector *v2.NamespacedSelector `json:"targetVpcNoSelector,omitempty" tf:"-"`
 }
 
 type VpcPeeringObservation struct {
@@ -80,11 +79,11 @@ type VpcPeeringParameters struct {
 
 	// Reference to a Vpc in network to populate sourceVpcNo.
 	// +kubebuilder:validation:Optional
-	SourceVPCNoRef *v1.NamespacedReference `json:"sourceVpcNoRef,omitempty" tf:"-"`
+	SourceVPCNoRef *v2.NamespacedReference `json:"sourceVpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate sourceVpcNo.
 	// +kubebuilder:validation:Optional
-	SourceVPCNoSelector *v1.NamespacedSelector `json:"sourceVpcNoSelector,omitempty" tf:"-"`
+	SourceVPCNoSelector *v2.NamespacedSelector `json:"sourceVpcNoSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	TargetVPCLoginID *string `json:"targetVpcLoginId,omitempty" tf:"target_vpc_login_id,omitempty"`
@@ -95,11 +94,11 @@ type VpcPeeringParameters struct {
 
 	// Reference to a Vpc in network to populate targetVpcNo.
 	// +kubebuilder:validation:Optional
-	TargetVPCNoRef *v1.NamespacedReference `json:"targetVpcNoRef,omitempty" tf:"-"`
+	TargetVPCNoRef *v2.NamespacedReference `json:"targetVpcNoRef,omitempty" tf:"-"`
 
 	// Selector for a Vpc in network to populate targetVpcNo.
 	// +kubebuilder:validation:Optional
-	TargetVPCNoSelector *v1.NamespacedSelector `json:"targetVpcNoSelector,omitempty" tf:"-"`
+	TargetVPCNoSelector *v2.NamespacedSelector `json:"targetVpcNoSelector,omitempty" tf:"-"`
 }
 
 // VpcPeeringSpec defines the desired state of VpcPeering
@@ -121,8 +120,8 @@ type VpcPeeringSpec struct {
 
 // VpcPeeringStatus defines the observed state of VpcPeering.
 type VpcPeeringStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        VpcPeeringObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               VpcPeeringObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
